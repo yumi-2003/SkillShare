@@ -3,7 +3,7 @@ import SkillShareLogo from "../../assets/skillshare.png";
 
 const Navbar = () => {
   return (
-    <div className="px-4 py-3 flex items-center justify-between w-full bg-white shadow-md">
+    <div className="px-4 py-3 flex items-center justify-between w-full shadow-md fixed top-0 left-0 z-50 bg-white bg-opacity-100">
       {/* logo + nav links */}
       <div className="flex items-center gap-x-8">
         <Link to="/" className="flex items-center space-x-2">
