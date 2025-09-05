@@ -1,10 +1,11 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Home from "./layout/Home";
-import Login from "./pages/Login";
-import Signup from "./pages/Signup";
 import AllCourses from "./components/AllCourses/AllCourses";
 import Navbar from "./components/HomeComponents/Navbar";
 import Footer from "./components/Footer/Footer";
+import AuthForm from "./components/Auth/AuthForm";
+import DashboardAdmin from "./pages/admin/DashboardAdmin";
+import DashboardStudent from "./pages/students/DashboardStudent";
 
 function App() {
   return (
@@ -13,10 +14,10 @@ function App() {
         <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          {/* <Route path="/admin/dashboard" element={<DashboardAdmin />} /> */}
-          {/* <Route path="/student/dashboard" element={<DashboardStudent />} /> */}
+          <Route path="/login" element={<AuthForm />} />
+          <Route path="/signup" element={<AuthForm />} />
+          <Route path="/admindashboard" element={<DashboardAdmin />} />
+          <Route path="/studentdashbaord" element={<DashboardStudent />} />
           <Route path="/allcourses" element={<AllCourses />} />
         </Routes>
 

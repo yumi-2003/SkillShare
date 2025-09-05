@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import CourseCard from "../HomeComponents/CourseCard";
-import CourseFilter from "../../pages/CoursesPage/CourseFilter";
+import CourseFilter from "../../pages/coursesPage/CourseFilter";
 
 const AllCourses = () => {
   return (
@@ -17,7 +17,7 @@ const AllCourses = () => {
         </p>
       </div>
       <CourseFilter />
-      <CourseCard />
+      <CourseCard title={false} showViewButton={false} />
     </div>
   );
 };

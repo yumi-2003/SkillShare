@@ -52,7 +52,7 @@ const courses = [
   },
 ];
 
-const CourseCard = ({ title, showViewButton }) => {
+const CourseCard = ({ title = true, showViewButton = true }) => {
   return (
     <div className="bg-gray-100 py-16">
       {/* title */}
