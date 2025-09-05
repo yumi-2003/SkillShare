@@ -52,19 +52,22 @@ const courses = [
   },
 ];
 
-const CourseCard = () => {
+const CourseCard = ({ title, showViewButton }) => {
   return (
     <div className="bg-gray-100 py-16">
       {/* title */}
-      <div className="max-w-7xl mx-auto px-6 lg:px-12">
-        <h2 className="text-center mb-7 text-3xl font-semibold">
-          Featured Courses
-        </h2>
-        <p className="text-center mt-2 text-gray-500">
-          Discover our most popular courses designed by industry experts to help
-          you build in-demand skills.
-        </p>
-      </div>
+      {title && (
+        <div className="max-w-7xl mx-auto px-6 lg:px-12">
+          <h2 className="text-center mb-7 text-3xl font-semibold">
+            Featured Courses
+          </h2>
+          <p className="text-center mt-2 text-gray-500">
+            Discover our most popular courses designed by industry experts to
+            help you build in-demand skills.
+          </p>
+        </div>
+      )}
+
       {/* course grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 px-3 mt-3">
         {courses.map((course) => (
@@ -101,14 +104,16 @@ const CourseCard = () => {
         ))}
       </div>
       {/* view all course */}
-      <div className="mt-8 text-center">
-        <Link
-          to="/allcourses"
-          className="text-lg rounded-lg px-6 py-3 hover:text-white hover:bg-blue-700 border-2 shadow-lg"
-        >
-          View All Courses
-        </Link>
-      </div>
+      {showViewButton && (
+        <div className="mt-8 text-center">
+          <Link
+            to="/allcourses"
+            className="text-lg rounded-lg px-6 py-3 hover:text-white hover:bg-blue-700 border-2 shadow-lg"
+          >
+            View All Courses
+          </Link>
+        </div>
+      )}
     </div>
   );
 };
