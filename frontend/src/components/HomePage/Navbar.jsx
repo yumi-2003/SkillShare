@@ -15,10 +15,7 @@ const Navbar = () => {
           <Link to="/" className="hover:text-blue-700 font-semibold">
             Home
           </Link>
-          <Link
-            to="/coursedetail"
-            className="hover:text-blue-700 font-semibold"
-          >
+          <Link to="/allcourses" className="hover:text-blue-700 font-semibold">
             Courses
           </Link>
         </div>

@@ -1,5 +1,6 @@
 import React from "react";
 import HeroImg from "../../assets/hero-img.png";
+import { Link } from "react-router-dom";
 
 const Hero = () => {
   return (
@@ -19,9 +20,12 @@ const Hero = () => {
             <button className="bg-yellow-400 text-black px-5 py-2 rounded-lg font-semibold shadow hover:bg-yellow-300">
               Get Started
             </button>
-            <button className="bg-white text-blue-700 px-5 py-2 rounded-lg font-semibold hover:bg-gray-100">
+            <Link
+              to="/allcourses"
+              className="bg-white text-blue-700 px-5 py-2 rounded-lg font-semibold hover:bg-gray-100"
+            >
               Explore Courses
-            </button>
+            </Link>
           </div>
         </div>
 
