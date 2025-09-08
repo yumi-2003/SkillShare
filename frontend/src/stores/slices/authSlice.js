@@ -1,18 +1,28 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const token = localStorage.getItem("SkillShareToken");
-const user = JSON.parse(localStorage.getItem("SkillShareUser"));
+// Safe parsing function for localStorage
+const getUserFromLocalStorage = () => {
+  const data = localStorage.getItem("SkillShareUser");
+  if (!data || data === "undefined") return null; // handle undefined or empty string
+  try {
+    return JSON.parse(data);
+  } catch (err) {
+    console.warn("Failed to parse SkillShareUser from localStorage:", err);
+    return null;
+  }
+};
 
-// initial state
+const token = localStorage.getItem("SkillShareToken");
+const user = getUserFromLocalStorage();
+
 const initialState = {
   token: token || null,
   user: user || null,
-  isAuthenticated: false,
+  isAuthenticated: !!token,
   loading: false,
   error: null,
 };
 
-//create log in, sign up, log out slice
 const authSlice = createSlice({
   name: "auth",
   initialState,

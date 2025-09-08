@@ -1,50 +1,49 @@
 import axiosInstance from "./axiosInstance";
 import userAvator from "../images/userAvator.webp";
-//mock api call later use of real api call for login and register
+import { handleError } from "../util/handleError";
 
 //create new account and track status
-export const signUp = async (Users) => {
+export const signUp = async (payload) => {
   try {
-    // const response = await axiosInstance.post("/auth/register", userData)
-    // return response.data
-    // now use mock data
-    await new Promise((res) => setTimeout(res, 1000));
-
-    return {
-      user: {
-        id: Date.now(),
-        name: Users.name,
-        email: Users.email,
-        userType: Users.userType,
-        profileImg: Users.profileImg || userAvator,
-      },
-      token: "mock-jwt-token-" + Math.random().toString(36).substr(2, 9),
-    };
+    const res = await axiosInstance.post("/register", payload);
+    if (res.data.token && res.data.user) {
+      localStorage.setItem("SkillShareToken", res.data.token);
+      localStorage.setItem("SkillShareUser", JSON.stringify(res.data.user));
+    }
+    return res.data;
   } catch (error) {
-    console.log(error);
-    throw error;
+    handleError(error, "Sign Up Failed");
   }
 };
 
 //login
-export const login = async (Users) => {
+export const login = async (payload) => {
   try {
-    // const response = await axiosInstance.post("/auth/login", userData)
-    // return response.data
-    //mock data
-    await new Promise((res) => setTimeout(res, 1000));
-    return {
-      user: {
-        id: 1,
-        name: "Ingyin",
-        email: Users.email,
-        userType: Users.userType,
-        profileImg: userAvator,
-      },
-      token: "mock-jwt-token-" + Math.random().toString(36).substr(2, 9),
-    };
+    const res = await axiosInstance.post("/login", payload);
+    if (res.data.token) {
+      localStorage.setItem("SkillShareToken", res.data.token);
+      localStorage.setItem("SkillShareUser", JSON.stringify(res.data.user));
+    }
+    return res.data;
   } catch (error) {
-    console.log(error);
-    throw error;
+    handleError(error, "Login Failed");
+  }
+};
+
+//logout user
+export const logout = async (payload) => {
+  localStorage.removeItem("SkillShareToken");
+  window.location.href = "/login";
+};
+
+//check current user
+
+export const checkCurrentUser = async (payload) => {
+  try {
+    const res = await axiosInstance.get("/get-current-user");
+    return res.data;
+  } catch (error) {
+    // Optionally handle the error here
+    handleError(error, "Check Current User Failed");
   }
 };

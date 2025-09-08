@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { loginUser } from "../../features/Auth/authAction";
+import { loginUser } from "../../features/Auth/authAction.js"; // ensure path is correct
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const AuthForm = () => {
@@ -15,7 +15,8 @@ const AuthForm = () => {
     name: "",
     email: "",
     password: "",
-    userType: "student",
+    cpassword: "",
+    userType: "",
   });
 
   const handleChange = (e) => {
@@ -27,34 +28,47 @@ const AuthForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!isLoginPage && formData.password !== formData.cpassword) {
+      alert("Passwords do not match");
+      return;
+    }
+
+    const payload = {
+      name: formData.name,
+      email: formData.email,
+      password: formData.password,
+      userType: formData.userType || "student",
+    };
+
     try {
-      const userType = await dispatch(
-        loginUser(formData, isLoginPage ? "login" : "signUp")
+      const response = await dispatch(
+        loginUser(payload, isLoginPage ? "login" : "signUp")
       );
-      if (userType) {
+
+      if (response?.user?.userType) {
         navigate(
-          userType === "instructor"
+          response.user.userType === "instructor"
             ? "/instructor-dashboard"
             : "/student-dashboard"
         );
       }
-    } catch (error) {
-      console.error(error);
+    } catch (err) {
+      console.error(err);
     }
   };
 
   return (
     <section className="h-screen flex items-center justify-center bg-gray-100">
-      {/* <div className="mt-10">
-        <h1>SkillShare</h1>
-      </div> */}
       <div className="w-full max-w-md p-6 rounded-xl bg-white">
         <h2 className="font-bold text-blue-600 text-2xl mb-6 text-center">
           {isLoginPage ? "Welcome Back" : "Join SkillShare"}
         </h2>
+
         {error && (
           <p className="text-red-500 text-sm mb-3 text-center">{error}</p>
         )}
+
         <form onSubmit={handleSubmit} className="space-y-4">
           {!isLoginPage && (
             <input
@@ -67,6 +81,7 @@ const AuthForm = () => {
               required
             />
           )}
+
           <input
             type="email"
             name="email"
@@ -108,6 +123,7 @@ const AuthForm = () => {
               </div>
             </div>
           )}
+
           <input
             type="password"
             name="password"
@@ -117,11 +133,12 @@ const AuthForm = () => {
             className="w-full border px-3 py-2 rounded-lg focus:outline-blue-500"
             required
           />
+
           {!isLoginPage && (
             <input
               type="password"
-              name="password"
-              value={formData.password}
+              name="cpassword"
+              value={formData.cpassword}
               onChange={handleChange}
               placeholder="Confirm Password"
               className="w-full border px-3 py-2 rounded-lg focus:outline-blue-500"
@@ -143,6 +160,7 @@ const AuthForm = () => {
               : "Register"}
           </button>
         </form>
+
         <p className="text-sm text-gray-600 mt-4 text-center">
           {isLoginPage ? (
             <>

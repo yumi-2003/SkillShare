@@ -5,15 +5,26 @@ import {
 } from "../../stores/slices/authSlice.js";
 import { signUp, login } from "../../apiCalls/auth.js";
 
-// mode = "login" or "singUp"
-export const loginUser = (Users, mode) => async (dispatch) => {
+// mode = "login" or "signUp"
+export const loginUser = (payload, mode) => async (dispatch) => {
   dispatch(loginStart());
   try {
-    const response = await (mode === "login" ? login(Users) : signUp(Users));
+    const response = await (mode === "login"
+      ? login(payload)
+      : signUp(payload));
+
+    // store token & user in localStorage
+    if (response?.token && response?.user) {
+      localStorage.setItem("SkillShareToken", response.token);
+      localStorage.setItem("SkillShareUser", JSON.stringify(response.user));
+    }
+
+    // dispatch full response (token + user)
     dispatch(loginSuccess(response));
-    return response;
+
+    return response; // for navigation
   } catch (error) {
-    dispatch(loginFail(error.message) || "Something went Wrong");
-    return error.message;
+    dispatch(loginFail(error.message || "Something went wrong"));
+    return null;
   }
 };

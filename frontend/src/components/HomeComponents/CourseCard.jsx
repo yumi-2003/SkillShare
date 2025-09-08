@@ -89,7 +89,11 @@ const CourseCard = ({ title = true, showViewButton = true }) => {
               <h3 className="text-lg font-semibold text-gray-800 mb-2">
                 {course.title}
               </h3>
-              <p className="text-gray-500 mb-2 text-sm">{course.description}</p>
+              <p className="text-gray-500 mb-2 text-sm">
+                {course.description.length > 80
+                  ? `${course.description.substring(0, 77)}...`
+                  : course.description}
+              </p>
               {/* stats */}
               <div className="flex justify-between mb-4 text-sm text-gray-400">
                 <span>⏱ {course.duration}</span>
