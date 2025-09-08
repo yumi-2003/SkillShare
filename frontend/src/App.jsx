@@ -6,8 +6,18 @@ import Footer from "./components/Footer/Footer";
 import AuthForm from "./components/Auth/AuthForm";
 import DashboardAdmin from "./pages/admin/DashboardAdmin";
 import DashboardStudent from "./pages/students/DashboardStudent";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { loadUserFromStorage } from "./util/loadUserFromStorage";
 
 function App() {
+  const dispatch = useDispatch();
+
+  // Load user from localStorage on app initialization
+  useEffect(() => {
+    loadUserFromStorage(dispatch);
+  }, [dispatch]);
+
   return (
     <>
       <Router>
@@ -17,7 +27,7 @@ function App() {
           <Route path="/login" element={<AuthForm />} />
           <Route path="/signup" element={<AuthForm />} />
           <Route path="/instructor-dashboard" element={<DashboardAdmin />} />
-          <Route path="/student-dashbaord" element={<DashboardStudent />} />
+          <Route path="/student-dashboard" element={<DashboardStudent />} />
           <Route path="/allcourses" element={<AllCourses />} />
         </Routes>
 
