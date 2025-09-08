@@ -3,6 +3,10 @@ const publicController = require("../controllers/public");
 
 const router = Router();
 
+// get all users
+// GET /api/users
+router.get("/users", publicController.getUsers);
+
 // get all courses
 // GET /api/courses
 router.get("/courses", publicController.getCourses);

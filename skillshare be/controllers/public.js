@@ -1,4 +1,20 @@
 const Course = require("../models/course");
+const User = require("../models/user");
+
+exports.getUsers = async (req, res) => {
+  try {
+    const users = await User.find({}).select("-password");
+    return res.status(200).json({
+      isSuccess: true,
+      users
+    });
+  } catch (err) {
+    return res.status(500).json({
+      isSuccess: false,
+      message: err.message || "Failed to fetch users",
+    });
+  }
+};
 
 exports.getCourses = async (req, res) => {
   const page = parseInt(req.query.page, 10) || 1;

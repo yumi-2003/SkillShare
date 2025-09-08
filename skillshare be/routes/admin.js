@@ -8,6 +8,7 @@ const categoryController = require("../controllers/category");
 const router = Router();
 
 // need to write instructor product routes
+router.post("/users", authMiddleware, isAdmin, []);
 
 // category management (admin)
 // POST /admin/categories
