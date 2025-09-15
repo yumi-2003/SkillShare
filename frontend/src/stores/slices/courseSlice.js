@@ -11,7 +11,7 @@ export const getAllCourses = createAsyncThunk("courses/fetchAll", async () => {
 export const createCourse = createAsyncThunk(
   "courses/create",
   async (courseData) => {
-    const res = await axiosInstance.post("/courses", courseData);
+    const res = await axiosInstance.post("/create-course", courseData);
     return res.data;
   }
 );

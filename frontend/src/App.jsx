@@ -9,6 +9,7 @@ import DashboardStudent from "./pages/students/DashboardStudent";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { loadUserFromStorage } from "./util/loadUserFromStorage";
+import CreateCoursePage from "./pages/admin/CourseManage/CreateCoursePage";
 
 function App() {
   const dispatch = useDispatch();
@@ -29,6 +30,7 @@ function App() {
           <Route path="/instructor-dashboard" element={<DashboardAdmin />} />
           <Route path="/student-dashboard" element={<DashboardStudent />} />
           <Route path="/allcourses" element={<AllCourses />} />
+          <Route path="/createCoursePage" element={<CreateCoursePage />} />
         </Routes>
 
         <Footer />
