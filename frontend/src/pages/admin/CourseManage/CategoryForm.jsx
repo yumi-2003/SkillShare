@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import {addNewCategory} from "../../../stores/slices/categorySlice";
-import { useSelector,useDispatch } from "react-redux";
+import { addNewCategory } from "../../../stores/slices/categorySlice";
+import { useSelector, useDispatch } from "react-redux";
 
 const CategoryForm = () => {
   const user = useSelector((state) => state.user.user);
@@ -51,7 +51,7 @@ const CategoryForm = () => {
         onClick={handleShowForm}
         className="bg-blue-500 text-white px-4 py-2 rounded-md"
       >
-        Create Category
+        + Create Category
       </button>
       {showForm && (
         <form

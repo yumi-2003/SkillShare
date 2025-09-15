@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axiosInstance from "../../apiCalls/axiosInstance";
+import { act } from "react";
 
 // Fetch all categories
 export const getAllCategories = createAsyncThunk(
@@ -48,22 +49,60 @@ const categorySlice = createSlice({
   extraReducers: (builder) => {
     builder
       // Fetch
+      .addCase(getAllCategories.pending, (state) => {
+        state.status = "loading";
+        state.error = null;
+      })
       .addCase(getAllCategories.fulfilled, (state, action) => {
+        state.status = "succeeded";
         state.categories = action.payload;
       })
+      .addCase(getAllCategories.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.error.message;
+      })
       // Add
+      .addCase(addNewCategory.pending, (state) => {
+        state.status = "loading";
+        state.error = null;
+      })
       .addCase(addNewCategory.fulfilled, (state, action) => {
+        state.status = "succeeded";
         state.categories.push(action.payload);
       })
+      .addCase(addNewCategory.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.error.message;
+      })
       // Delete
+      .addCase(deleteCategory.pending, (state) => {
+        state.status = "loading";
+        state.error = null;
+      })
       .addCase(deleteCategory.fulfilled, (state, action) => {
-        state.categories = state.categories.filter((item) => item.id !== action.payload);
+        state.status = "succeeded";
+        state.categories = state.categories.filter(
+          (item) => item.id !== action.payload
+        );
+      })
+      .addCase(deleteCategory.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.error.message;
       })
       // Update
+      .addCase(updateCategory.pending, (state) => {
+        state.status = "loading";
+        state.error = null;
+      })
       .addCase(updateCategory.fulfilled, (state, action) => {
+        state.status = "succeeded";
         state.categories = state.categories.map((item) =>
           item.id === action.payload.id ? action.payload : item
         );
+      })
+      .addCase(updateCategory.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.error.message;
       });
   },
 });

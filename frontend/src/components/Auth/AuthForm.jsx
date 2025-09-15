@@ -1,14 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { loginUser } from "../../features/Auth/authAction.js"; // ensure path is correct
+import { loginUser } from "../../features/Auth/authAction.js";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { emailValidate, passwordValidate } from "../../util/validation.js";
 
 const AuthForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
   const isLoginPage = location.pathname === "/login";
-
   const { loading, error } = useSelector((state) => state.auth);
 
   const [formData, setFormData] = useState({
@@ -17,22 +17,71 @@ const AuthForm = () => {
     password: "",
     cpassword: "",
     userType: "",
+    successMsg: "",
   });
 
-  const handleChange = (e) => {
+  const [formError, setFormError] = useState({});
+
+  // Clear form whenever location changes
+  useEffect(() => {
     setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
+      name: "",
+      email: "",
+      password: "",
+      cpassword: "",
+      userType: "",
+      successMsg: "",
     });
+    setFormError({});
+  }, [location.pathname]);
+
+  // Handle user input change
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  // Centralized validation
+  const validateForm = () => {
+    const errors = {};
+
+    if (!isLoginPage && !formData.name) {
+      errors.name = "Please enter username!";
+    }
+
+    if (!formData.email) {
+      errors.email = "Please enter email!";
+    } else if (!emailValidate(formData.email)) {
+      errors.email = "Please enter valid email!";
+    }
+
+    if (!formData.password) {
+      errors.password = "Please enter password!";
+    } else if (!passwordValidate(formData.password)) {
+      errors.password = "Password is not strong enough!";
+    }
+
+    if (!isLoginPage) {
+      if (!formData.cpassword) {
+        errors.cpassword = "Please confirm your password!";
+      } else if (formData.password !== formData.cpassword) {
+        errors.cpassword = "Passwords do not match!";
+      }
+      if (!formData.userType) {
+        errors.userType = "Please select a role!";
+      }
+    }
+
+    setFormError(errors);
+    return Object.keys(errors).length === 0;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (!isLoginPage && formData.password !== formData.cpassword) {
-      alert("Passwords do not match");
-      return;
-    }
+    if (!validateForm()) return;
 
     const payload = {
       name: formData.name,
@@ -45,6 +94,17 @@ const AuthForm = () => {
       const response = await dispatch(
         loginUser(payload, isLoginPage ? "login" : "signUp")
       );
+
+      setFormData({
+        name: "",
+        email: "",
+        password: "",
+        cpassword: "",
+        userType: "",
+        successMsg: isLoginPage
+          ? "Login Successful!"
+          : "Successfully Signed Up!",
+      });
 
       if (response?.user?.userType) {
         navigate(
@@ -59,8 +119,8 @@ const AuthForm = () => {
   };
 
   return (
-    <section className="h-screen flex items-center justify-center bg-gray-100">
-      <div className="w-full max-w-md p-6 rounded-xl bg-white">
+    <section className="h-screen flex items-center justify-center bg-gray-100 mt-14">
+      <div className="w-full max-w-md p-6 rounded-xl bg-white shadow-lg">
         <h2 className="font-bold text-blue-600 text-2xl mb-6 text-center">
           {isLoginPage ? "Welcome Back" : "Join SkillShare"}
         </h2>
@@ -71,26 +131,32 @@ const AuthForm = () => {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           {!isLoginPage && (
-            <input
-              type="text"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              placeholder="Full Name"
-              className="w-full border px-3 py-2 rounded-lg focus:outline-blue-500"
-              required
-            />
+            <>
+              <input
+                type="text"
+                name="name"
+                value={formData.name}
+                onChange={handleInputChange}
+                placeholder="Full Name"
+                className="w-full border px-3 py-2 rounded-lg focus:outline-blue-500"
+              />
+              {formError.name && (
+                <p className="text-red-500 text-sm">{formError.name}</p>
+              )}
+            </>
           )}
 
           <input
             type="email"
             name="email"
             value={formData.email}
-            onChange={handleChange}
+            onChange={handleInputChange}
             placeholder="Email"
             className="w-full border px-3 py-2 rounded-lg focus:outline-blue-500"
-            required
           />
+          {formError.email && (
+            <p className="text-red-500 text-sm">{formError.email}</p>
+          )}
 
           {!isLoginPage && (
             <div className="w-full">
@@ -104,7 +170,7 @@ const AuthForm = () => {
                     name="userType"
                     value="student"
                     checked={formData.userType === "student"}
-                    onChange={handleChange}
+                    onChange={handleInputChange}
                     className="mr-3"
                   />
                   <span className="text-gray-800">Student</span>
@@ -115,12 +181,15 @@ const AuthForm = () => {
                     name="userType"
                     value="instructor"
                     checked={formData.userType === "instructor"}
-                    onChange={handleChange}
+                    onChange={handleInputChange}
                     className="mr-3"
                   />
                   <span className="text-gray-800">Instructor</span>
                 </label>
               </div>
+              {formError.userType && (
+                <p className="text-red-500 text-sm">{formError.userType}</p>
+              )}
             </div>
           )}
 
@@ -128,28 +197,38 @@ const AuthForm = () => {
             type="password"
             name="password"
             value={formData.password}
-            onChange={handleChange}
+            onChange={handleInputChange}
             placeholder="Password"
             className="w-full border px-3 py-2 rounded-lg focus:outline-blue-500"
-            required
           />
+          {formError.password && (
+            <p className="text-red-500 text-sm">{formError.password}</p>
+          )}
 
           {!isLoginPage && (
-            <input
-              type="password"
-              name="cpassword"
-              value={formData.cpassword}
-              onChange={handleChange}
-              placeholder="Confirm Password"
-              className="w-full border px-3 py-2 rounded-lg focus:outline-blue-500"
-              required
-            />
+            <>
+              <input
+                type="password"
+                name="cpassword"
+                value={formData.cpassword}
+                onChange={handleInputChange}
+                placeholder="Confirm Password"
+                className="w-full border px-3 py-2 rounded-lg focus:outline-blue-500"
+              />
+              {formError.cpassword && (
+                <p className="text-red-500 text-sm">{formError.cpassword}</p>
+              )}
+            </>
+          )}
+
+          {formData.successMsg && (
+            <p className="text-green-600 text-center">{formData.successMsg}</p>
           )}
 
           <button
             type="submit"
-            disabled={loading}
-            className="w-full bg-blue-600 text-white py-2 rounded-2xl hover:bg-blue-700"
+            disabled={loading || Object.keys(formError).length > 0}
+            className="w-full bg-blue-600 text-white py-2 rounded-2xl hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed"
           >
             {loading
               ? isLoginPage
@@ -164,7 +243,7 @@ const AuthForm = () => {
         <p className="text-sm text-gray-600 mt-4 text-center">
           {isLoginPage ? (
             <>
-              Don't have an account?{" "}
+              Don&apos;t have an account?{" "}
               <Link
                 to="/signup"
                 className="text-blue-500 hover:underline font-medium"

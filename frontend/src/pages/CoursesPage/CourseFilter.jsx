@@ -20,7 +20,6 @@ const CourseFilter = () => {
 
   return (
     <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-6">
-
       {/* search input */}
       <input
         type="text"
@@ -37,7 +36,7 @@ const CourseFilter = () => {
               className={
                 // activeCategory === category.id
                 // ? "px-4 py-2 rounded-lg bg-blue-600 text-white"
-                "px-4 py-2 rounded-lg bg-gray-200 text-gray-800"
+                "px-4 py-2 rounded bg-gray-200 text-gray-800"
               }
             >
               {category.name}

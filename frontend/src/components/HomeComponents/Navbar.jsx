@@ -34,7 +34,7 @@ const Navbar = () => {
       {user ? (
         <div className="flex items-center gap-3">
           {/* <Theme /> */}
-          {user.userType === "student" && (
+          {user && user.userType === "student" && (
             <Link
               to="/student-dashboard"
               className="text-gray-600 hover:text-blue-700 font-medium"
@@ -42,7 +42,7 @@ const Navbar = () => {
               Student Dashboard
             </Link>
           )}
-          {user.userType === "instructor" && (
+          {user && user.userType === "instructor" && (
             <Link
               to="/instructor-dashboard"
               className="text-gray-600 hover:text-blue-700 font-medium"

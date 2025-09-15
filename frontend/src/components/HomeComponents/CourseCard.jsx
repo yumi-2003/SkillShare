@@ -1,9 +1,11 @@
-import { Club } from "lucide-react";
+import { useSelector, useDispatch } from "react-redux";
 import reactCourseimg from "../../assets/react_course.jpg";
 import pythonimg from "../../assets/python.png";
 import uiuximg from "../../assets/uiux.jpg";
 import datascience from "../../assets/data-science.jpg";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { Edit, Trash } from "lucide-react";
+
 // Mock Course Data
 const courses = [
   {
@@ -53,6 +55,10 @@ const courses = [
 ];
 
 const CourseCard = ({ title = true, showViewButton = true }) => {
+  const user = useSelector((state) => state.user?.user);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   return (
     <div className="bg-gray-100 py-16">
       {/* title */}
@@ -100,9 +106,27 @@ const CourseCard = ({ title = true, showViewButton = true }) => {
                 <span>👥 {course.students}</span>
                 <span>📚 {course.lessons}</span>
               </div>
-              <button className="w-full bg-blue-600 text-white text-lg rounded-lg px-4 py-2 hover:bg-blue-700 transition">
-                Enroll Now
-              </button>
+              {user?.userType === "instructor" ? (
+                <div className="flex gap-2 mt-2">
+                  <Link
+                    to=""
+                    className="flex items-center justify-center gap-2 w-full bg-yellow-400 text-black px-3 py-2 rounded hover:bg-yellow-500 transition-colors"
+                  >
+                    <Edit size={20} />
+                    Edit
+                  </Link>
+                  <button
+                    // onClick={() => alert("Delete clicked")}
+                    className="flex items-center justify-center gap-2 w-1/4 bg-red-500 text-white px-3 py-2 rounded hover:bg-red-600 transition-colors"
+                  >
+                    <Trash size={18} />
+                  </button>
+                </div>
+              ) : (
+                <button className="w-full bg-blue-600 text-white text-lg rounded-lg px-4 py-2 hover:bg-blue-700 transition">
+                  Enroll Now
+                </button>
+              )}
             </div>
           </div>
         ))}
