@@ -20,17 +20,17 @@ const CreateCoursePage = () => {
     totalLessons: "",
     duration: "",
     category: "",
-    images: null,
+    // images: null,
   });
 
   const handleChange = (e) => {
-    const { name, value, files } = e.target;
-    console.log(name, value, files);
-    if (name === "images") {
-      setFormData({ ...formData, images: files[0] });
-    } else {
-      setFormData({ ...formData, [name]: value });
-    }
+    const { name, value } = e.target;
+    // console.log(name, value, files);
+    // if (name === "images") {
+    //   setFormData({ ...formData, images: files[0] });
+    // } else {
+    setFormData({ ...formData, [name]: value });
+    // }
   };
 
   //handleSubmit
@@ -52,9 +52,9 @@ const CreateCoursePage = () => {
       formData.totalLessons ? Number(formData.totalLessons) : ""
     );
 
-    if (formData.images) {
-      data.append("images", formData.images);
-    }
+    // if (formData.images) {
+    //   data.append("images", formData.images);
+    // }
 
     dispatch(createCourse(data))
       .then(() => {
@@ -65,12 +65,13 @@ const CreateCoursePage = () => {
           totalLessons: "",
           duration: "",
           category: "",
-          images: null,
+          //   images: null,
         });
       })
       .catch((err) => {
-        console.log("Error:", err.response?.data || err.message);
-        alert(err.response?.data?.message || "Something went wrong!");
+        // console.log("Error:", err.response?.data || err.message);
+        // alert(err.response?.data?.message || "Something went wrong!");
+        console.log(err);
       });
   };
 
@@ -141,7 +142,7 @@ const CreateCoursePage = () => {
 
           {/* Image Upload */}
           <div>
-            <label className="block mb-2 font-medium">Course Image:</label>
+            {/* <label className="block mb-2 font-medium">Course Image:</label>
             <div className="flex items-center justify-center w-full">
               <label
                 htmlFor="dropzone-file"
@@ -175,10 +176,10 @@ const CreateCoursePage = () => {
                   onChange={handleChange}
                 />
               </label>
-            </div>
+            </div> */}
 
             {/* Show preview when selected */}
-            {formData.images && (
+            {/* {formData.images && (
               <div className="mt-3">
                 <img
                   src={URL.createObjectURL(formData.images)}
@@ -186,7 +187,7 @@ const CreateCoursePage = () => {
                   className="w-full h-40 object-cover rounded-lg shadow-md"
                 />
               </div>
-            )}
+            )} */}
           </div>
           <button
             type="submit"

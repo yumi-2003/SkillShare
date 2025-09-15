@@ -136,7 +136,7 @@ const CourseCard = ({ title = true, showViewButton = true }) => {
         <div className="mt-8 text-center">
           <Link
             to="/allcourses"
-            className="text-lg rounded-lg px-6 py-3 hover:text-white hover:bg-blue-700 border-2 shadow-lg"
+            className="text-lg rounded-lg px-6 py-3 hover:text-white hover:bg-blue-700 border shadow-sm transition"
           >
             View All Courses
           </Link>
