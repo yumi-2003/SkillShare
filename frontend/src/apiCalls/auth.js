@@ -13,6 +13,7 @@ export const signUp = async (payload) => {
     return res.data;
   } catch (error) {
     handleError(error, "Sign Up Failed");
+    throw error;
   }
 };
 
@@ -27,6 +28,7 @@ export const login = async (payload) => {
     return res.data;
   } catch (error) {
     handleError(error, "Login Failed");
+    throw error;
   }
 };
 

@@ -3,6 +3,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { loginUser } from "../../features/Auth/authAction.js";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { emailValidate, passwordValidate } from "../../util/validation.js";
+import { User, Mail, Eye, EyeOff, XCircle, CheckCircle } from "lucide-react";
+import Toast from "../ui/Toast";
 
 const AuthForm = () => {
   const dispatch = useDispatch();
@@ -10,6 +12,11 @@ const AuthForm = () => {
   const location = useLocation();
   const isLoginPage = location.pathname === "/login";
   const { loading, error } = useSelector((state) => state.auth);
+  const [show, setShow] = useState(false);
+
+  const handlePassword = () => {
+    setShow((show) => !show);
+  };
 
   const [formData, setFormData] = useState({
     name: "",
@@ -17,10 +24,18 @@ const AuthForm = () => {
     password: "",
     cpassword: "",
     userType: "",
-    successMsg: "",
   });
 
   const [formError, setFormError] = useState({});
+
+  //Taost state
+  const [toast, setToast] = useState({
+    isOpen: false,
+    message: "",
+    icon: null,
+    iconColor: "",
+    duration: 3000,
+  });
 
   // Clear form whenever location changes
   useEffect(() => {
@@ -34,6 +49,12 @@ const AuthForm = () => {
     });
     setFormError({});
   }, [location.pathname]);
+
+  //show toast and hide
+  const showToast = ({ message, icon, iconColor, duration }) => {
+    setToast({ isOpen: true, message, icon, iconColor, duration });
+  };
+  const closeToast = () => setToast((t) => ({ ...t, isOpen: false }));
 
   // Handle user input change
   const handleInputChange = (e) => {
@@ -95,26 +116,42 @@ const AuthForm = () => {
         loginUser(payload, isLoginPage ? "login" : "signUp")
       );
 
+      // Success toast
+      showToast({
+        message: isLoginPage ? "Login Successful" : "SignUp Success",
+        icon: CheckCircle,
+        iconColor: "text-green-500",
+        duration: 2200,
+      });
+
       setFormData({
         name: "",
         email: "",
         password: "",
         cpassword: "",
         userType: "",
-        successMsg: isLoginPage
-          ? "Login Successful!"
-          : "Successfully Signed Up!",
       });
 
       if (response?.user?.userType) {
-        navigate(
-          response.user.userType === "instructor"
-            ? "/instructor-dashboard"
-            : "/student-dashboard"
+        setTimeout(
+          () =>
+            navigate(
+              response.user.userType === "instructor"
+                ? "/instructor-dashboard"
+                : "/student-dashboard"
+            ),
+          1200
         );
       }
     } catch (err) {
-      console.error(err);
+      // This now executes if login fails
+      const msg = err.message || "Authentication Failed";
+      showToast({
+        message: msg,
+        icon: XCircle,
+        iconColor: "text-red-500",
+        duration: 3500,
+      });
     }
   };
 
@@ -132,31 +169,38 @@ const AuthForm = () => {
         <form onSubmit={handleSubmit} className="space-y-4">
           {!isLoginPage && (
             <>
-              <input
-                type="text"
-                name="name"
-                value={formData.name}
-                onChange={handleInputChange}
-                placeholder="Full Name"
-                className="w-full border px-3 py-2 rounded-lg focus:outline-blue-500"
-              />
+              <div className="flex items-center gap-2 border rounded-lg px-3 py-2 w-full max-w-md sm:max-w-lg focus-within:ring-2 focus-within:ring-blue-500">
+                <input
+                  type="text"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleInputChange}
+                  placeholder="Full Name"
+                  className="flex-1 bg-transparent outline-none text-sm sm:text-base"
+                />
+                <User size={20} className="text-gray-500" />
+              </div>
               {formError.name && (
                 <p className="text-red-500 text-sm">{formError.name}</p>
               )}
             </>
           )}
-
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleInputChange}
-            placeholder="Email"
-            className="w-full border px-3 py-2 rounded-lg focus:outline-blue-500"
-          />
-          {formError.email && (
-            <p className="text-red-500 text-sm">{formError.email}</p>
-          )}
+          <>
+            <div className="flex items-center gap-2 border rounded-lg px-3 py-2 w-full max-w-md sm:max-w-lg focus-within:ring-2 focus-within:ring-blue-500">
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleInputChange}
+                placeholder="Email"
+                className="flex-1 bg-transparent outline-none text-sm sm:text-base"
+              />
+              <Mail size={20} />
+            </div>
+            {formError.email && (
+              <p className="text-red-500 text-sm">{formError.email}</p>
+            )}
+          </>
 
           {!isLoginPage && (
             <div className="w-full">
@@ -193,37 +237,53 @@ const AuthForm = () => {
             </div>
           )}
 
-          <input
-            type="password"
-            name="password"
-            value={formData.password}
-            onChange={handleInputChange}
-            placeholder="Password"
-            className="w-full border px-3 py-2 rounded-lg focus:outline-blue-500"
-          />
-          {formError.password && (
-            <p className="text-red-500 text-sm">{formError.password}</p>
-          )}
+          <>
+            <div className="flex items-center gap-2 border rounded-lg px-3 py-2 w-full max-w-md sm:max-w-lg focus-within:ring-2 focus-within:ring-blue-500">
+              <input
+                type={show ? "text" : "password"}
+                name="password"
+                value={formData.password}
+                onChange={handleInputChange}
+                placeholder="Password"
+                className="flex-1 bg-transparent outline-none text-sm sm:text-base"
+              />
+              {!show ? (
+                <EyeOff size={20} onClick={handlePassword} />
+              ) : (
+                <Eye size={20} onClick={handlePassword} />
+              )}
+            </div>
+            {formError.password && (
+              <p className="text-red-500 text-sm">{formError.password}</p>
+            )}
+          </>
 
           {!isLoginPage && (
             <>
-              <input
-                type="password"
-                name="cpassword"
-                value={formData.cpassword}
-                onChange={handleInputChange}
-                placeholder="Confirm Password"
-                className="w-full border px-3 py-2 rounded-lg focus:outline-blue-500"
-              />
+              <div className="flex items-center gap-2 border rounded-lg px-3 py-2 w-full max-w-md sm:max-w-lg focus-within:ring-2 focus-within:ring-blue-500">
+                <input
+                  type={show ? "text" : "password"}
+                  name="cpassword"
+                  value={formData.cpassword}
+                  onChange={handleInputChange}
+                  placeholder="Confirm Password"
+                  className="flex-1 bg-transparent outline-none text-sm sm:text-base"
+                />
+                {!show ? (
+                  <EyeOff size={20} onClick={handlePassword} />
+                ) : (
+                  <Eye size={20} onClick={handlePassword} />
+                )}
+              </div>
               {formError.cpassword && (
                 <p className="text-red-500 text-sm">{formError.cpassword}</p>
               )}
             </>
           )}
 
-          {formData.successMsg && (
+          {/* {formData.successMsg && (
             <p className="text-green-600 text-center">{formData.successMsg}</p>
-          )}
+          )} */}
 
           <button
             type="submit"
@@ -264,6 +324,14 @@ const AuthForm = () => {
           )}
         </p>
       </div>
+      <Toast
+        isOpen={toast.isOpen}
+        onClose={closeToast}
+        message={toast.message}
+        icon={toast.icon}
+        iconColor={toast.iconColor}
+        duration={toast.duration}
+      />
     </section>
   );
 };
