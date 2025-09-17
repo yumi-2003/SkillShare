@@ -12,6 +12,5 @@ export default configureStore({
     theme: themeReducer,
     category: categoryReducer,
     course: courseReducer,
-    // course: courseReducer,
   },
 });

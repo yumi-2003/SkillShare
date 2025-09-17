@@ -1,5 +1,4 @@
 import axiosInstance from "./axiosInstance";
-import userAvator from "../images/userAvator.webp";
 import { handleError } from "../util/handleError";
 
 //create new account and track status
@@ -33,14 +32,14 @@ export const login = async (payload) => {
 };
 
 //logout user
-export const logout = async (payload) => {
+export const logout = async () => {
   localStorage.removeItem("SkillShareToken");
   window.location.href = "/login";
 };
 
 //check current user
 
-export const checkCurrentUser = async (payload) => {
+export const checkCurrentUser = async () => {
   try {
     const res = await axiosInstance.get("/get-current-user");
     return res.data;

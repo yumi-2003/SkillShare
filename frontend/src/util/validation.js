@@ -5,5 +5,5 @@ export const emailValidate = (email) => {
 export const passwordValidate = (password) => {
   const passwordPattern =
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/;
-  return passwordPattern.test(passwordPattern);
+  return passwordPattern.test(password);
 };

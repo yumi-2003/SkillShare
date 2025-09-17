@@ -1,13 +1,13 @@
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import SkillShareLogo from "../../assets/skillshare.png";
 import { useSelector, useDispatch } from "react-redux";
-import { setUser } from "../../stores/slices/userSlice";
+import { logOut } from "../../stores/slices/authSlice";
 import { useNavigate } from "react-router-dom";
 // import Theme from "../../pages/homePage/Theme";
 
 const Navbar = () => {
   //get user from redux
-  const user = useSelector((state) => state.user?.user);
+  const user = useSelector((state) => state.auth?.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -21,12 +21,27 @@ const Navbar = () => {
         </Link>
 
         <div className="flex space-x-6 text-gray-600">
-          <Link to="/" className="hover:text-blue-700 font-semibold">
+          <NavLink
+            to="/"
+            end
+            className={({ isActive }) =>
+              isActive
+                ? "font-bold text-blue-700 border-b-2 border-blue-700 pb-1"
+                : "text-gray-600 hover:text-blue-700 font-semibold"
+            }
+          >
             Home
-          </Link>
-          <Link to="/allcourses" className="hover:text-blue-700 font-semibold">
+          </NavLink>
+          <NavLink
+            to="/allcourses"
+            className={({ isActive }) =>
+              isActive
+                ? "font-bold text-blue-700 border-b-2 border-blue-700 pb-1"
+                : "text-gray-600 hover:text-blue-700 font-semibold"
+            }
+          >
             Courses
-          </Link>
+          </NavLink>
         </div>
       </div>
 
@@ -35,26 +50,34 @@ const Navbar = () => {
         <div className="flex items-center gap-3">
           {/* <Theme /> */}
           {user && user.userType === "student" && (
-            <Link
+            <NavLink
               to="/student-dashboard"
-              className="text-gray-600 hover:text-blue-700 font-medium"
+              className={({ isActive }) =>
+                isActive
+                  ? "text-blue-700 font-semibold border-b-2 border-blue-700 pb-1"
+                  : "text-gray-600 hover:text-blue-700 font-medium"
+              }
             >
               Student Dashboard
-            </Link>
+            </NavLink>
           )}
           {user && user.userType === "instructor" && (
-            <Link
+            <NavLink
               to="/instructor-dashboard"
-              className="text-gray-600 hover:text-blue-700 font-medium"
+              className={({ isActive }) =>
+                isActive
+                  ? "text-blue-700 font-semibold border-b-2 border-blue-700 pb-1"
+                  : "text-gray-600 hover:text-blue-700 font-medium"
+              }
             >
               Instructor Dashboard
-            </Link>
+            </NavLink>
           )}
 
           <button
             onClick={() => {
               // Clear user from Redux store
-              dispatch(setUser(null));
+              dispatch(logOut());
               // Clear localStorage
               localStorage.removeItem("SkillShareToken");
               localStorage.removeItem("SkillShareUser");
@@ -68,18 +91,26 @@ const Navbar = () => {
         </div>
       ) : (
         <div className="flex items-center gap-3">
-          <Link
+          <NavLink
             to="/login"
-            className="text-gray-600 hover:text-gray-800 font-medium"
+            className={({ isActive }) =>
+              isActive
+                ? "text-blue-700 font-semibold border-b-2 border-blue-700 pb-1"
+                : "text-gray-600 hover:text-gray-800 font-medium"
+            }
           >
             Login
-          </Link>
-          <Link
+          </NavLink>
+          <NavLink
             to="/signup"
-            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 font-medium"
+            className={({ isActive }) =>
+              isActive
+                ? "bg-blue-700 text-white px-4 py-2 rounded font-medium border-b-2 border-blue-700 pb-1"
+                : "bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 font-medium"
+            }
           >
             Sign Up
-          </Link>
+          </NavLink>
         </div>
       )}
     </div>

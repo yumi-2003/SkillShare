@@ -5,7 +5,6 @@ import { getAllCategories } from "../../stores/slices/categorySlice";
 
 const CourseFilter = () => {
   const [search, setSearch] = useState("");
-
   const { categories, status, error } = useSelector((state) => state.category);
   const dispatch = useDispatch();
 
@@ -31,7 +30,7 @@ const CourseFilter = () => {
         {Array.isArray(categories) &&
           categories.map((category) => (
             <button
-              key={category.id}
+              key={category._id}
               // onClick={()=>setActiveCategory(category.id)}
               className={
                 // activeCategory === category.id

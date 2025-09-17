@@ -1,12 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import CategoryForm from "./CategoryForm";
-import { setUser } from "../../../stores/slices/userSlice";
-import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import CourseCard from "../../../components/HomeComponents/CourseCard";
 
 const CourseForm = () => {
-  const user = useSelector((state) => state.user.user);
   return (
     <section className="bg-gray-100 p-4">
       <CategoryForm />

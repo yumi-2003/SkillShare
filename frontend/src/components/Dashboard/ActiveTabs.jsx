@@ -2,9 +2,7 @@ import { Search } from "lucide-react";
 import React, { useState, useEffect } from "react";
 
 const ActiveTabs = ({ tabs, storageKeys = "activeTab" }) => {
-  const [activeTab, setActiveTab] = useState(
-    sessionStorage.getItem(storageKeys) || tabs[0].id
-  );
+  const [activeTab, setActiveTab] = useState(tabs[0].id);
 
   useEffect(() => {
     sessionStorage.setItem(storageKeys, activeTab);

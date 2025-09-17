@@ -17,6 +17,10 @@ axiosInstance.interceptors.request.use(
     if (token) {
       config.headers.Authorization = `Bearer ${token}`; // for token request to server
     }
+    // If payload is FormData, let the browser set proper multipart boundaries
+    if (config.data instanceof FormData) {
+      delete config.headers["Content-Type"]; // axios will set it to multipart/form-data with boundary
+    }
     return config;
   },
   (error) => {

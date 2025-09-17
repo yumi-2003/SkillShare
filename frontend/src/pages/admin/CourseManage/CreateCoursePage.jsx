@@ -1,44 +1,54 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { createCourse } from "../../../stores/slices/courseSlice";
 import { getAllCategories } from "../../../stores/slices/categorySlice";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const CreateCoursePage = () => {
+  const [preview, setPreview] = useState("");
+  const user = useSelector((state) => state.user.user);
   const dispatch = useDispatch();
   const { categories } = useSelector((state) => state.category);
-  //   const { loading, error } = useSelector((state) => state.courses);
+  const { status, error } = useSelector((state) => state.course);
+  const firstRender = useRef(true);
 
-  //get all cateogries
+  // get all categories
   useEffect(() => {
     dispatch(getAllCategories());
   }, [dispatch]);
 
-  //manage form data
+  // form state
   const [formData, setFormData] = useState({
     title: "",
     description: "",
     totalLessons: "",
     duration: "",
     category: "",
-    // images: null,
+    image: null,
   });
 
+  // handle change
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    // console.log(name, value, files);
-    // if (name === "images") {
-    //   setFormData({ ...formData, images: files[0] });
-    // } else {
-    setFormData({ ...formData, [name]: value });
-    // }
+    const { name, value, files } = e.target;
+    if (name === "image") {
+      setFormData({ ...formData, image: files[0] });
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
   };
 
-  //handleSubmit
+  // handle submit
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (!formData.title || !formData.description || !formData.category) {
-      alert("Please fill in all required fields.");
+    if (
+      !formData.title ||
+      !formData.description ||
+      !formData.category ||
+      !formData.image
+    ) {
+      toast.warning("Please fill in all required fields.");
       return;
     }
 
@@ -51,29 +61,50 @@ const CreateCoursePage = () => {
       "totalLessons",
       formData.totalLessons ? Number(formData.totalLessons) : ""
     );
+    data.append("userId", user._id);
+    if (formData.image) {
+      data.append("image", formData.image);
+    }
 
-    // if (formData.images) {
-    //   data.append("images", formData.images);
-    // }
-
-    dispatch(createCourse(data))
-      .then(() => {
-        alert("Course created successfully!");
-        setFormData({
-          title: "",
-          description: "",
-          totalLessons: "",
-          duration: "",
-          category: "",
-          //   images: null,
-        });
-      })
-      .catch((err) => {
-        // console.log("Error:", err.response?.data || err.message);
-        // alert(err.response?.data?.message || "Something went wrong!");
-        console.log(err);
-      });
+    dispatch(createCourse(data));
   };
+
+  // watch status for toast notifications
+  useEffect(() => {
+    if (firstRender.current) {
+      firstRender.current = false; // skip first run
+      return;
+    }
+    if (status === "loading") {
+      toast.info("Creating course...", { autoClose: 1000 });
+    }
+    if (status === "succeeded") {
+      toast.success("Course created successfully!", { autoClose: 2000 });
+
+      // reset form after success
+      setFormData({
+        title: "",
+        description: "",
+        totalLessons: "",
+        duration: "",
+        category: "",
+        image: null,
+      });
+      setPreview("");
+    }
+    if (status === "failed") {
+      toast.error(error || "Something went wrong!", { autoClose: 3000 });
+    }
+  }, [status, error]);
+
+  // preview image
+  useEffect(() => {
+    if (formData.image) {
+      const objectUrl = URL.createObjectURL(formData.image);
+      setPreview(objectUrl);
+      return () => URL.revokeObjectURL(objectUrl);
+    }
+  }, [formData.image]);
 
   return (
     <div className="max-w-3xl mx-auto px-4 py-20">
@@ -81,7 +112,12 @@ const CreateCoursePage = () => {
         <h2 className="text-xl font-semibold mb-6 text-center">
           Create a new Course
         </h2>
-        <form className="space-y-5">
+        <form
+          action="post"
+          encType="multipart/form-data"
+          onSubmit={handleSubmit}
+          className="space-y-5"
+        >
           <label className="block font-medium mb-2">Title:</label>
           <input
             name="title"
@@ -92,6 +128,7 @@ const CreateCoursePage = () => {
             required
             className="w-full px-4 py-2 rounded-lg border focus:ring focus:ring-blue-200"
           />
+
           <label className="block font-medium mb-2">Category:</label>
           <select
             name="category"
@@ -107,14 +144,16 @@ const CreateCoursePage = () => {
               </option>
             ))}
           </select>
+
           <label className="block font-medium mb-2">Description:</label>
           <textarea
             name="description"
             onChange={handleChange}
             rows="4"
             value={formData.description}
-            className="w-full border rouned-lg px-4 py-2"
+            className="w-full border rounded-lg px-4 py-2"
           ></textarea>
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             <div>
               <label className="block mb-2 font-medium">Total Lessons</label>
@@ -142,7 +181,7 @@ const CreateCoursePage = () => {
 
           {/* Image Upload */}
           <div>
-            {/* <label className="block mb-2 font-medium">Course Image:</label>
+            <label className="block mb-2 font-medium">Course Image:</label>
             <div className="flex items-center justify-center w-full">
               <label
                 htmlFor="dropzone-file"
@@ -169,35 +208,36 @@ const CreateCoursePage = () => {
                   <p className="text-xs text-gray-400">PNG, JPG (Max 5MB)</p>
                 </div>
                 <input
-                  id="dropzone-file"
                   type="file"
-                  name="images"
-                  className="hidden"
+                  id="dropzone-file"
+                  name="image"
+                  accept="image/png, image/jpeg, image/jpg"
                   onChange={handleChange}
+                  className="hidden"
                 />
               </label>
-            </div> */}
+            </div>
 
-            {/* Show preview when selected */}
-            {/* {formData.images && (
-              <div className="mt-3">
-                <img
-                  src={URL.createObjectURL(formData.images)}
-                  alt="Preview"
-                  className="w-full h-40 object-cover rounded-lg shadow-md"
-                />
-              </div>
-            )} */}
+            {preview && (
+              <img
+                src={preview}
+                alt="Preview"
+                className="w-full h-40 object-cover rounded-lg shadow-md mt-3"
+              />
+            )}
           </div>
+
           <button
             type="submit"
-            onClick={handleSubmit}
             className="px-6 py-3 bg-blue-500 w-full rounded-lg hover:bg-blue-700 transition text-white"
           >
             Create Course
           </button>
         </form>
       </div>
+
+      {/* Toast Container */}
+      <ToastContainer position="top-right" />
     </div>
   );
 };

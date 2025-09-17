@@ -1,22 +1,25 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axiosInstance from "../../apiCalls/axiosInstance";
 
-// fetch all courses
-export const getAllCourses = createAsyncThunk("courses/fetchAll", async () => {
-  const res = await axiosInstance.get("courses");
-  return res.data;
-});
-
-//create new courses
-export const createCourse = createAsyncThunk(
-  "courses/create",
-  async (courseData) => {
-    const res = await axiosInstance.post("/create-course", courseData);
+// Fetch all courses
+export const getAllCourses = createAsyncThunk(
+  "courses/getAllCourses",
+  async () => {
+    const res = await axiosInstance.get("/api/courses");
     return res.data;
   }
 );
 
-//update courses
+// Create new course
+export const createCourse = createAsyncThunk(
+  "courses/create",
+  async (courseData) => {
+    const res = await axiosInstance.post("/auth/create-course", courseData);
+    return res.data;
+  }
+);
+
+// Update course
 export const updateCourse = createAsyncThunk(
   "courses/update",
   async ({ id, data }) => {
@@ -25,59 +28,66 @@ export const updateCourse = createAsyncThunk(
   }
 );
 
-//deleCourses
-export const deleteCourse = createAsyncThunk("/courses/delete", async (id) => {
+// Delete course
+export const deleteCourse = createAsyncThunk("courses/delete", async (id) => {
   await axiosInstance.delete(`/courses/${id}`);
   return id;
 });
 
-//create course slice
+// Course slice
 const courseSlice = createSlice({
   name: "course",
-  initialState: { list: [], state: "idle", error: null },
+  initialState: { list: [], status: "idle", error: null },
   reducers: {},
   extraReducers: (builder) => {
     builder
-      //fetch all course
+      // Fetch all courses
       .addCase(getAllCourses.pending, (state) => {
         state.status = "loading";
         state.error = null;
       })
       .addCase(getAllCourses.fulfilled, (state, action) => {
-        state.state = "succeeded";
-        state.list = action.payload;
+        state.status = "succeeded";
+        state.list = Array.isArray(action.payload.courses)
+          ? action.payload.courses
+          : [];
       })
       .addCase(getAllCourses.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.error.message;
       })
-      //add new course
+
+      // Create course
       .addCase(createCourse.pending, (state) => {
         state.status = "loading";
         state.error = null;
       })
       .addCase(createCourse.fulfilled, (state, action) => {
         state.status = "succeeded";
-        state.list.push(action.payload);
+        state.list = action.payload;
       })
       .addCase(createCourse.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.error.message;
       })
-      //delete course
+
+      // Delete course
       .addCase(deleteCourse.pending, (state) => {
         state.status = "loading";
         state.error = null;
       })
       .addCase(deleteCourse.fulfilled, (state, action) => {
         state.status = "succeeded";
-        state.list = state.list.filter((item) => item.id !== action.payload);
+        state.list = state.list.filter(
+          (course) => course._id !== action.payload
+        );
       })
       .addCase(deleteCourse.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.error.message;
       })
-      //update course
+
+      // Update course
       .addCase(updateCourse.pending, (state) => {
         state.status = "loading";
         state.error = null;
@@ -85,7 +95,7 @@ const courseSlice = createSlice({
       .addCase(updateCourse.fulfilled, (state, action) => {
         state.status = "succeeded";
         state.list = state.list.map((item) =>
-          item.id === action.payload ? action.payload : item
+          item._id === action.payload._id ? action.payload : item
         );
       })
       .addCase(updateCourse.rejected, (state, action) => {
@@ -94,4 +104,5 @@ const courseSlice = createSlice({
       });
   },
 });
+
 export default courseSlice.reducer;

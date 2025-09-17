@@ -1,12 +1,11 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axiosInstance from "../../apiCalls/axiosInstance";
-import { act } from "react";
 
 // Fetch all categories
 export const getAllCategories = createAsyncThunk(
   "category/getAllCategories",
   async () => {
-    const response = await axiosInstance.get("/categories");
+    const response = await axiosInstance.get("/api/categories");
     return response.data.categories || [];
   }
 );
@@ -15,7 +14,7 @@ export const getAllCategories = createAsyncThunk(
 export const addNewCategory = createAsyncThunk(
   "category/addNewCategory",
   async (data) => {
-    const response = await axiosInstance.post("/categories", data);
+    const response = await axiosInstance.post("/auth/categories", data);
     return response.data;
   }
 );
@@ -24,7 +23,7 @@ export const addNewCategory = createAsyncThunk(
 export const deleteCategory = createAsyncThunk(
   "category/deleteCategory",
   async (id) => {
-    await axiosInstance.delete(`/categories/${id}`);
+    await axiosInstance.delete(`/auth/categories/${id}`);
     return id; // return the id to filter it out from state
   }
 );
@@ -33,7 +32,7 @@ export const deleteCategory = createAsyncThunk(
 export const updateCategory = createAsyncThunk(
   "category/updateCategory",
   async ({ id, updates }) => {
-    const response = await axiosInstance.put(`/categories/${id}`, updates);
+    const response = await axiosInstance.put(`/auth/categories/${id}`, updates);
     return response.data;
   }
 );

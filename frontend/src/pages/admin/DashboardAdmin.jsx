@@ -1,10 +1,20 @@
-import React, { act } from "react";
 import Overview from "../../components/Dashboard/Overview";
 import ActiveTabs from "../../components/Dashboard/ActiveTabs";
 import { LineChart, BookOpen, Users } from "lucide-react";
-import CoursesForm from "../admin/CourseManage/CourseForm"
+import CoursesForm from "../admin/CourseManage/CourseForm";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 const DashboardAdmin = () => {
+  const navigate = useNavigate();
+  const { user } = useSelector((state) => state.auth); // Get user from Redux
+
+  useEffect(() => {
+    if (!user) {
+      navigate("/login"); // redirect if not logged in
+    }
+  }, [user, navigate]);
   const activeTabs = [
     {
       id: 0,

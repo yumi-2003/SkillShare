@@ -11,11 +11,16 @@ const AuthForm = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const isLoginPage = location.pathname === "/login";
-  const { loading, error } = useSelector((state) => state.auth);
+  const { loading } = useSelector((state) => state.auth);
   const [show, setShow] = useState(false);
+  const [showCPassword, setShowCPassword] = useState(false);
 
   const handlePassword = () => {
     setShow((show) => !show);
+  };
+
+  const handleCpassword = () => {
+    setShowCPassword((showCPassword) => !showCPassword);
   };
 
   const [formData, setFormData] = useState({
@@ -162,9 +167,9 @@ const AuthForm = () => {
           {isLoginPage ? "Welcome Back" : "Join SkillShare"}
         </h2>
 
-        {error && (
+        {/* {error && (
           <p className="text-red-500 text-sm mb-3 text-center">{error}</p>
-        )}
+        )} */}
 
         <form onSubmit={handleSubmit} className="space-y-4">
           {!isLoginPage && (
@@ -262,17 +267,17 @@ const AuthForm = () => {
             <>
               <div className="flex items-center gap-2 border rounded-lg px-3 py-2 w-full max-w-md sm:max-w-lg focus-within:ring-2 focus-within:ring-blue-500">
                 <input
-                  type={show ? "text" : "password"}
+                  type={showCPassword ? "text" : "password"}
                   name="cpassword"
                   value={formData.cpassword}
                   onChange={handleInputChange}
                   placeholder="Confirm Password"
                   className="flex-1 bg-transparent outline-none text-sm sm:text-base"
                 />
-                {!show ? (
-                  <EyeOff size={20} onClick={handlePassword} />
+                {!showCPassword ? (
+                  <EyeOff size={20} onClick={handleCpassword} />
                 ) : (
-                  <Eye size={20} onClick={handlePassword} />
+                  <Eye size={20} onClick={handleCpassword} />
                 )}
               </div>
               {formError.cpassword && (
