@@ -1,13 +1,13 @@
 const { validationResult } = require("express-validator");
 const Course = require("../models/course");
 const { v2: cloudinary } = require("cloudinary");
+const { uploadBase64Image } = require("../utils/upload");
 require("dotenv").config();
 
-// Configuration
 cloudinary.config({
-  cloud_name: "dcwg5gtc4",
-  api_key: "892578732377972",
-  api_secret: process.env.CLOUDINARY_URL,
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
 // add new course
@@ -20,16 +20,46 @@ exports.addNewCourse = async (req, res) => {
       .json({ isSuccess: false, message: errors.array()[0].msg });
   }
 
-  const { title, description, totalLessons, duration, category } = req.body;
+  const {
+    title,
+    description,
+    totalLessons,
+    duration,
+    category,
+    userId,
+    image,
+  } = req.body;
 
   try {
+    let imageUrl = undefined;
+    const fileFromMultipart =
+      Array.isArray(req.files) && req.files.length > 0 ? req.files[0] : null;
+    if (fileFromMultipart) {
+      const uploadResult = await cloudinary.uploader.upload(
+        fileFromMultipart.path,
+        {
+          folder: "skillshare",
+          resource_type: "image",
+        }
+      );
+      imageUrl = uploadResult?.secure_url;
+    } else if (image) {
+      const imageUploadRes = await uploadBase64Image(image);
+      if (imageUploadRes.error) {
+        return res
+          .status(422)
+          .json({ isSuccess: false, message: "Image upload failed." });
+      }
+      imageUrl = imageUploadRes.imageUrl;
+    }
     const courseDoc = await Course.create({
       title,
       description,
       totalLessons,
       duration,
       category,
-      instructor: req.userId,
+      image: imageUrl,
+      instructor: userId,
     });
 
     return res.status(201).json({
@@ -144,6 +174,7 @@ exports.deleteCourse = async (req, res) => {
   try {
     const { id } = req.params;
     const courseDoc = await Course.findById(id);
+    console.log("COURSE INSTRUCTOR:", courseDoc?.instructor);
 
     if (!courseDoc) {
       return res.status(404).json({
@@ -156,8 +187,8 @@ exports.deleteCourse = async (req, res) => {
       throw new Error("Authorization Failed.");
     }
 
-    if (courseDoc.images && Array.isArray(courseDoc.images)) {
-      const deletePromises = courseDoc.images.map((img) => {
+    if (courseDoc.image && Array.isArray(courseDoc.image)) {
+      const deletePromises = courseDoc.image.map((img) => {
         const publicId = img.substring(
           img.lastIndexOf("/") + 1,
           img.lastIndexOf(".")

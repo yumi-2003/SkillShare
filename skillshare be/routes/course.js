@@ -10,7 +10,7 @@ const authMiddleware = require("../middlewares/Auth");
 // add course
 // POST /create-course
 router.post(
-  "/create-course",
+  "/auth/create-course",
   authMiddleware,
   [
     body("title").trim().notEmpty().withMessage("Course title is required."),
@@ -33,16 +33,16 @@ router.post(
 
 // get all courses
 // GET /courses
-router.get("/courses", authMiddleware, courseController.getAllCourses);
+// router.get("/courses", authMiddleware, courseController.getAllCourses);
 
 // get single course
 // GET /courses/:id
-router.get("/courses/:id", authMiddleware, courseController.getCourseById);
+// router.get("/courses/:id", authMiddleware, courseController.getCourseById);
 
 // update course
 // PUT /update-course/:id
 router.put(
-  "/update-course/:id",
+  "/auth/update-course/:id",
   authMiddleware,
   [
     body("title").trim().notEmpty().withMessage("Course title is required."),
@@ -70,7 +70,7 @@ router.delete("/courses/:id", authMiddleware, courseController.deleteCourse);
 // upload course image
 // POST /upload-course-image/:id
 router.post(
-  "/upload-course-image/:id",
+  "/auth/upload-course-image/:id",
   authMiddleware,
   courseController.uploadCourseImage
 );
@@ -78,7 +78,7 @@ router.post(
 // get course images
 // GET /course-images/:id
 router.get(
-  "/course-images/:id",
+  "/auth/course-images/:id",
   authMiddleware,
   courseController.getCourseImages
 );
@@ -86,7 +86,7 @@ router.get(
 // delete course image
 // DELETE /courses/images/:courseId/:imgToDelete
 router.delete(
-  "/courses/images/:courseId/:imgToDelete",
+  "/auth/courses/images/:courseId/:imgToDelete",
   authMiddleware,
   courseController.deleteCourseImage
 );
@@ -94,7 +94,7 @@ router.delete(
 // categories
 // POST /categories
 router.post(
-  "/categories",
+  "/auth/categories",
   authMiddleware,
   [
     body("name").trim().notEmpty().withMessage("Category name is required."),
@@ -106,15 +106,16 @@ router.post(
   categoryController.addCategory
 );
 
-// GET /categories
-router.get("/categories", authMiddleware, categoryController.getCategories);
-
 // GET /categories/:id
-router.get("/categories/:id", authMiddleware, categoryController.getCategoryById);
+router.get(
+  "/auth/categories/:id",
+  authMiddleware,
+  categoryController.getCategoryById
+);
 
 // PUT /categories/:id
 router.put(
-  "/categories/:id",
+  "/auth/categories/:id",
   authMiddleware,
   [
     body("name").trim().notEmpty().withMessage("Category name is required."),
@@ -127,33 +128,37 @@ router.put(
 );
 
 // DELETE /categories/:id
-router.delete("/categories/:id", authMiddleware, categoryController.deleteCategory);
+router.delete(
+  "/auth/categories/:id",
+  authMiddleware,
+  categoryController.deleteCategory
+);
 
 // enrollments
 // POST /courses/:courseId/enroll
 router.post(
-  "/courses/:courseId/enroll",
+  "/auth/courses/:courseId/enroll",
   authMiddleware,
   enrollmentController.enrollInCourse
 );
 
 // GET /my-enrollments
 router.get(
-  "/my-enrollments",
+  "/auth/my-enrollments",
   authMiddleware,
   enrollmentController.getMyEnrollments
 );
 
 // GET /courses/:courseId/enrollment-status
 router.get(
-  "/courses/:courseId/enrollment-status",
+  "/auth/courses/:courseId/enrollment-status",
   authMiddleware,
   enrollmentController.getEnrollmentStatus
 );
 
 // GET /courses/:courseId/enrollees (instructor only)
 router.get(
-  "/courses/:courseId/enrollees",
+  "/auth/courses/:courseId/enrollees",
   authMiddleware,
   enrollmentController.getCourseEnrollees
 );
