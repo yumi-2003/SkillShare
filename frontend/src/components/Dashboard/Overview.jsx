@@ -29,7 +29,7 @@ const Overview = () => {
       const res = await axiosInstance.get("api/courses");
       setCourseList(res.data.courses || []);
     } catch (error) {
-      console.log(erorr);
+      console.log(error);
     }
   };
 

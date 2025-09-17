@@ -23,16 +23,25 @@ export const createCourse = createAsyncThunk(
 export const updateCourse = createAsyncThunk(
   "courses/update",
   async ({ id, data }) => {
-    const res = await axiosInstance.put(`/courses/${id}`, data);
+    const res = await axiosInstance.put(`/auth/update-course/${id}`, data, {
+      headers: {
+        "Content-Type": "multipart/form-data", // ensure file + text fields are sent
+      },
+    });
     return res.data;
   }
 );
 
 // Delete course
-export const deleteCourse = createAsyncThunk("courses/delete", async (id) => {
-  await axiosInstance.delete(`/courses/${id}`);
-  return id;
-});
+export const deleteCourse = createAsyncThunk(
+  "courses/delete",
+  async ({ id, userId }) => {
+    await axiosInstance.delete(`/auth/courses/${id}`, {
+      data: { userId },
+    });
+    return id;
+  }
+);
 
 // Course slice
 const courseSlice = createSlice({

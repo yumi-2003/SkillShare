@@ -1,12 +1,13 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Edit, Trash } from "lucide-react";
 import { getAllCourses, deleteCourse } from "../../stores/slices/courseSlice";
 import { getAllCategories } from "../../stores/slices/categorySlice";
 
 const CourseCard = ({ title = true, showViewButton = true }) => {
   const dispatch = useDispatch();
+  const location = useLocation();
 
   // Redux state
   const {
@@ -18,12 +19,14 @@ const CourseCard = ({ title = true, showViewButton = true }) => {
   const { categories } = useSelector((state) => state.category);
   const user = useSelector((state) => state.user.user);
 
+  // Limit courses to 4 only on homepage
+  const displayedCourses = showViewButton ? courses.slice(0, 4) : courses;
+
   // Fetch courses and categories on mount
   useEffect(() => {
     dispatch(getAllCourses());
     dispatch(getAllCategories());
   }, [dispatch]);
-  console.log(courses);
 
   // Helper to get category name from ID
   const getCategoryName = (categoryId) => {
@@ -31,9 +34,11 @@ const CourseCard = ({ title = true, showViewButton = true }) => {
     return category ? category.name : "Unknown";
   };
 
-  //delete course
+  // Delete course
   const handleDelete = (id) => {
-    dispatch(deleteCourse(id));
+    if (user?._id) {
+      dispatch(deleteCourse({ id, userId: user._id }));
+    }
   };
 
   return (
@@ -61,10 +66,9 @@ const CourseCard = ({ title = true, showViewButton = true }) => {
 
       {/* Courses Grid */}
       {status === "succeeded" &&
-        Array.isArray(courses) &&
-        courses.length > 0 && (
+        (Array.isArray(courses) && courses.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 px-3 mt-3">
-            {courses.map((course) => (
+            {displayedCourses.map((course) => (
               <div
                 key={course._id}
                 className="bg-white rounded-lg shadow-lg hover:shadow-2xl overflow-hidden transition duration-300"
@@ -96,7 +100,6 @@ const CourseCard = ({ title = true, showViewButton = true }) => {
 
                   <div className="flex justify-between mb-4 text-sm text-gray-400">
                     <span>⏱ {course.duration} weeks</span>
-                    {/* <span>👥 {course.students}</span> */}
                     <span>📚 {course.totalLessons} lessons</span>
                   </div>
 
@@ -104,7 +107,7 @@ const CourseCard = ({ title = true, showViewButton = true }) => {
                   {user?.userType === "instructor" ? (
                     <div className="flex gap-2 mt-2">
                       <Link
-                        to="#"
+                        to={`/courses/edit/${course._id}`}
                         className="flex items-center justify-center gap-2 w-full bg-yellow-400 text-black px-3 py-2 rounded hover:bg-yellow-500 transition-colors"
                       >
                         <Edit size={20} /> Edit
@@ -127,7 +130,14 @@ const CourseCard = ({ title = true, showViewButton = true }) => {
               </div>
             ))}
           </div>
-        )}
+        ) : (
+          <div className="text-center mt-8 text-gray-600">
+            <p className="text-lg font-semibold">🚫 No courses found</p>
+            <p className="text-sm text-gray-400 mt-2">
+              Please check back later or create a new course.
+            </p>
+          </div>
+        ))}
 
       {/* View All Courses */}
       {showViewButton && courses.length > 0 && (

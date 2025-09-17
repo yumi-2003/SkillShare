@@ -12,6 +12,7 @@ const authMiddleware = require("../middlewares/Auth");
 router.post(
   "/auth/create-course",
   authMiddleware,
+  upload.single("image"), // optional image
   [
     body("title").trim().notEmpty().withMessage("Course title is required."),
     body("description")
@@ -37,7 +38,7 @@ router.post(
 
 // get single course
 // GET /courses/:id
-// router.get("/courses/:id", authMiddleware, courseController.getCourseById);
+router.get("/courses/:id", authMiddleware, courseController.getCourseById);
 
 // update course
 // PUT /update-course/:id
@@ -65,7 +66,11 @@ router.put(
 
 // delete course
 // DELETE /courses/:id
-router.delete("/courses/:id", authMiddleware, courseController.deleteCourse);
+router.delete(
+  "/auth/courses/:id",
+  authMiddleware,
+  courseController.deleteCourse
+);
 
 // upload course image
 // POST /upload-course-image/:id
