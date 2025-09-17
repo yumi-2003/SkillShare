@@ -12,7 +12,6 @@ const authMiddleware = require("../middlewares/Auth");
 router.post(
   "/auth/create-course",
   authMiddleware,
-  upload.single("image"), // optional image
   [
     body("title").trim().notEmpty().withMessage("Course title is required."),
     body("description")

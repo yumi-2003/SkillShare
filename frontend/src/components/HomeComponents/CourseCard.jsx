@@ -104,7 +104,8 @@ const CourseCard = ({ title = true, showViewButton = true }) => {
                   </div>
 
                   {/* Actions */}
-                  {user?.userType === "instructor" ? (
+                  {user?.userType === "instructor" &&
+                  user._id === course.instructor ? (
                     <div className="flex gap-2 mt-2">
                       <Link
                         to={`/courses/edit/${course._id}`}
@@ -112,14 +113,13 @@ const CourseCard = ({ title = true, showViewButton = true }) => {
                       >
                         <Edit size={20} /> Edit
                       </Link>
-                      {user._id === course.instructor && (
-                        <button
-                          className="flex items-center justify-center gap-2 w-1/4 bg-red-500 text-white px-3 py-2 rounded hover:bg-red-600 transition-colors"
-                          onClick={() => handleDelete(course._id)}
-                        >
-                          <Trash size={18} />
-                        </button>
-                      )}
+
+                      <button
+                        className="flex items-center justify-center gap-2 w-1/4 bg-red-500 text-white px-3 py-2 rounded hover:bg-red-600 transition-colors"
+                        onClick={() => handleDelete(course._id)}
+                      >
+                        <Trash size={18} />
+                      </button>
                     </div>
                   ) : (
                     <button className="w-full bg-blue-600 text-white text-lg rounded-lg px-4 py-2 hover:bg-blue-700 transition">
