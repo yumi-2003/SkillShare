@@ -11,6 +11,7 @@ import { useDispatch } from "react-redux";
 import { loadUserFromStorage } from "./util/loadUserFromStorage";
 import CreateCoursePage from "./pages/admin/CourseManage/CreateCoursePage";
 import EditCourse from "./pages/admin/CourseManage/EditCourse";
+import CourseDetails from "./pages/CourseDetails";
 
 function App() {
   const dispatch = useDispatch();
@@ -33,6 +34,7 @@ function App() {
           <Route path="/allcourses" element={<AllCourses />} />
           <Route path="/createCoursePage" element={<CreateCoursePage />} />
           <Route path="/courses/edit/:id" element={<EditCourse />} />
+          <Route path="/courseDetails/:id" element={<CourseDetails />} />
         </Routes>
 
         <Footer />

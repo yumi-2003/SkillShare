@@ -1,13 +1,13 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Edit, Trash } from "lucide-react";
-import { getAllCourses, deleteCourse } from "../../stores/slices/courseSlice";
+import { getAllCourses } from "../../stores/slices/courseSlice";
 import { getAllCategories } from "../../stores/slices/categorySlice";
 
 const CourseCard = ({ title = true, showViewButton = true }) => {
   const dispatch = useDispatch();
-  const location = useLocation();
+  // const location = useLocation();
 
   // Redux state
   const {
@@ -17,7 +17,6 @@ const CourseCard = ({ title = true, showViewButton = true }) => {
   } = useSelector((state) => state.course);
   const courses = coursesData || [];
   const { categories } = useSelector((state) => state.category);
-  const user = useSelector((state) => state.user.user);
 
   // Limit courses to 4 only on homepage
   const displayedCourses = showViewButton ? courses.slice(0, 4) : courses;
@@ -32,13 +31,6 @@ const CourseCard = ({ title = true, showViewButton = true }) => {
   const getCategoryName = (categoryId) => {
     const category = categories.find((cat) => cat._id === categoryId);
     return category ? category.name : "Unknown";
-  };
-
-  // Delete course
-  const handleDelete = (id) => {
-    if (user?._id) {
-      dispatch(deleteCourse({ id, userId: user._id }));
-    }
   };
 
   return (
@@ -104,28 +96,12 @@ const CourseCard = ({ title = true, showViewButton = true }) => {
                   </div>
 
                   {/* Actions */}
-                  {user?.userType === "instructor" &&
-                  user._id === course.instructor ? (
-                    <div className="flex gap-2 mt-2">
-                      <Link
-                        to={`/courses/edit/${course._id}`}
-                        className="flex items-center justify-center gap-2 w-full bg-yellow-400 text-black px-3 py-2 rounded hover:bg-yellow-500 transition-colors"
-                      >
-                        <Edit size={20} /> Edit
-                      </Link>
-
-                      <button
-                        className="flex items-center justify-center gap-2 w-1/4 bg-red-500 text-white px-3 py-2 rounded hover:bg-red-600 transition-colors"
-                        onClick={() => handleDelete(course._id)}
-                      >
-                        <Trash size={18} />
-                      </button>
-                    </div>
-                  ) : (
-                    <button className="w-full bg-blue-600 text-white text-lg rounded-lg px-4 py-2 hover:bg-blue-700 transition">
-                      Enroll Now
-                    </button>
-                  )}
+                  <Link
+                    to={`/courseDetails/${course._id}`}
+                    className="block w-full bg-blue-600 text-white text-lg rounded-lg px-4 py-2 hover:bg-blue-700 transition text-center"
+                  >
+                    Details
+                  </Link>
                 </div>
               </div>
             ))}

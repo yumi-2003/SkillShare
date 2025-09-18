@@ -5,8 +5,6 @@ import { getAllCategories } from "../../../stores/slices/categorySlice";
 import { toast, ToastContainer } from "react-toastify";
 import { useParams, useNavigate } from "react-router-dom";
 import axiosInstance from "../../../apiCalls/axiosInstance";
-import "react-toastify/dist/ReactToastify.css";
-
 const EditCourse = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -104,7 +102,7 @@ const EditCourse = () => {
     }
     if (status === "succeeded") {
       toast.success("Course updated successfully!", { autoClose: 2000 });
-      navigate("/courses"); // redirect after update
+      navigate("/allcourses"); // redirect after update
     }
     if (status === "failed") {
       toast.error(error || "Something went wrong!", { autoClose: 3000 });

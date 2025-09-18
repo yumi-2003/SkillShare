@@ -4,6 +4,7 @@ import { createCourse } from "../../../stores/slices/courseSlice";
 import { getAllCategories } from "../../../stores/slices/categorySlice";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from "react-router-dom";
 
 const CreateCoursePage = () => {
   const [preview, setPreview] = useState("");
@@ -12,6 +13,7 @@ const CreateCoursePage = () => {
   const { categories } = useSelector((state) => state.category);
   const { status, error } = useSelector((state) => state.course);
   const firstRender = useRef(true);
+  const navigate = useNavigate();
 
   // get all categories
   useEffect(() => {
@@ -80,6 +82,7 @@ const CreateCoursePage = () => {
     }
     if (status === "succeeded") {
       toast.success("Course created successfully!", { autoClose: 2000 });
+      navigate("/allcourses");
 
       // reset form after success
       setFormData({
@@ -95,7 +98,7 @@ const CreateCoursePage = () => {
     if (status === "failed") {
       toast.error(error || "Something went wrong!", { autoClose: 3000 });
     }
-  }, [status, error]);
+  }, [status, error, navigate]);
 
   // preview image
   useEffect(() => {
