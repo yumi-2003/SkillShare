@@ -6,7 +6,7 @@ exports.getUsers = async (req, res) => {
     const users = await User.find({}).select("-password");
     return res.status(200).json({
       isSuccess: true,
-      users
+      users,
     });
   } catch (err) {
     return res.status(500).json({
@@ -47,16 +47,30 @@ exports.getCourses = async (req, res) => {
 exports.getCoursesByFilters = async (req, res) => {
   try {
     const { searchKey, category } = req.query;
+
+    // Build query object
     const query = {};
 
+    // Text search in title and description
     if (searchKey) {
-      query.title = { $regex: searchKey, $options: "i" };
+      const matchingInstructors = await User.find(
+        { name: { $regex: searchKey, $options: "i" } },
+        { _id: 1 }
+      );
+
+      query.$or = [
+        { title: { $regex: searchKey, $options: "i" } },
+        { description: { $regex: searchKey, $options: "i" } },
+        { instructor: { $in: matchingInstructors.map((i) => i._id) } },
+      ];
     }
 
+    // Category filter
     if (category) {
       query.category = category;
     }
 
+    // Execute query with pagination
     const courses = await Course.find(query)
       .populate("instructor", "name email")
       .populate("category", "category_name");
@@ -64,8 +78,13 @@ exports.getCoursesByFilters = async (req, res) => {
     return res.status(200).json({
       isSuccess: true,
       courses,
+      filters: {
+        searchKey: searchKey || null,
+        category: category || null,
+      },
     });
   } catch (err) {
+    console.error("Error in getCoursesByFilters:", err);
     return res.status(500).json({
       isSuccess: false,
       message: err.message || "Failed to fetch courses",

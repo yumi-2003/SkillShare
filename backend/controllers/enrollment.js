@@ -5,22 +5,44 @@ const Course = require("../models/course");
 exports.enrollInCourse = async (req, res) => {
   try {
     const { courseId } = req.params;
+    const { userId } = req.body;
 
-    const courseDoc = await Course.findById(courseId).select("instructor");
+    // Populate instructor to ensure _id
+    const courseDoc = await Course.findById(courseId).populate(
+      "instructor",
+      "_id"
+    );
     if (!courseDoc) {
-      return res.status(404).json({ isSuccess: false, message: "Course not found." });
+      return res
+        .status(404)
+        .json({ isSuccess: false, message: "Course not found." });
     }
 
-    if (courseDoc.instructor && courseDoc.instructor.toString() === req.userId.toString()) {
-      return res.status(409).json({ isSuccess: false, message: "Instructors cannot enroll in their own course." });
+    // Check if the user is the instructor
+    if (courseDoc.instructor?._id?.toString() === userId) {
+      return res.status(409).json({
+        isSuccess: false,
+        message: "Instructors cannot enroll in their own course.",
+      });
     }
 
-    const existing = await Enrollment.findOne({ course: courseId, student: req.userId });
+    // Check if the user is already enrolled
+    const existing = await Enrollment.findOne({
+      course: courseId,
+      student: userId,
+    });
     if (existing) {
-      return res.status(409).json({ isSuccess: false, message: "Already enrolled in this course." });
+      return res.status(409).json({
+        isSuccess: false,
+        message: "Already enrolled in this course.",
+      });
     }
 
-    const enrollmentDoc = await Enrollment.create({ course: courseId, student: req.userId });
+    // Create new enrollment
+    const enrollmentDoc = await Enrollment.create({
+      course: courseId,
+      student: userId,
+    });
 
     return res.status(201).json({
       isSuccess: true,
@@ -34,8 +56,10 @@ exports.enrollInCourse = async (req, res) => {
 
 // Get all enrollments of current user
 exports.getMyEnrollments = async (req, res) => {
+  const { userId } = req.body;
+
   try {
-    const enrollments = await Enrollment.find({ student: req.userId })
+    const enrollments = await Enrollment.find({ student: userId })
       .sort({ createdAt: -1 })
       .populate({
         path: "course",
@@ -54,9 +78,13 @@ exports.getMyEnrollments = async (req, res) => {
 
 // Check if current user is enrolled in a course
 exports.getEnrollmentStatus = async (req, res) => {
+  const { userId } = req.body;
   try {
     const { courseId } = req.params;
-    const existing = await Enrollment.findOne({ course: courseId, student: req.userId }).select("_id");
+    const existing = await Enrollment.findOne({
+      course: courseId,
+      student: userId,
+    }).select("_id");
     return res.status(200).json({ isSuccess: true, enrolled: !!existing });
   } catch (err) {
     return res.status(422).json({ isSuccess: false, message: err.message });
@@ -65,16 +93,23 @@ exports.getEnrollmentStatus = async (req, res) => {
 
 // For instructors: list students enrolled in a course they own
 exports.getCourseEnrollees = async (req, res) => {
+  const { userId } = req.body;
   try {
     const { courseId } = req.params;
 
     const courseDoc = await Course.findById(courseId).select("instructor");
     if (!courseDoc) {
-      return res.status(404).json({ isSuccess: false, message: "Course not found." });
+      return res
+        .status(404)
+        .json({ isSuccess: false, message: "Course not found." });
     }
 
-    if (req.userId.toString() !== courseDoc.instructor.toString()) {
-      return res.status(403).json({ isSuccess: false, message: "Authorization Failed." });
+    console.log(userId, courseDoc.instructor?._id?.toString());
+
+    if (userId !== courseDoc.instructor?._id?.toString()) {
+      return res
+        .status(403)
+        .json({ isSuccess: false, message: "Authorization Failed." });
     }
 
     const enrollees = await Enrollment.find({ course: courseId })

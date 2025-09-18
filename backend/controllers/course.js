@@ -145,15 +145,62 @@ exports.updateCourse = async (req, res) => {
       });
     }
 
-    // if (req.userId.toString() !== courseDoc.instructor.toString()) {
-    //   throw new Error("Authorization Failed.");
-    // }
+    // --- IMAGE HANDLING ---
+    let imageUrl = courseDoc.image; // keep old by default
+    let newImageUploaded = false;
 
+    const fileFromMultipart =
+      Array.isArray(req.files) && req.files.length > 0 ? req.files[0] : null;
+
+    if (fileFromMultipart) {
+      // Commenting out old image check and deletion
+      /*
+      if (
+        !courseDoc.image ||
+        !courseDoc.image.includes(fileFromMultipart.filename)
+      ) {
+        if (courseDoc.image) {
+          const publicId = getCloudinaryPublicId(courseDoc.image);
+          if (publicId) await cloudinary.uploader.destroy(publicId);
+        }
+      }
+      */
+      const uploadResult = await cloudinary.uploader.upload(
+        fileFromMultipart.path,
+        {
+          folder: "skillshare",
+          resource_type: "image",
+        }
+      );
+      imageUrl = uploadResult?.secure_url;
+      newImageUploaded = true;
+    } else if (image) {
+      // Commenting out old image check and deletion for base64
+      /*
+      if (image !== courseDoc.image) {
+        if (courseDoc.image) {
+          const publicId = getCloudinaryPublicId(courseDoc.image);
+          if (publicId) await cloudinary.uploader.destroy(publicId);
+        }
+      }
+      */
+      const imageUploadRes = await uploadBase64Image(image);
+      if (imageUploadRes.error) {
+        return res
+          .status(422)
+          .json({ isSuccess: false, message: "Image upload failed." });
+      }
+      imageUrl = imageUploadRes.imageUrl;
+      newImageUploaded = true;
+    }
+
+    // --- UPDATE FIELDS ---
     courseDoc.title = title;
     courseDoc.description = description;
     courseDoc.totalLessons = totalLessons;
     courseDoc.duration = duration;
     courseDoc.category = category;
+    if (newImageUploaded) courseDoc.image = imageUrl;
 
     await courseDoc.save();
 

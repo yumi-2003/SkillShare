@@ -10,6 +10,30 @@ export const getAllCourses = createAsyncThunk(
   }
 );
 
+// Fetch courses by filters
+export const getCoursesByFilters = createAsyncThunk(
+  "courses/getCoursesByFilters",
+  async (filters = {}) => {
+    const params = new URLSearchParams();
+
+    // Add filters to query params
+    Object.keys(filters).forEach((key) => {
+      if (
+        filters[key] !== null &&
+        filters[key] !== undefined &&
+        filters[key] !== ""
+      ) {
+        params.append(key, filters[key]);
+      }
+    });
+
+    const res = await axiosInstance.get(
+      `/api/courses/filters?${params.toString()}`
+    );
+    return res.data;
+  }
+);
+
 // Create new course
 export const createCourse = createAsyncThunk(
   "courses/create",
@@ -46,8 +70,17 @@ export const deleteCourse = createAsyncThunk(
 // Course slice
 const courseSlice = createSlice({
   name: "course",
-  initialState: { list: [], status: "idle", error: null },
-  reducers: {},
+  initialState: {
+    list: [],
+    filters: {},
+    status: "idle",
+    error: null,
+  },
+  reducers: {
+    clearFilters: (state) => {
+      state.filters = {};
+    },
+  },
   extraReducers: (builder) => {
     builder
       // Fetch all courses
@@ -62,6 +95,24 @@ const courseSlice = createSlice({
           : [];
       })
       .addCase(getAllCourses.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.error.message;
+      })
+
+      // Fetch courses by filters
+      .addCase(getCoursesByFilters.pending, (state) => {
+        state.status = "loading";
+        state.error = null;
+      })
+      .addCase(getCoursesByFilters.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.filteredList = Array.isArray(action.payload.courses)
+          ? action.payload.courses
+          : [];
+        state.pagination = action.payload.pagination || null;
+        state.filters = action.payload.filters || {};
+      })
+      .addCase(getCoursesByFilters.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.error.message;
       })
@@ -114,4 +165,5 @@ const courseSlice = createSlice({
   },
 });
 
+export const { clearFilters } = courseSlice.actions;
 export default courseSlice.reducer;

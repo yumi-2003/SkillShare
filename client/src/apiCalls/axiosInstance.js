@@ -3,7 +3,7 @@ import { logout } from "./auth";
 
 const axiosInstance = axios.create({
   baseURL: "http://localhost:4000", // api base url
-  timeout: 5000, // request timeout in millseconds
+  // timeout: 10000, // request timeout in millseconds
   headers: {
     "Content-Type": "application/json",
   },
