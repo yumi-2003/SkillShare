@@ -54,11 +54,11 @@ const Overview = () => {
 
   return (
     <>
-      <div className="grid gird-cols-1 sm-grid-cols-2 md:grid-cols-3 gap-4 my-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 md:gap-8 my-6">
         <Card
           title="Total Users"
           value={
-            userList.filter((user) => user.userType != "instructor").length
+            userList.filter((user) => user.userType !== "instructor").length
           }
           subtitle=""
           icon={<Users size={20} />}
@@ -70,12 +70,13 @@ const Overview = () => {
           icon={<BookOpen size={20} />}
         />
         <Card
-          title="Total Enrollement"
+          title="Total Enrollment"
           value={enrollmentList.length}
           subtitle=""
           icon={<Layers size={20} />}
         />
       </div>
+
       <EnrolledStudents />
     </>
   );
