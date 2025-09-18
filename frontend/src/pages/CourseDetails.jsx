@@ -162,7 +162,7 @@ const CourseDetails = () => {
                 <div className="p-4">
                   <h3 className="text-lg font-semibold mb-2">{course.title}</h3>
                   <p className="text-gray-500 text-sm mb-3">
-                    {getCategoryName(course.category) || "No category"}
+                    {getCategoryName(course.category)}
                   </p>
                   <Link
                     to={`/courseDetails/${course._id}`}

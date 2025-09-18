@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { logOut } from "../../stores/slices/authSlice";
 import SkillShareLogo from "../../assets/skillshare.png";
 import { Menu, X } from "lucide-react";
+import ProfileSideBar from "../ProfileSideBar";
 
 const Navbar = () => {
   const user = useSelector((state) => state.auth?.user);
@@ -62,7 +63,7 @@ const Navbar = () => {
           <div className="hidden md:flex items-center gap-4">
             {user ? (
               <>
-                {user.userType === "student" && (
+                {/* {user.userType === "student" && (
                   <NavLink
                     to="/student-dashboard"
                     className={({ isActive }) =>
@@ -85,7 +86,8 @@ const Navbar = () => {
                   >
                     Instructor Dashboard
                   </NavLink>
-                )}
+                )} */}
+                <ProfileSideBar />
                 <button
                   onClick={handleLogout}
                   className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 font-medium"
@@ -161,7 +163,7 @@ const Navbar = () => {
 
             {user ? (
               <>
-                {user.userType === "student" && (
+                {/* {user.userType === "student" && (
                   <NavLink
                     to="/student-dashboard"
                     onClick={() => setMenuOpen(false)}
@@ -186,7 +188,8 @@ const Navbar = () => {
                   >
                     Instructor Dashboard
                   </NavLink>
-                )}
+                )} */}
+                <ProfileSideBar />
                 <button
                   onClick={handleLogout}
                   className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 font-medium mt-2"

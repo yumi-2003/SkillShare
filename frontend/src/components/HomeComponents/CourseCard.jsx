@@ -100,7 +100,7 @@ const CourseCard = ({ title = true, showViewButton = true }) => {
                       to={`/courseDetails/${course._id}`}
                       className="block w-full bg-blue-600 text-white text-base sm:text-lg rounded-lg px-4 py-2 hover:bg-blue-700 transition text-center"
                     >
-                      Details
+                      View Details
                     </Link>
                   </div>
                 </div>
