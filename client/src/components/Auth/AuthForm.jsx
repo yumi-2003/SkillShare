@@ -87,7 +87,7 @@ const AuthForm = () => {
     if (!formData.password) {
       errors.password = "Please enter password!";
     } else if (!passwordValidate(formData.password)) {
-      errors.password = "Password is not strong enough!";
+      errors.password = "Password should be included 8 character!";
     }
 
     if (!isLoginPage) {
@@ -123,7 +123,7 @@ const AuthForm = () => {
 
       // Success toast
       showToast({
-        message: isLoginPage ? "Login Successful" : "SignUp Success",
+        message: isLoginPage ? "Login Successufl" : "SignUp Success",
         icon: CheckCircle,
         iconColor: "text-green-500",
         duration: 2200,
@@ -136,18 +136,18 @@ const AuthForm = () => {
         cpassword: "",
         userType: "",
       });
+      navigate("/login");
 
       if (response?.user?.userType) {
-        setTimeout(
-          () =>
-            navigate(
-              response.user.userType === "instructor"
-                ? "/instructor-dashboard"
-                : "/student-dashboard"
-            ),
-          1200
-        );
+        setTimeout(() => {
+          if (response?.user?.userType === "student") {
+            navigate("/student-dashboard");
+          } else {
+            navigate("/instructor-dashboard");
+          }
+        }, 1200);
       }
+      //after login navigate to dashboard based on userType
     } catch (err) {
       // This now executes if login fails
       const msg = err.message || "Authentication Failed";

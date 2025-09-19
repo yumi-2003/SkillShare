@@ -87,14 +87,17 @@ const CourseDetails = () => {
     }
     if (user?._id) {
       dispatch(enrollInCourse({ courseId: courseData._id, userId: user?._id }))
-        .then(() => {
-          toast.success("Enrolled successfully!");
+        .then((res) => {
+          if (res.payload?.isSuccess) {
+            toast.success("Enrolled successfully!");
+            navigate("/student-dashboard");
+          } else {
+            toast.error(res.payload?.message || "You are already enrolled.");
+          }
         })
         .catch((err) => {
-          toast.error("Enrollment failed: " + err.message);
+          toast.error(err.message || "Enrollment failed.");
         });
-    } else {
-      toast.error("Please log in to enroll in courses.");
     }
   };
   return (

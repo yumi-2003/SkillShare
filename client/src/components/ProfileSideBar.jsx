@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import {
   X,
   Mail,
@@ -9,9 +9,8 @@ import {
   GraduationCap,
   PlusCircle,
 } from "lucide-react";
-import { Link } from "react-router-dom";
 
-//avator name to show as initial login or sign up
+// Avatar component to show initials
 const Avator = ({ name }) => {
   const initialName = name
     .split(" ")
@@ -25,85 +24,102 @@ const Avator = ({ name }) => {
     </div>
   );
 };
+
 const ProfileSideBar = () => {
   const [openProfile, setOpenProfile] = useState(false);
+  const sidebarRef = useRef(null); // Ref for sidebar
   const user = useSelector((state) => state.auth.user);
   const navigate = useNavigate();
 
-  //   function to navigate dashboard
+  // Navigate to dashboard
   const navigateDashboard = () => {
     if (user?.userType === "student") navigate("/student-dashboard");
     if (user?.userType === "instructor") navigate("/instructor-dashboard");
   };
 
+  // Close sidebar when clicking outside
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (sidebarRef.current && !sidebarRef.current.contains(event.target)) {
+        setOpenProfile(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [sidebarRef]);
+
   return (
-    <div className="">
-      {/* get avator */}
+    <div>
+      {/* Avatar button */}
       <div onClick={() => setOpenProfile(true)} className="cursor-pointer">
-        <Avator name={user?.name} />
+        <Avator name={user?.name || ""} />
       </div>
+
       {openProfile && (
-        <div className="fixed inset-0 bg-black/50 flex justify-end">
-          <div className="w-72 rounded-l-2xl shadow-lg relative mt-10 mx-2 h-20">
-            <div className="p-6 bg-gradient-to-r from-blue-500 to bg-purple-500 text-white rounded-tl-2xl">
+        <div className="fixed inset-0 bg-black/50 flex justify-end z-50">
+          <div
+            ref={sidebarRef}
+            className="w-72 rounded-l-2xl shadow-lg relative mt-10 mx-2 h-24 bg-white"
+          >
+            {/* Header */}
+            <div className="p-6 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-tl-2xl">
               <div className="flex flex-col items-center">
-                <Avator name={user?.name} />
+                <Avator name={user?.name || ""} />
                 <span className="mt-2 font-bold">{user?.name}</span>
                 <span className="bg-white text-blue-600 text-sm px-3 py-1 rounded-full mt-2">
                   {user?.userType === "student"
                     ? "🎓 Student"
                     : "👨‍🏫 Instructor"}
                 </span>
-                <span className="flex items-center justify-center bg-white text-blue-600 text-sm px-3 py-1 rounded-full mt-2 gap-3 ">
-                  <Mail size={20} />
+                <span className="flex items-center justify-center bg-white text-blue-600 text-sm px-3 py-1 rounded-full mt-2 gap-2">
+                  <Mail size={16} />
                   {user?.email}
                 </span>
               </div>
             </div>
 
-            {/* activity based on userType*/}
+            {/* Activity section */}
             <div className="p-6 bg-white">
               {user?.userType === "student" ? (
-                <>
-                  <Link
-                    to={"/allcourses"}
-                    className="flex items-center justify-center text-gray-800"
-                  >
-                    <Book />
-                    View Courses and Join Free
-                  </Link>
-                </>
+                <Link
+                  to="/allcourses"
+                  className="flex items-center gap-2 mb-2 text-gray-800 hover:text-blue-600"
+                >
+                  <Book size={16} />
+                  View Courses and Join Free
+                </Link>
               ) : (
                 <>
-                  <p className="flex gap-2 mb-4 text-gray-800">
-                    <BookKey />
-                    Manage Courses
+                  <p className="flex items-center gap-2 mb-2 text-gray-800 hover:text-blue-600">
+                    <BookKey size={16} /> Manage Courses
                   </p>
-                  <p className="flex gap-2 mb-4 text-gray-800">
-                    <GraduationCap />
-                    Manage Students
+                  <p className="flex items-center gap-2 mb-2 text-gray-800 hover:text-blue-600">
+                    <GraduationCap size={16} /> Manage Students
                   </p>
-                  <p className="flex gap-2 text-gray-800">
-                    <PlusCircle />
-                    Join Courses
+                  <p className="flex items-center gap-2 text-gray-800 hover:text-blue-600">
+                    <PlusCircle size={16} /> Join Courses
                   </p>
                 </>
               )}
             </div>
 
-            {/* action */}
+            {/* Actions */}
             <div className="p-6 space-y-3 bg-white">
               <button
-                onClick={() => navigateDashboard()}
-                className="w-full bg-blue-600 text-white py-2 rounded-lg"
+                onClick={navigateDashboard}
+                className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
               >
                 Go to Dashboard
               </button>
-              <button className="w-full bg-gradient-to-r from-blue-500 to-purple-500 text-white py-2 rounded-lg">
+              <button className="w-full bg-gradient-to-r from-blue-500 to-purple-500 text-white py-2 rounded-lg hover:opacity-90 transition">
                 Edit Profile
               </button>
             </div>
-            {/* close button */}
+
+            {/* Close button */}
             <button
               onClick={() => setOpenProfile(false)}
               className="absolute top-4 right-4 text-gray-600 hover:text-black"

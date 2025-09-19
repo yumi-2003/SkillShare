@@ -38,7 +38,7 @@ const CourseCard = ({ title = true, showViewButton = true }) => {
         {/* Title */}
         {title && (
           <div className="mb-12">
-            <h2 className="text-center mb-4 text-2xl sm:text-3xl md:text-4xl font-semibold">
+            <h2 className="text-center mb-4 text- sm:text-3xl md:text-4xl font-semibold">
               Featured Courses
             </h2>
             <p className="text-center mt-2 text-gray-500 text-sm sm:text-base md:text-lg">

@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import DashboardStudent from "../students/DashboardStudent";
+import EnrolledStudents from "./EnrolledStudents";
 
 const DashboardAdmin = () => {
   const navigate = useNavigate();
@@ -33,7 +34,7 @@ const DashboardAdmin = () => {
       id: 2,
       label: "Student",
       icon: Users,
-      // content:
+      content: <EnrolledStudents />,
     },
     {
       id: 3,
