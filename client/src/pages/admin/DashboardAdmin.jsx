@@ -5,6 +5,7 @@ import CoursesForm from "../admin/CourseManage/CourseForm";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
+import DashboardStudent from "../students/DashboardStudent";
 
 const DashboardAdmin = () => {
   const navigate = useNavigate();
@@ -33,6 +34,11 @@ const DashboardAdmin = () => {
       label: "Student",
       icon: Users,
       // content:
+    },
+    {
+      id: 3,
+      label: "My Enrollments",
+      content: <DashboardStudent />,
     },
   ];
   return (

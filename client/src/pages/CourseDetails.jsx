@@ -6,6 +6,7 @@ import { deleteCourse, getAllCourses } from "../stores/slices/courseSlice";
 import { getAllCategories } from "../stores/slices/categorySlice";
 import axiosInstance from "../apiCalls/axiosInstance";
 import { toast, ToastContainer } from "react-toastify";
+import { enrollInCourse } from "../stores/slices/enrollment";
 
 const CourseDetails = () => {
   const { id } = useParams();
@@ -75,6 +76,27 @@ const CourseDetails = () => {
     return cat ? cat.name : "Unknown";
   };
 
+  // Enrollment handler (for students)
+  const handleEnroll = () => {
+    if (
+      user?.userType === "instructor" &&
+      user?._id === courseData.instructor?._id
+    ) {
+      toast.error("You cannot enroll in courses.");
+      return;
+    }
+    if (user?._id) {
+      dispatch(enrollInCourse({ courseId: courseData._id, userId: user?._id }))
+        .then(() => {
+          toast.success("Enrolled successfully!");
+        })
+        .catch((err) => {
+          toast.error("Enrollment failed: " + err.message);
+        });
+    } else {
+      toast.error("Please log in to enroll in courses.");
+    }
+  };
   return (
     <div className="max-w-6xl mx-auto p-6 mt-24">
       <ToastContainer />
@@ -105,7 +127,7 @@ const CourseDetails = () => {
           </div>
           <div className="flex flex-wrap gap-2 mb-6">
             <span className="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-semibold">
-              Duration: {courseData.duration || "0"} weeks
+              Duration: {courseData.duration || "0"} hours
             </span>
             <span className="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-semibold">
               Instructor {courseData.instructor?.name || "unknown"}
@@ -134,7 +156,10 @@ const CourseDetails = () => {
               </button>
             </div>
           ) : (
-            <button className="px-6 py-3 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition">
+            <button
+              className="px-6 py-3 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition"
+              onClick={handleEnroll}
+            >
               Enroll Now
             </button>
           )}

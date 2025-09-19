@@ -1,6 +1,6 @@
 const Enrollment = require("../models/enrollment");
 const Course = require("../models/course");
-
+// POST /enroll/:courseId
 // Enroll current user in a course
 exports.enrollInCourse = async (req, res) => {
   try {
@@ -54,16 +54,20 @@ exports.enrollInCourse = async (req, res) => {
   }
 };
 
+//Get /my-enrollments
 // Get all enrollments of current user
 exports.getMyEnrollments = async (req, res) => {
-  const { userId } = req.body;
+  // console.log("req.body:", req.body); // will be undefined for GET
+  // console.log("req.query:", req.query); // check if userId comes here
+
+  const { userId } = req.query; // <-- use query for GET
 
   try {
     const enrollments = await Enrollment.find({ student: userId })
       .sort({ createdAt: -1 })
       .populate({
         path: "course",
-        select: "title description images instructor category createdAt",
+        select: "title description image instructor category createdAt",
         populate: [
           { path: "instructor", select: "name email" },
           { path: "category", select: "category_name" },
@@ -76,6 +80,7 @@ exports.getMyEnrollments = async (req, res) => {
   }
 };
 
+// GET /enroll-status/:courseId
 // Check if current user is enrolled in a course
 exports.getEnrollmentStatus = async (req, res) => {
   const { userId } = req.body;
@@ -91,6 +96,7 @@ exports.getEnrollmentStatus = async (req, res) => {
   }
 };
 
+// GET /course/courseId/enrollees
 // For instructors: list students enrolled in a course they own
 exports.getCourseEnrollees = async (req, res) => {
   const { userId } = req.body;
@@ -114,7 +120,8 @@ exports.getCourseEnrollees = async (req, res) => {
 
     const enrollees = await Enrollment.find({ course: courseId })
       .sort({ createdAt: -1 })
-      .populate({ path: "student", select: "name email" });
+      .populate({ path: "student", select: "name email" })
+      .populate({ path: "course", select: "title" });
 
     return res.status(200).json({ isSuccess: true, enrollees });
   } catch (err) {

@@ -12,6 +12,7 @@ import { loadUserFromStorage } from "./util/loadUserFromStorage";
 import CreateCoursePage from "./pages/admin/CourseManage/CreateCoursePage";
 import EditCourse from "./pages/admin/CourseManage/EditCourse";
 import CourseDetails from "./pages/CourseDetails";
+// import { checkCurrentUser } from "./apiCalls/auth";
 
 function App() {
   const dispatch = useDispatch();
@@ -19,6 +20,7 @@ function App() {
   // Load user from localStorage on app initialization
   useEffect(() => {
     loadUserFromStorage(dispatch);
+    // dispatch(checkCurrentUser());
   }, [dispatch]);
 
   return (

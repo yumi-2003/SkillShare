@@ -3,11 +3,15 @@ import Card from "./Card";
 import { Users, BookOpen, Layers, UserStar } from "lucide-react";
 import axiosInstance from "../../apiCalls/axiosInstance";
 import EnrolledStudents from "../../pages/admin/EnrolledStudents";
+// import { useSelector } from "react-redux";
+// import { getCourseEnrollees } from "../../stores/slices/enrollment";
 
 const Overview = () => {
   const [userList, setUserList] = useState([]);
   const [courseList, setCourseList] = useState([]);
-  const [enrollmentList, setEnrollmentList] = useState([]);
+  // const [enrollmentList, setEnrollmentList] = useState([]);
+  // const user = useSelector((state) => state.auth.user); // Get user from Redux
+  // const { myEnrollments } = useSelector((state) => state.enrollment);
 
   // get users api
   const getUsers = async () => {
@@ -19,9 +23,9 @@ const Overview = () => {
     }
   };
 
-  useEffect(() => {
-    getUsers();
-  }, []);
+  // useEffect(() => {
+  //   getUsers();
+  // }, []);
 
   //get courses api
   const getCourses = async () => {
@@ -33,23 +37,11 @@ const Overview = () => {
     }
   };
 
+  //get enrolled students from redux slice
+
   useEffect(() => {
+    getUsers();
     getCourses();
-  }, []);
-
-  //get enrollement api
-  const getEnrollement = async () => {
-    try {
-      const res = await axiosInstance.get("api/enrollments");
-      setEnrollmentList(res.data.enrollments || []);
-      console.log(enrollmentList);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  useEffect(() => {
-    getEnrollement();
   }, []);
 
   return (
@@ -71,7 +63,7 @@ const Overview = () => {
         />
         <Card
           title="Total Enrollment"
-          value={enrollmentList.length}
+          // value={user?._id && enrollmentList.length}
           subtitle=""
           icon={<Layers size={20} />}
         />

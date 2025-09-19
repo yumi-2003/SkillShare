@@ -20,7 +20,7 @@ const Avator = ({ name }) => {
     .toUpperCase();
 
   return (
-    <div className="w-12 h-12 flex items-center justify-center rounded-full bg-gradient-to-r from-blue-500 to-blue-800 text-white font-medium text-sm">
+    <div className="w-10 h-10 flex items-center justify-center rounded-full bg-gradient-to-r from-blue-300 to-blue-500 text-white font-medium text-sm">
       {initialName}
     </div>
   );

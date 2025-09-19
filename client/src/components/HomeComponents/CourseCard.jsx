@@ -33,7 +33,7 @@ const CourseCard = ({ title = true, showViewButton = true }) => {
   };
 
   return (
-    <div className="w-full bg-gray-100 sm:px-3 lg:px-6 py-24">
+    <div className="w-full sm:px-3 py-6">
       <div className="max-w-8xl mx-auto">
         {/* Title */}
         {title && (
@@ -91,7 +91,7 @@ const CourseCard = ({ title = true, showViewButton = true }) => {
                     </p>
 
                     <div className="flex justify-between mb-4 text-sm sm:text-base text-gray-400">
-                      <span>⏱ {course.duration} weeks</span>
+                      <span>⏱ {course.duration} hours</span>
                       <span>📚 {course.totalLessons} lessons</span>
                     </div>
 
