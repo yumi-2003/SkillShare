@@ -6,7 +6,6 @@ import { getAllCategories } from "../../stores/slices/categorySlice";
 
 const CourseCard = ({ title = true, showViewButton = true }) => {
   const dispatch = useDispatch();
-  // const location = useLocation();
 
   // Redux state
   const {
@@ -37,11 +36,11 @@ const CourseCard = ({ title = true, showViewButton = true }) => {
       <div className="max-w-8xl mx-auto">
         {/* Title */}
         {title && (
-          <div className="mb-12">
-            <h2 className="text-center mb-4 text- sm:text-3xl md:text-4xl font-semibold">
+          <div className="mb-8">
+            <h2 className="text-center mb-2 text-lg sm:text-xl font-semibold text-gray-800">
               Featured Courses
             </h2>
-            <p className="text-center mt-2 text-gray-500 text-sm sm:text-base md:text-lg">
+            <p className="text-center text-xs sm:text-sm text-gray-500 font-normal">
               Discover our most popular courses designed by industry experts to
               help you build in-demand skills.
             </p>
@@ -50,10 +49,12 @@ const CourseCard = ({ title = true, showViewButton = true }) => {
 
         {/* Loading / Error */}
         {status === "loading" && (
-          <p className="text-center mt-8 text-gray-500">Loading courses...</p>
+          <p className="text-center mt-6 text-gray-500 text-sm">
+            Loading courses...
+          </p>
         )}
         {status === "failed" && (
-          <p className="text-center mt-8 text-red-500">{error}</p>
+          <p className="text-center mt-6 text-red-500 text-sm">{error}</p>
         )}
 
         {/* Courses Grid */}
@@ -63,7 +64,7 @@ const CourseCard = ({ title = true, showViewButton = true }) => {
               {displayedCourses.map((course) => (
                 <div
                   key={course._id}
-                  className="bg-white rounded-lg shadow-lg overflow-hidden flex flex-col transition duration-300 hover:shadow-2xl"
+                  className="bg-white rounded-lg shadow-md overflow-hidden flex flex-col transition duration-300 hover:shadow-lg"
                 >
                   {/* Course Image */}
                   <div className="relative">
@@ -71,34 +72,34 @@ const CourseCard = ({ title = true, showViewButton = true }) => {
                       <img
                         src={course.image}
                         alt={course.title}
-                        className="w-full h-48 sm:h-56 md:h-48 lg:h-52 object-cover"
+                        className="w-full h-40 sm:h-44 object-cover"
                       />
                     )}
-                    <span className="absolute top-3 left-3 bg-green-200 text-green-800 rounded px-2 py-1 text-xs font-semibold">
+                    <span className="absolute top-2 left-2 bg-green-200 text-green-800 rounded px-2 py-0.5 text-[10px] font-medium">
                       {getCategoryName(course.category)}
                     </span>
                   </div>
 
                   {/* Course Info */}
-                  <div className="p-6 flex flex-col flex-1">
-                    <h3 className="text-lg sm:text-xl font-semibold text-gray-800 mb-2">
+                  <div className="p-4 flex flex-col flex-1">
+                    <h3 className="text-sm sm:text-base font-semibold text-gray-900 mb-1">
                       {course.title}
                     </h3>
-                    <p className="text-gray-500 mb-4 text-sm sm:text-base flex-1">
+                    <p className="text-xs sm:text-sm text-gray-600 mb-3 flex-1">
                       {course.description.length > 40
                         ? `${course.description.substring(0, 35)}...`
                         : course.description}
                     </p>
 
-                    <div className="flex justify-between mb-4 text-sm sm:text-base text-gray-400">
-                      <span>⏱ {course.duration} hours</span>
+                    <div className="flex justify-between mb-3 text-[11px] sm:text-xs text-gray-500 font-medium">
+                      <span>⏱ {course.duration} hrs</span>
                       <span>📚 {course.totalLessons} lessons</span>
                     </div>
 
                     {/* Details Button */}
                     <Link
                       to={`/courseDetails/${course._id}`}
-                      className="block w-full bg-blue-600 text-white text-base sm:text-lg rounded-lg px-4 py-2 hover:bg-blue-700 transition text-center"
+                      className="block w-full bg-blue-600 text-white text-xs sm:text-sm font-medium rounded-md px-3 py-1.5 hover:bg-blue-700 transition text-center"
                     >
                       View Details
                     </Link>
@@ -108,8 +109,8 @@ const CourseCard = ({ title = true, showViewButton = true }) => {
             </div>
           ) : (
             <div className="text-center mt-8 text-gray-600">
-              <p className="text-lg font-semibold">🚫 No courses found</p>
-              <p className="text-sm text-gray-400 mt-2">
+              <p className="text-sm font-medium">🚫 No courses found</p>
+              <p className="text-xs text-gray-400 mt-1">
                 Please check back later or create a new course.
               </p>
             </div>
@@ -117,10 +118,10 @@ const CourseCard = ({ title = true, showViewButton = true }) => {
 
         {/* View All Courses */}
         {showViewButton && courses.length > 0 && (
-          <div className="mt-8 text-center">
+          <div className="mt-6 text-center">
             <Link
               to="/allcourses"
-              className="text-base sm:text-lg md:text-xl rounded-lg px-4 sm:px-6 py-2 sm:py-3 hover:text-white hover:bg-blue-700 border border-neutral-300 shadow-lg transition"
+              className="text-xs sm:text-sm font-medium rounded-md px-4 py-2 hover:text-white hover:bg-blue-700 border border-neutral-300 shadow-md transition"
             >
               View All Courses
             </Link>

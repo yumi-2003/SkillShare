@@ -121,14 +121,35 @@ const AuthForm = () => {
         loginUser(payload, isLoginPage ? "login" : "signUp")
       );
 
-      // Success toast
-      showToast({
-        message: isLoginPage ? "Login Successufl" : "SignUp Success",
-        icon: CheckCircle,
-        iconColor: "text-green-500",
-        duration: 2200,
-      });
+      if (isLoginPage) {
+        showToast({
+          message: "Login Successful",
+          icon: CheckCircle,
+          iconColor: "text-green-500",
+          duration: 2000,
+        });
 
+        if (response?.user?.userType === "student") {
+          navigate("/student-dashboard");
+        } else if (response?.user?.userType === "instructor") {
+          navigate("/instructor-dashboard");
+        } else {
+          navigate("/");
+        }
+      } else {
+        showToast({
+          message: "Account created successfully, please log in",
+          icon: CheckCircle,
+          iconColor: "text-green-500",
+          duration: 2500,
+        });
+
+        setTimeout(() => {
+          navigate("/login");
+        }, 2500);
+      }
+
+      // Reset form
       setFormData({
         name: "",
         email: "",
@@ -136,23 +157,9 @@ const AuthForm = () => {
         cpassword: "",
         userType: "",
       });
-      navigate("/login");
-
-      if (response?.user?.userType) {
-        setTimeout(() => {
-          if (response?.user?.userType === "student") {
-            navigate("/student-dashboard");
-          } else {
-            navigate("/instructor-dashboard");
-          }
-        }, 1200);
-      }
-      //after login navigate to dashboard based on userType
     } catch (err) {
-      // This now executes if login fails
-      const msg = err.message || "Authentication Failed";
       showToast({
-        message: msg,
+        message: err.message || "Authentication Failed",
         icon: XCircle,
         iconColor: "text-red-500",
         duration: 3500,

@@ -53,14 +53,13 @@ const AllCourses = () => {
   // Helper to get category name from ID
   const getCategoryName = (categoryId) => {
     const category = categories.find((cat) => cat._id === categoryId);
-    console.log(category);
     return category ? category.name : "Unknown";
   };
 
   return (
-    <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-12 py-24 sm:py-8 mt-18">
+    <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-12 py-24 sm:py-8">
       {/* Page Title */}
-      <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-6 text-center sm:text-left">
+      <h1 className="text-lg sm:text-xl md:text-2xl font-semibold mb-6 text-center sm:text-left text-gray-800 mt-10">
         All Courses
       </h1>
 
@@ -76,26 +75,28 @@ const AllCourses = () => {
 
       {/* Results Info */}
       {courses && courses.length > 0 && (
-        <div className="mb-4 text-sm text-gray-600">
-          Found <span className="font-bold text-lg">{courses.length}</span>{" "}
-          course{courses.length !== 1 ? "s." : "."}
+        <div className="mb-4 text-xs sm:text-sm text-gray-600">
+          Found <span className="font-semibold">{courses.length}</span> course
+          {courses.length !== 1 ? "s." : "."}
         </div>
       )}
 
       {/* Loading / Error */}
       {status === "loading" && (
         <div className="text-center mt-8">
-          <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-          <p className="mt-2 text-gray-500">Loading courses...</p>
+          <div className="inline-block animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600"></div>
+          <p className="mt-2 text-xs sm:text-sm text-gray-500">
+            Loading courses...
+          </p>
         </div>
       )}
 
       {status === "failed" && (
         <div className="text-center mt-8 text-red-500">
-          <p>Error: {error}</p>
+          <p className="text-sm">Error: {error}</p>
           <button
             onClick={handleApplyFilters}
-            className="mt-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+            className="mt-2 px-3 py-1.5 bg-blue-600 text-white text-xs sm:text-sm rounded-md hover:bg-blue-700"
           >
             Try Again
           </button>
@@ -110,7 +111,7 @@ const AllCourses = () => {
               {courses.map((course) => (
                 <div
                   key={course._id}
-                  className="bg-white rounded-lg shadow-lg overflow-hidden flex flex-col transition duration-300 hover:shadow-2xl"
+                  className="bg-white rounded-lg shadow-md overflow-hidden flex flex-col transition duration-300 hover:shadow-lg"
                 >
                   {/* Course Image */}
                   <div className="relative">
@@ -118,33 +119,33 @@ const AllCourses = () => {
                       <img
                         src={course.image}
                         alt={course.title}
-                        className="w-full h-48 sm:h-56 md:h-48 lg:h-52 object-cover"
+                        className="w-full h-40 sm:h-44 object-cover"
                       />
                     )}
-                    <span className="absolute top-3 left-3 bg-green-200 text-green-800 rounded px-2 py-1 text-xs font-semibold">
+                    <span className="absolute top-2 left-2 bg-green-200 text-green-800 rounded px-2 py-0.5 text-[10px] font-medium">
                       {getCategoryName(course.category._id)}
                     </span>
                   </div>
 
                   {/* Course Info */}
-                  <div className="p-6 flex flex-col flex-1">
-                    <h3 className="text-lg sm:text-xl font-semibold text-gray-800 mb-2">
+                  <div className="p-4 flex flex-col flex-1">
+                    <h3 className="text-sm sm:text-base font-semibold text-gray-900 mb-1">
                       {course.title}
                     </h3>
-                    <p className="text-gray-500 mb-4 text-sm sm:text-base flex-1">
+                    <p className="text-xs sm:text-sm text-gray-600 mb-3 flex-1">
                       {course.description.length > 40
                         ? `${course.description.substring(0, 35)}...`
                         : course.description}
                     </p>
 
-                    <div className="flex justify-between mb-4 text-sm sm:text-base text-gray-400">
+                    <div className="flex justify-between mb-3 text-[11px] sm:text-xs text-gray-500 font-medium">
                       <span>⏱ {course.duration} weeks</span>
                       <span>📚 {course.totalLessons} lessons</span>
                     </div>
 
                     {/* Instructor Info */}
                     {course.instructor && (
-                      <div className="text-sm text-gray-500 mb-2">
+                      <div className="text-xs sm:text-sm text-gray-500 mb-2">
                         👨‍🏫 {course.instructor.name}
                       </div>
                     )}
@@ -152,7 +153,7 @@ const AllCourses = () => {
                     {/* Details Button */}
                     <Link
                       to={`/courseDetails/${course._id}`}
-                      className="block w-full bg-blue-600 text-white text-base sm:text-lg rounded-lg px-4 py-2 hover:bg-blue-700 transition text-center"
+                      className="block w-full bg-blue-600 text-white text-xs sm:text-sm font-medium rounded-md px-3 py-1.5 hover:bg-blue-700 transition text-center"
                     >
                       Details
                     </Link>
@@ -162,8 +163,8 @@ const AllCourses = () => {
             </div>
           ) : (
             <div className="text-center mt-8 text-gray-600">
-              <p className="text-lg font-semibold">🚫 No courses found</p>
-              <p className="text-sm text-gray-400 mt-2">
+              <p className="text-sm font-medium">🚫 No courses found</p>
+              <p className="text-xs text-gray-400 mt-1">
                 Try adjusting your search criteria or clear the filters.
               </p>
             </div>

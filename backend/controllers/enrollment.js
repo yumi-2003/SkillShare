@@ -99,7 +99,7 @@ exports.getEnrollmentStatus = async (req, res) => {
 // GET /course/courseId/enrollees
 // For instructors: list students enrolled in a course they own
 exports.getCourseEnrollees = async (req, res) => {
-  const { userId } = req.body;
+  const { userId } = req.query;
   try {
     const { courseId } = req.params;
 
@@ -110,7 +110,7 @@ exports.getCourseEnrollees = async (req, res) => {
         .json({ isSuccess: false, message: "Course not found." });
     }
 
-    console.log(userId, courseDoc.instructor?._id?.toString());
+    // console.log(userId, courseDoc.instructor?._id?.toString());
 
     if (userId !== courseDoc.instructor?._id?.toString()) {
       return res

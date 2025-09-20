@@ -26,9 +26,11 @@ const DashboardStudent = () => {
   // console.log(myEnrollments.course.image);
 
   return (
-    <div className="h-screen p-6 mt-24 sm:mt-10 overflow-auto">
-      <h2 className="text-2xl font-bold">My Dashboard</h2>
-      <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-500 mb-6 break-words">
+    <div className="h-screen p-6 mt-24 sm:mt-10 overflow-hidden">
+      <h2 className="text-xl sm:text-2xl font-semibold text-gray-800">
+        My Dashboard
+      </h2>
+      <p className="text-sm text-gray-500 mb-4 italic">
         Track your learning progress and enrolled courses
       </p>
 
@@ -73,7 +75,7 @@ const DashboardStudent = () => {
                       {enrollment.course.title}
                     </h4>
                     <p className="text-gray-600 text-sm mb-4">
-                      {enrollment.course.description.length > 40
+                      {enrollment.course.description?.length > 40
                         ? enrollment.course.description.substring(0, 35) + "..."
                         : enrollment.course.description}
                     </p>

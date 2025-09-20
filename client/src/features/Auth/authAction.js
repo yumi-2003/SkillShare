@@ -19,6 +19,6 @@ export const loginUser = (payload, mode) => async (dispatch) => {
     return response; // success response
   } catch (error) {
     dispatch(loginFail(error.message || "Something went wrong"));
-    throw error; // <-- important so component can catch it
+    throw error;
   }
 };

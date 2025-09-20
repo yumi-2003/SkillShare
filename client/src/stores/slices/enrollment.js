@@ -56,6 +56,7 @@ export const getCourseEnrollees = createAsyncThunk(
         `/auth/courses/${courseId}/enrollees`,
         {
           data: { userId },
+          // params: { userId },
         }
       );
       return res.data;

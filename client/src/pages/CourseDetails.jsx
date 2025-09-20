@@ -16,7 +16,7 @@ const CourseDetails = () => {
   const { list: coursesList } = useSelector((state) => state.course);
   const user = useSelector((state) => state.user.user);
 
-  const [preview, setPreview] = useState("");
+  // const [preview, setPreview] = useState("");
   const [courseData, setCourseData] = useState({
     title: "",
     description: "",
@@ -47,9 +47,9 @@ const CourseDetails = () => {
             duration: courseDoc.duration || "",
             category: courseDoc.category?._id || "",
             instructor: courseDoc.instructor || null,
-            image: null,
+            image: courseDoc.image,
           });
-          setPreview(courseDoc.image || "/placeholder.png");
+          // setPreview(courseDoc.image || "/placeholder.png");
         }
       } catch (err) {
         console.error("Failed to fetch course", err.message);
@@ -90,7 +90,9 @@ const CourseDetails = () => {
         .then((res) => {
           if (res.payload?.isSuccess) {
             toast.success("Enrolled successfully!");
-            navigate("/student-dashboard");
+            setTimeout(() => {
+              navigate("/student-dashboard");
+            }, 1500);
           } else {
             toast.error(res.payload?.message || "You are already enrolled.");
           }
@@ -108,7 +110,7 @@ const CourseDetails = () => {
         {/* Left: Course Image */}
         <div className="relative md:w-1/2">
           <img
-            src={preview}
+            src={courseData.image}
             alt={courseData.title}
             className="w-full h-80 md:h-full object-cover"
           />
