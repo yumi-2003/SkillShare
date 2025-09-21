@@ -3,7 +3,7 @@ import Card from "./Card";
 import { Users, BookOpen, Layers, UserStar } from "lucide-react";
 import axiosInstance from "../../apiCalls/axiosInstance";
 import EnrolledStudents from "../../pages/admin/EnrolledStudents";
-// import { useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 // import { getCourseEnrollees } from "../../stores/slices/enrollment";
 
 const Overview = () => {
@@ -11,7 +11,7 @@ const Overview = () => {
   const [courseList, setCourseList] = useState([]);
   // const [enrollmentList, setEnrollmentList] = useState([]);
   // const user = useSelector((state) => state.auth.user); // Get user from Redux
-  // const { myEnrollments } = useSelector((state) => state.enrollment);
+  const { courseEnrollees } = useSelector((state) => state.enrollment);
 
   // get users api
   const getUsers = async () => {
@@ -70,7 +70,40 @@ const Overview = () => {
         />
       </div>
 
-      <EnrolledStudents />
+      {/* <EnrolledStudents /> */}
+
+      {/* get enrolles students */}
+      <div className="bg-gray-50 p-4 mt-2">
+        {courseEnrollees?.length > 0 ? (
+          courseEnrollees.map((enrollee) => (
+            <div
+              key={enrollee._id}
+              className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 border p-2 rounded mb-2"
+            >
+              <div>
+                <p className="font-medium">{enrollee.student.name}</p>
+                <p className="text-sm text-gray-500">
+                  {enrollee.student.email}
+                </p>
+              </div>
+              <div>
+                <p className="text-sm text-gray-500">
+                  Enrolled At:{" "}
+                  {new Date(enrollee.enrolledAt).toLocaleDateString()}
+                </p>
+                <p className="text-sm text-gray-500">
+                  Enrolled On:{" "}
+                  <span className="font-bold">{enrollee.course.title}</span>
+                </p>
+              </div>
+            </div>
+          ))
+        ) : (
+          <p className="text-gray-500">
+            No students enrolled in this course yet.
+          </p>
+        )}
+      </div>
     </>
   );
 };

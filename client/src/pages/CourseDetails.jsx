@@ -15,6 +15,7 @@ const CourseDetails = () => {
   const { categories } = useSelector((state) => state.category);
   const { list: coursesList } = useSelector((state) => state.course);
   const user = useSelector((state) => state.user.user);
+  const [isEnrolled, setIsEnrolled] = useState(false);
 
   // const [preview, setPreview] = useState("");
   const [courseData, setCourseData] = useState({
@@ -66,7 +67,10 @@ const CourseDetails = () => {
     if (user?._id) {
       dispatch(deleteCourse({ id, userId: user._id }));
       toast.success("Course deleted successfully");
-      navigate("/allcourses");
+
+      setTimeout(() => {
+        navigate("/student-dashboard");
+      });
     }
   };
 
@@ -90,9 +94,7 @@ const CourseDetails = () => {
         .then((res) => {
           if (res.payload?.isSuccess) {
             toast.success("Enrolled successfully!");
-            setTimeout(() => {
-              navigate("/student-dashboard");
-            }, 1500);
+            setIsEnrolled(true);
           } else {
             toast.error(res.payload?.message || "You are already enrolled.");
           }
@@ -100,6 +102,7 @@ const CourseDetails = () => {
         .catch((err) => {
           toast.error(err.message || "Enrollment failed.");
         });
+      // setIsEnrolled(true);
     }
   };
   return (
@@ -162,10 +165,15 @@ const CourseDetails = () => {
             </div>
           ) : (
             <button
-              className="px-6 py-3 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition"
-              onClick={handleEnroll}
+              className={`px-6 py-3 rounded-lg shadow text-white transition ${
+                isEnrolled
+                  ? "bg-orange-500 cursor-not-allowed"
+                  : "bg-blue-600 hover:bg-blue-700"
+              }`}
+              onClick={() => handleEnroll()}
+              disabled={isEnrolled}
             >
-              Enroll Now
+              {isEnrolled ? "Enrolled" : "Enroll Now"}
             </button>
           )}
         </div>

@@ -110,9 +110,7 @@ exports.getCourseEnrollees = async (req, res) => {
         .json({ isSuccess: false, message: "Course not found." });
     }
 
-    // console.log(userId, courseDoc.instructor?._id?.toString());
-
-    if (userId !== courseDoc.instructor?._id?.toString()) {
+    if (userId !== courseDoc.instructor.toString()) {
       return res
         .status(403)
         .json({ isSuccess: false, message: "Authorization Failed." });

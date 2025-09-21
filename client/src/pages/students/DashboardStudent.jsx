@@ -55,15 +55,15 @@ const DashboardStudent = () => {
         />
       </div>
 
-      <div>
+      <div className="">
         <h3 className="text-xl font-semibold mb-4">My Courses</h3>
-        <div className="bg-white rounded-lg shadow p-6 text-center">
+        <div className="bg-white h-100 overflow-auto rounded-lg shadow p-6 text-center scroll-auto">
           {myEnrollments && myEnrollments.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
               {myEnrollments.map((enrollment) => (
                 <div
                   key={enrollment._id}
-                  className="border rounded-lg overflow-hidden shadow hover:shadow-lg transition-shadow"
+                  className="border rounded-lg  shadow hover:shadow-lg transition-shadow"
                 >
                   <img
                     src={enrollment.course.image || "/placeholder.png"}

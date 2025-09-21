@@ -55,8 +55,8 @@ export const getCourseEnrollees = createAsyncThunk(
       const res = await axiosInstance.get(
         `/auth/courses/${courseId}/enrollees`,
         {
-          data: { userId },
-          // params: { userId },
+          // data: { userId },
+          params: { userId },
         }
       );
       return res.data;
@@ -122,8 +122,8 @@ const enrollmentSlice = createSlice({
       })
       .addCase(getCourseEnrollees.fulfilled, (state, action) => {
         state.status = "succeeded";
-        state.courseEnrollees = Array.isArray(action.payload.enrollments)
-          ? action.payload.enrollments
+        state.courseEnrollees = Array.isArray(action.payload.enrollees)
+          ? action.payload.enrollees
           : [];
       })
       .addCase(getCourseEnrollees.rejected, (state, action) => {

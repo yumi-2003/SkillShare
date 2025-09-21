@@ -176,7 +176,7 @@ const CreateCoursePage = () => {
                 name="duration"
                 value={formData.duration}
                 onChange={handleChange}
-                placeholder="e.g. 8 weeks"
+                placeholder="e.g. 8 hours"
                 className="w-full border rounded-lg px-4 py-2"
               />
             </div>

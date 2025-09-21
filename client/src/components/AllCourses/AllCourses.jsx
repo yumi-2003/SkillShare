@@ -139,7 +139,7 @@ const AllCourses = () => {
                     </p>
 
                     <div className="flex justify-between mb-3 text-[11px] sm:text-xs text-gray-500 font-medium">
-                      <span>⏱ {course.duration} weeks</span>
+                      <span>⏱ {course.duration} hours</span>
                       <span>📚 {course.totalLessons} lessons</span>
                     </div>
 
@@ -162,7 +162,7 @@ const AllCourses = () => {
               ))}
             </div>
           ) : (
-            <div className="text-center mt-8 text-gray-600">
+            <div className="text-center mt-8 text-gray-600 h-[80vh]">
               <p className="text-sm font-medium">🚫 No courses found</p>
               <p className="text-xs text-gray-400 mt-1">
                 Try adjusting your search criteria or clear the filters.

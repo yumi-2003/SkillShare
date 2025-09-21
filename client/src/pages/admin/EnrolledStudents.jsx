@@ -9,7 +9,6 @@ const EnrolledStudents = () => {
   const user = useSelector((state) => state.auth.user);
   const { list: coursesData } = useSelector((state) => state.course);
   const courses = coursesData || [];
-  const { courseEnrollees } = useSelector((state) => state.enrollment);
 
   // Filter courses created by this instructor
   const instructorCourses = courses.filter(
@@ -30,7 +29,7 @@ const EnrolledStudents = () => {
         );
       });
     }
-  }, [dispatch, instructorCourses, user?._id]);
+  }, [dispatch]);
 
   return (
     <div>
@@ -44,7 +43,7 @@ const EnrolledStudents = () => {
         <CourseAccordion
           key={course._id}
           course={course}
-          enrollees={courseEnrollees[course._id]}
+          // enrollees={courseEnrollees[course._id]}
         />
       ))}
     </div>

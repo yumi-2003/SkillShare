@@ -33,8 +33,14 @@ const ProfileSideBar = () => {
 
   // Navigate to dashboard
   const navigateDashboard = () => {
-    if (user?.userType === "student") navigate("/student-dashboard");
-    if (user?.userType === "instructor") navigate("/instructor-dashboard");
+    if (user?.userType === "student") {
+      navigate("/student-dashboard");
+      setOpenProfile(false);
+    }
+    if (user?.userType === "instructor") {
+      navigate("/instructor-dashboard");
+      setOpenProfile(false);
+    }
   };
 
   // Close sidebar when clicking outside
