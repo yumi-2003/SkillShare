@@ -96,9 +96,11 @@ const enrollmentSlice = createSlice({
       })
       .addCase(getMyEnrollments.fulfilled, (state, action) => {
         state.status = "succeeded";
-        state.myEnrollments = Array.isArray(action.payload.enrollments)
-          ? action.payload.enrollments
-          : [];
+        state.myEnrollments = (
+          Array.isArray(action.payload.enrollments)
+            ? action.payload.enrollments
+            : []
+        ).filter((en) => en.course);
       })
       .addCase(getMyEnrollments.rejected, (state, action) => {
         state.status = "failed";

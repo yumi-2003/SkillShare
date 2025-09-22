@@ -120,9 +120,12 @@ const ProfileSideBar = () => {
               >
                 Go to Dashboard
               </button>
-              <button className="w-full bg-gradient-to-r from-blue-500 to-purple-500 text-white py-2 rounded-lg hover:opacity-90 transition">
+              <Link
+                to={"/editProfile"}
+                className="w-full block bg-gradient-to-r from-blue-500 to-purple-500 text-white text-center px-1 py-2 rounded-lg hover:opacity-90 transition"
+              >
                 Edit Profile
-              </button>
+              </Link>
             </div>
 
             {/* Close button */}

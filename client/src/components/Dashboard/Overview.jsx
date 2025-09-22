@@ -24,7 +24,7 @@ const Overview = () => {
   };
 
   // useEffect(() => {
-  //   getUsers();
+  //   get;
   // }, []);
 
   //get courses api

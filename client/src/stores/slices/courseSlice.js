@@ -49,7 +49,7 @@ export const updateCourse = createAsyncThunk(
   async ({ id, data }) => {
     const res = await axiosInstance.put(`/auth/update-course/${id}`, data, {
       headers: {
-        "Content-Type": "multipart/form-data", // ensure file + text fields are sent
+        "Content-Type": "multipart/form-data",
       },
     });
     return res.data;

@@ -14,11 +14,11 @@ const EnrolledStudents = () => {
   const instructorCourses = courses.filter(
     (course) => course.instructor === user?._id
   );
-
   // Get all courses
   useEffect(() => {
     dispatch(getAllCourses());
   }, [dispatch]);
+  console.log("Created by this Instructor", instructorCourses);
 
   // Fetch enrolled students for each course
   useEffect(() => {

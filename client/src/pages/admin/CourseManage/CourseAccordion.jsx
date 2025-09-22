@@ -6,7 +6,8 @@ const CourseAccordion = ({ course }) => {
 
   const [isOpen, setIsOpen] = useState(false);
 
-  console.log(courseEnrollees);
+  console.log("Enrollees", courseEnrollees);
+  console.log("course", course);
 
   const toggleAccordion = () => {
     setIsOpen(!isOpen);

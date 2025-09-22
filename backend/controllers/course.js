@@ -109,9 +109,18 @@ exports.getCourseById = async (req, res) => {
       });
     }
 
+    // Get reviews for this course
+    const Review = require("../models/review");
+    const reviews = await Review.find({ course: req.params.id })
+      .populate("student", "name email")
+      .sort({ createdAt: -1 });
+
     return res.status(200).json({
       isSuccess: true,
-      courseDoc,
+      courseDoc: {
+        ...courseDoc.toObject(),
+        reviews,
+      },
     });
   } catch (err) {
     return res.status(422).json({
@@ -379,5 +388,31 @@ exports.deleteCourseImage = async (req, res) => {
       isSuccess: false,
       message: err.message,
     });
+  }
+};
+
+// Update course rating ( it will be called when reviews are added, updated or deleted)
+exports.updateCourseRating = async (courseId) => {
+  try {
+    const Review = require("../models/review");
+    const reviews = await Review.find({ course: courseId });
+
+    if (reviews.length === 0) {
+      await Course.findByIdAndUpdate(courseId, {
+        averageRating: 0,
+        totalReviews: 0,
+      });
+      return;
+    }
+
+    const totalRating = reviews.reduce((sum, review) => sum + review.rating, 0);
+    const averageRating = totalRating / reviews.length;
+
+    await Course.findByIdAndUpdate(courseId, {
+      averageRating: Math.round(averageRating * 10) / 10,
+      totalReviews: reviews.length,
+    });
+  } catch (err) {
+    console.error("Error updating course rating:", err.message);
   }
 };

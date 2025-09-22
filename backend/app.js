@@ -10,6 +10,8 @@ const authRoutes = require("./routes/auth");
 const courseRoutes = require("./routes/course");
 const adminRoutes = require("./routes/admin");
 const publicRoutes = require("./routes/public");
+const profileRoutes = require("./routes/profile");
+const reviewRoutes = require("./routes/review");
 
 const app = express();
 
@@ -45,8 +47,11 @@ app.use(
 //routes
 app.use(authRoutes);
 app.use(courseRoutes);
+
 app.use("/admin", adminRoutes);
 app.use("/api", publicRoutes);
+app.use("/api", profileRoutes);
+app.use("/api", reviewRoutes);
 
 mongoose.connect(process.env["MONGODB_URL"]).then((_) => {
   app.listen(4000);

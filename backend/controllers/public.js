@@ -17,24 +17,12 @@ exports.getUsers = async (req, res) => {
 };
 
 exports.getCourses = async (req, res) => {
-  const page = parseInt(req.query.page, 10) || 1;
-  const perPage = 6;
-
   try {
-    const courses = await Course.find({})
-      .sort({ createdAt: -1 })
-      .skip((page - 1) * perPage)
-      .limit(perPage);
-
-    // Count total courses
-    const totalCourses = await Course.countDocuments({});
+    const courses = await Course.find({}).sort({ createdAt: -1 });
 
     return res.status(200).json({
       isSuccess: true,
       courses,
-      totalCourses,
-      totalPages: Math.ceil(totalCourses / perPage),
-      currentPage: page,
     });
   } catch (err) {
     return res.status(500).json({

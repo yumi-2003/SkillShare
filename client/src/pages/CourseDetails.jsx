@@ -6,7 +6,7 @@ import { deleteCourse, getAllCourses } from "../stores/slices/courseSlice";
 import { getAllCategories } from "../stores/slices/categorySlice";
 import axiosInstance from "../apiCalls/axiosInstance";
 import { toast, ToastContainer } from "react-toastify";
-import { enrollInCourse } from "../stores/slices/enrollment";
+import { enrollInCourse, getMyEnrollments } from "../stores/slices/enrollment";
 
 const CourseDetails = () => {
   const { id } = useParams();
@@ -15,7 +15,7 @@ const CourseDetails = () => {
   const { categories } = useSelector((state) => state.category);
   const { list: coursesList } = useSelector((state) => state.course);
   const user = useSelector((state) => state.user.user);
-  const [isEnrolled, setIsEnrolled] = useState(false);
+  const { myEnrollments } = useSelector((state) => state.enrollment);
 
   // const [preview, setPreview] = useState("");
   const [courseData, setCourseData] = useState({
@@ -67,12 +67,23 @@ const CourseDetails = () => {
     if (user?._id) {
       dispatch(deleteCourse({ id, userId: user._id }));
       toast.success("Course deleted successfully");
-
       setTimeout(() => {
-        navigate("/student-dashboard");
+        navigate("/allcourses");
       });
     }
   };
+
+  //fetch all my enrollments to check it have been already enrolled or not
+  useEffect(() => {
+    if (user?._id) {
+      dispatch(getMyEnrollments({ userId: user._id }));
+    }
+  }, [dispatch, user?._id]);
+
+  //checked enrolled or not
+  const isEnrolled = myEnrollments.some(
+    (enrollment) => enrollment.course._id === courseData._id
+  );
 
   const relatedCourses = coursesList.filter((c) => c._id !== courseData._id);
   const getCategoryName = (categoryId) => {
@@ -94,7 +105,9 @@ const CourseDetails = () => {
         .then((res) => {
           if (res.payload?.isSuccess) {
             toast.success("Enrolled successfully!");
-            setIsEnrolled(true);
+            setTimeout(() => {
+              navigate("/student-dashboard");
+            }, 5000);
           } else {
             toast.error(res.payload?.message || "You are already enrolled.");
           }
@@ -105,6 +118,8 @@ const CourseDetails = () => {
       // setIsEnrolled(true);
     }
   };
+  //check enrolled state
+
   return (
     <div className="max-w-6xl mx-auto p-6 mt-24">
       <ToastContainer />
@@ -164,17 +179,20 @@ const CourseDetails = () => {
               </button>
             </div>
           ) : (
-            <button
-              className={`px-6 py-3 rounded-lg shadow text-white transition ${
-                isEnrolled
-                  ? "bg-orange-500 cursor-not-allowed"
-                  : "bg-blue-600 hover:bg-blue-700"
-              }`}
-              onClick={() => handleEnroll()}
-              disabled={isEnrolled}
-            >
-              {isEnrolled ? "Enrolled" : "Enroll Now"}
-            </button>
+            <div>
+              {isEnrolled ? (
+                <button disabled className="bg-gray-400 px-4 py-2 rounded">
+                  Already Enrolled
+                </button>
+              ) : (
+                <button
+                  onClick={handleEnroll}
+                  className="bg-blue-600 text-white px-4 py-2 rounded"
+                >
+                  Enroll Now
+                </button>
+              )}
+            </div>
           )}
         </div>
       </div>

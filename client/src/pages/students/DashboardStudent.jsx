@@ -22,8 +22,14 @@ const DashboardStudent = () => {
       dispatch(getMyEnrollments({ userId: user?._id }));
     }
   }, [dispatch, user?._id]);
-  // console.log("My Enrollments:", myEnrollments);
-  // console.log(myEnrollments.course.image);
+  console.log("My Enrollments:", myEnrollments);
+
+  const image =
+    myEnrollments && myEnrollments.length > 0
+      ? myEnrollments.map((enrollment) => enrollment.course.image)
+      : null;
+
+  console.log(image);
 
   return (
     <div className="h-screen p-6 mt-24 sm:mt-10 overflow-hidden">
@@ -57,7 +63,7 @@ const DashboardStudent = () => {
 
       <div className="">
         <h3 className="text-xl font-semibold mb-4">My Courses</h3>
-        <div className="bg-white h-100 overflow-auto rounded-lg shadow p-6 text-center scroll-auto">
+        <div className="bg-white h-100 overflow-auto rounded-lg shadow p-6 text-center">
           {myEnrollments && myEnrollments.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
               {myEnrollments.map((enrollment) => (
@@ -66,8 +72,8 @@ const DashboardStudent = () => {
                   className="border rounded-lg  shadow hover:shadow-lg transition-shadow"
                 >
                   <img
-                    src={enrollment.course.image || "/placeholder.png"}
-                    alt={enrollment.course.title}
+                    src={enrollment.course?.image || "/placeholder.png"}
+                    alt={enrollment.course?.title}
                     className="w-full h-40 object-cover"
                   />
                   <div className="p-4">

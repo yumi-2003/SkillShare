@@ -1,7 +1,6 @@
 import React from "react";
 
 const Card = ({ title, value, subtitle, icon, color = "blue" }) => {
-  // Tailwind colors for accent (icon or border)
   const colorClasses = {
     blue: "text-blue-600 border-blue-200",
     green: "text-green-600 border-green-200",

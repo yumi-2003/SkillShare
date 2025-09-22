@@ -5,6 +5,7 @@ import themeReducer from "./slices/themeSlice";
 import categoryReducer from "./slices/categorySlice";
 import courseReducer from "./slices/courseSlice";
 import enrollmentReducer from "./slices/enrollment";
+import profileReducer from "./slices/profileSlice";
 
 export default configureStore({
   reducer: {
@@ -15,5 +16,6 @@ export default configureStore({
     course: courseReducer,
     // Add enrollment slice reducer
     enrollment: enrollmentReducer,
+    profile: profileReducer,
   },
 });
