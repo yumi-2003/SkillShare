@@ -4,20 +4,21 @@ import { Link, useParams, useNavigate } from "react-router-dom";
 import { Edit, Trash } from "lucide-react";
 import { deleteCourse, getAllCourses } from "../stores/slices/courseSlice";
 import { getAllCategories } from "../stores/slices/categorySlice";
+import { enrollInCourse, getMyEnrollments } from "../stores/slices/enrollment";
 import axiosInstance from "../apiCalls/axiosInstance";
 import { toast, ToastContainer } from "react-toastify";
-import { enrollInCourse, getMyEnrollments } from "../stores/slices/enrollment";
+import ReviewCourse from "../pages/coursesPage/ReviewCourse";
 
 const CourseDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
   const { categories } = useSelector((state) => state.category);
   const { list: coursesList } = useSelector((state) => state.course);
   const user = useSelector((state) => state.user.user);
   const { myEnrollments } = useSelector((state) => state.enrollment);
 
-  // const [preview, setPreview] = useState("");
   const [courseData, setCourseData] = useState({
     title: "",
     description: "",
@@ -27,13 +28,13 @@ const CourseDetails = () => {
     image: null,
   });
 
-  // Fetch categories
+  // Fetch categories and courses
   useEffect(() => {
     dispatch(getAllCategories());
     dispatch(getAllCourses());
   }, [dispatch]);
 
-  // Fetch course data
+  // Fetch course details
   useEffect(() => {
     const fetchCourseById = async () => {
       try {
@@ -50,7 +51,6 @@ const CourseDetails = () => {
             instructor: courseDoc.instructor || null,
             image: courseDoc.image,
           });
-          // setPreview(courseDoc.image || "/placeholder.png");
         }
       } catch (err) {
         console.error("Failed to fetch course", err.message);
@@ -60,38 +60,28 @@ const CourseDetails = () => {
     fetchCourseById();
   }, [id]);
 
-  const category = categories.find((c) => c._id === courseData.category);
-
-  // Delete course
-  const handleDelete = (id) => {
-    if (user?._id) {
-      dispatch(deleteCourse({ id, userId: user._id }));
-      toast.success("Course deleted successfully");
-      setTimeout(() => {
-        navigate("/allcourses");
-      });
-    }
-  };
-
-  //fetch all my enrollments to check it have been already enrolled or not
+  // Fetch user enrollments
   useEffect(() => {
     if (user?._id) {
       dispatch(getMyEnrollments({ userId: user._id }));
     }
   }, [dispatch, user?._id]);
 
-  //checked enrolled or not
+  const category = categories.find((c) => c._id === courseData.category);
+
+  // Check enrollment
   const isEnrolled = myEnrollments.some(
     (enrollment) => enrollment.course._id === courseData._id
   );
 
   const relatedCourses = coursesList.filter((c) => c._id !== courseData._id);
+
   const getCategoryName = (categoryId) => {
     const cat = categories.find((cat) => cat._id === categoryId);
     return cat ? cat.name : "Unknown";
   };
 
-  // Enrollment handler (for students)
+  // Enrollment handler
   const handleEnroll = () => {
     if (
       user?.userType === "instructor" &&
@@ -105,9 +95,7 @@ const CourseDetails = () => {
         .then((res) => {
           if (res.payload?.isSuccess) {
             toast.success("Enrolled successfully!");
-            setTimeout(() => {
-              navigate("/student-dashboard");
-            }, 5000);
+            setTimeout(() => navigate("/student-dashboard"), 5000);
           } else {
             toast.error(res.payload?.message || "You are already enrolled.");
           }
@@ -115,15 +103,23 @@ const CourseDetails = () => {
         .catch((err) => {
           toast.error(err.message || "Enrollment failed.");
         });
-      // setIsEnrolled(true);
     }
   };
-  //check enrolled state
+
+  // Delete course
+  const handleDelete = (id) => {
+    if (user?._id) {
+      dispatch(deleteCourse({ id, userId: user._id }));
+      toast.success("Course deleted successfully");
+      setTimeout(() => navigate("/allcourses"), 500);
+    }
+  };
 
   return (
     <div className="max-w-6xl mx-auto p-6 mt-24">
       <ToastContainer />
-      {/* Card Wrapper */}
+
+      {/* Course Card */}
       <div className="bg-white shadow-xl rounded-2xl overflow-hidden flex flex-col md:flex-row gap-8">
         {/* Left: Course Image */}
         <div className="relative md:w-1/2">
@@ -153,7 +149,7 @@ const CourseDetails = () => {
               Duration: {courseData.duration || "0"} hours
             </span>
             <span className="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-semibold">
-              Instructor {courseData.instructor?.name || "unknown"}
+              Instructor: {courseData.instructor?.name || "unknown"}
             </span>
           </div>
           <p className="text-gray-700 leading-relaxed mb-6">
@@ -161,7 +157,6 @@ const CourseDetails = () => {
           </p>
 
           {/* Action Buttons */}
-
           {user?.userType === "instructor" &&
           user?._id === courseData.instructor?._id ? (
             <div className="flex gap-2 mt-2">
@@ -179,9 +174,9 @@ const CourseDetails = () => {
               </button>
             </div>
           ) : (
-            <div>
+            <div className="mt-2">
               {isEnrolled ? (
-                <button disabled className="bg-gray-400 px-4 py-2 rounded">
+                <button className="bg-orange-300 px-4 py-2 rounded">
                   Already Enrolled
                 </button>
               ) : (
@@ -197,38 +192,45 @@ const CourseDetails = () => {
         </div>
       </div>
 
-      {/* Related Courses Section (Optional) */}
+      {/* Reviews Section */}
+      <div className="mt-12">
+        {courseData._id && (
+          <ReviewCourse
+            courseId={courseData._id}
+            enrolled={isEnrolled}
+            currentUser={user}
+          />
+        )}
+      </div>
+
+      {/* Related Courses */}
       <div className="mt-12">
         <h2 className="text-2xl font-bold mb-6">Related Courses</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {relatedCourses
-            .filter((course) => course._id !== courseData._id) // exclude current course
-            .map((course) => (
-              <div
-                key={course._id}
-                className="bg-white shadow-lg rounded-xl overflow-hidden hover:shadow-2xl transition duration-300"
-              >
-                <div className="overflow-hidden">
-                  <img
-                    src={course.image || "/placeholder.png"}
-                    alt={course.title}
-                    className="w-full h-40 object-cover transform hover:scale-105 transition duration-300"
-                  />
-                </div>
-                <div className="p-4">
-                  <h3 className="text-lg font-semibold mb-2">{course.title}</h3>
-                  <p className="text-gray-500 text-sm mb-3">
-                    {getCategoryName(course.category)}
-                  </p>
-                  <Link
-                    to={`/courseDetails/${course._id}`}
-                    className="inline-block px-4 py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 transition"
-                  >
-                    View Details
-                  </Link>
-                </div>
+          {relatedCourses.map((course) => (
+            <div
+              key={course._id}
+              className="bg-white shadow-lg rounded-xl overflow-hidden hover:shadow-2xl transition duration-300"
+            >
+              <img
+                src={course.image || "/placeholder.png"}
+                alt={course.title}
+                className="w-full h-40 object-cover"
+              />
+              <div className="p-4">
+                <h3 className="text-lg font-semibold mb-2">{course.title}</h3>
+                <p className="text-gray-500 text-sm mb-3">
+                  {getCategoryName(course.category)}
+                </p>
+                <Link
+                  to={`/courseDetails/${course._id}`}
+                  className="inline-block px-4 py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 transition"
+                >
+                  View Details
+                </Link>
               </div>
-            ))}
+            </div>
+          ))}
         </div>
       </div>
     </div>
