@@ -43,8 +43,8 @@ const Navbar = () => {
               end
               className={({ isActive }) =>
                 isActive
-                  ? "text-[#10b981] border-b-2 border-[#10b981] pb-1"
-                  : "text-[#064e3b] hover:text-[#10b981]"
+                  ? "text-white border-b-2 border-[#10b981]"
+                  : "text-white hover:text-[#10b981]"
               }
             >
               Home
@@ -53,8 +53,8 @@ const Navbar = () => {
               to="/allcourses"
               className={({ isActive }) =>
                 isActive
-                  ? "text-[#10b981] border-b-2 border-[#10b981] pb-1"
-                  : "text-[#064e3b] hover:text-[#10b981]"
+                  ? "text-white border-b-2 border-[#10b981]"
+                  : "text-white hover:text-[#10b981]"
               }
             >
               Courses
@@ -79,8 +79,8 @@ const Navbar = () => {
                   to="/login"
                   className={({ isActive }) =>
                     isActive
-                      ? "text-[#10b981] font-semibold border-b-2 border-[#10b981] pb-1"
-                      : "text-[#064e3b] hover:text-[#10b981]"
+                      ? "text-white font-semibold border-none border-[#10b981]"
+                      : "text-white hover:text-[#10b981]"
                   }
                 >
                   Login
@@ -89,8 +89,8 @@ const Navbar = () => {
                   to="/signup"
                   className={({ isActive }) =>
                     isActive
-                      ? "bg-[#065f46] text-white px-4 py-2 rounded font-medium border-b-2 border-[#10b981] pb-1"
-                      : "bg-[#059669] text-white px-4 py-2 rounded hover:bg-[#065f46] font-medium transition"
+                      ? "bg-[#065f46] nav-link-white px-4 py-2 rounded font-medium border border-[#10b981]"
+                      : "bg-[#059669] nav-link-white px-4 py-2 rounded hover:bg-[#065f46] font-medium transition"
                   }
                 >
                   Sign Up
@@ -121,7 +121,7 @@ const Navbar = () => {
               onClick={() => setMenuOpen(false)}
               className={({ isActive }) =>
                 isActive
-                  ? "text-[#10b981] font-semibold border-b-2 border-[#10b981] pb-1"
+                  ? "text-[#10b981] font-semibold border border-[#10b981] pb-1"
                   : "text-[#064e3b] hover:text-[#10b981]"
               }
             >
@@ -132,7 +132,7 @@ const Navbar = () => {
               onClick={() => setMenuOpen(false)}
               className={({ isActive }) =>
                 isActive
-                  ? "text-[#10b981] font-semibold border-b-2 border-[#10b981] pb-1"
+                  ? "text-[#10b981] font-semibold border border-[#10b981] pb-1"
                   : "text-[#064e3b] hover:text-[#10b981]"
               }
             >
@@ -156,8 +156,8 @@ const Navbar = () => {
                   onClick={() => setMenuOpen(false)}
                   className={({ isActive }) =>
                     isActive
-                      ? "text-[#10b981] font-semibold border-b-2 border-[#10b981] pb-1"
-                      : "text-[#064e3b] hover:text-[#10b981]"
+                      ? "text-white font-semibold border border-[#10b981] pb-1"
+                      : "text-white hover:text-[#10b981]"
                   }
                 >
                   Login
@@ -167,8 +167,8 @@ const Navbar = () => {
                   onClick={() => setMenuOpen(false)}
                   className={({ isActive }) =>
                     isActive
-                      ? "bg-[#065f46] text-white px-4 py-2 rounded font-medium border-b-2 border-[#10b981] pb-1"
-                      : "bg-[#059669] text-white px-4 py-2 rounded hover:bg-[#065f46] font-medium transition"
+                      ? "bg-[#065f46] nav-link-white px-4 py-2 rounded font-medium border-b-2 border-[#10b981]"
+                      : "bg-[#059669] nav-link-white px-4 py-2 rounded hover:bg-[#065f46] font-medium transition"
                   }
                 >
                   Sign Up

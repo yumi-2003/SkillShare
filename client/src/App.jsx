@@ -14,6 +14,7 @@ import EditCourse from "./pages/admin/CourseManage/EditCourse";
 import CourseDetails from "./pages/CourseDetails";
 import EditProfile from "./components/Profile/EditProfile";
 import AboutUs from "./pages/homePage/AboutUs";
+import ContactUs from "./pages/homePage/ContactUs";
 // import { checkCurrentUser } from "./apiCalls/auth";
 
 function App() {
@@ -41,6 +42,7 @@ function App() {
           <Route path="/courseDetails/:id" element={<CourseDetails />} />
           <Route path="/editProfile" element={<EditProfile />} />
           <Route path="/aboutUs" element={<AboutUs />} />
+          <Route path="/contactUs" element={<ContactUs />} />
         </Routes>
 
         <Footer />

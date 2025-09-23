@@ -19,7 +19,7 @@ const Hero = () => {
           <div className="flex justify-center lg:justify-start gap-4">
             <Link
               to={"/signup"}
-              className="bg-[#10b981] text-white px-6 py-3 rounded-lg font-semibold shadow-lg"
+              className="bg-[#10b981] nav-link-white px-6 py-3 rounded-lg font-semibold shadow-lg"
             >
               Get Started
             </Link>

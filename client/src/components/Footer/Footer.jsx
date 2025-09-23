@@ -22,8 +22,7 @@ const Footer = () => {
           <a href="/aboutUs" className="hover:text-[#10b981] transition">
             About
           </a>
-          <a href="/contact" className="hover:text-[#10b981] transition">
-            {" "}
+          <a href="/contactUs" className="hover:text-[#10b981] transition">
             Contact
           </a>
         </div>
@@ -33,7 +32,6 @@ const Footer = () => {
             <Facebook size={20} />
           </a>
           <a href="#" className="hover:text-[#10b981] transition">
-            {" "}
             <Twitter size={20} />
           </a>
           <a href="#" className="hover:text-[#10b981] transition">

@@ -181,14 +181,14 @@ const AuthForm = () => {
         <form onSubmit={handleSubmit} className="space-y-4">
           {!isLoginPage && (
             <>
-              <div className="flex items-center gap-2 border rounded-lg px-3 py-2 w-full max-w-md sm:max-w-lg">
+              <div className="flex items-center gap-2 rounded-lg px-3 py-2 w-full max-w-md sm:max-w-lg">
                 <input
                   type="text"
                   name="name"
                   value={formData.name}
                   onChange={handleInputChange}
                   placeholder="Full Name"
-                  className="flex-1 bg-transparent outline-none text-sm sm:text-base"
+                  className="flex-1 bg-transparent border-none outline-none text-sm sm:text-base"
                 />
                 <User size={20} className="text-gray-500" />
               </div>
@@ -198,7 +198,7 @@ const AuthForm = () => {
             </>
           )}
           <>
-            <div className="flex items-center gap-2 border rounded-lg px-3 py-2 w-full max-w-md sm:max-w-lg focus-within:ring-2 focus-within:ring-blue-500">
+            <div className="flex items-center gap-2 rounded-lg px-3 py-2 w-full max-w-md sm:max-w-lg">
               <input
                 type="email"
                 name="email"
@@ -220,7 +220,7 @@ const AuthForm = () => {
                 I want to join as
               </p>
               <div className="flex flex-col gap-3">
-                <label className="flex items-center border rounded-lg p-3 cursor-pointer hover:border-blue-500">
+                <label className="flex items-center rounded-lg p-3 cursor-pointer ">
                   <input
                     type="radio"
                     name="userType"
@@ -231,7 +231,7 @@ const AuthForm = () => {
                   />
                   <span className="text-gray-800">Student</span>
                 </label>
-                <label className="flex items-center border rounded-lg p-3 cursor-pointer hover:border-blue-500">
+                <label className="flex items-center rounded-lg p-3 cursor-pointer ">
                   <input
                     type="radio"
                     name="userType"
@@ -250,7 +250,7 @@ const AuthForm = () => {
           )}
 
           <>
-            <div className="flex items-center gap-2 border rounded-lg px-3 py-2 w-full max-w-md sm:max-w-lg focus-within:ring-2 focus-within:ring-blue-500">
+            <div className="flex items-center gap-2 rounded-lg px-3 py-2 w-full max-w-md sm:max-w-lg ">
               <input
                 type={show ? "text" : "password"}
                 name="password"
@@ -272,7 +272,7 @@ const AuthForm = () => {
 
           {!isLoginPage && (
             <>
-              <div className="flex items-center gap-2 border rounded-lg px-3 py-2 w-full max-w-md sm:max-w-lg focus-within:ring-2 focus-within:ring-blue-500">
+              <div className="flex items-center gap-2 rounded-lg px-3 py-2 w-full max-w-md sm:max-w-lg">
                 <input
                   type={showCPassword ? "text" : "password"}
                   name="cpassword"
@@ -318,7 +318,7 @@ const AuthForm = () => {
               Don&apos;t have an account?{" "}
               <Link
                 to="/signup"
-                className="text-blue-500 hover:underline font-medium"
+                className="text-green-500 hover:underline font-medium"
               >
                 Register
               </Link>
@@ -328,7 +328,7 @@ const AuthForm = () => {
               Already have an account?{" "}
               <Link
                 to="/login"
-                className="text-blue-500 hover:underline font-medium"
+                className="text-green-500 hover:underline font-medium"
               >
                 Login
               </Link>

@@ -175,7 +175,7 @@ const CourseDetails = () => {
           ) : (
             <div className="mt-2">
               {isEnrolled ? (
-                <button className="bg-orange-300 px-4 py-2 rounded">
+                <button className="bg-blue-800 text-white px-4 py-2 rounded">
                   Already Enrolled
                 </button>
               ) : (

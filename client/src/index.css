@@ -23,6 +23,7 @@ h1, h2, h3, h4, h5, h6, .logo {
 
 .bg-blue-600:hover, .btn-primary:hover {
   background-color: #065f46 !important; /* Dark Emerald */
+  color: #ffffff !important;
 }
 
 .button-hover:hover {
@@ -43,7 +44,7 @@ h1, h2, h3, h4, h5, h6, .logo {
 /* input and border  */
 .border-gray-300, input, textarea, select {
   border-color: #d1fae5 !important; /* Soft Mint Border */
-  /* border-width: 1px; */
+  border-width: 1px;
   border-radius: 0.375rem;
   padding: 0.5rem 0.75rem;
 }
@@ -109,11 +110,19 @@ input:focus, textarea:focus, select:focus {
 }
 
 .navbar a {
-  color: #065f46 !important; /* Deep Forest Green */
+  color: #065f46; /* Deep Forest Green */
 }
 
 .navbar a:hover {
-  color: #10b981 !important; /* Bright Mint */
+  color: #10b981; /* Bright Mint */
+}
+
+.nav-link-white {
+  color: #ffffff !important; /* White text */
+}
+
+.nav-link-white:hover {
+  color: #f0fdf4 !important; /* Optional: light hover on colored bg */
 }
 
 /* dark mode  */

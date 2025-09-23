@@ -221,7 +221,7 @@ const ReviewCourse = ({ courseId, enrolled, currentUser }) => {
               </div>
               <p className="text-sm text-gray-700">{review.comment}</p>
             </div>
-            {review?.student && review.student?._id === currentUser._id && (
+            {review?.student && review?.student?._id === currentUser._id && (
               <div className="flex flex-col space-y-1 text-xs ml-4">
                 <button
                   onClick={() => handleEdit(review)}

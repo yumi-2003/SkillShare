@@ -163,7 +163,7 @@ const AllCourses = () => {
                 </div>
               ))}
               {showCourses < courses.length && (
-                <div className="flex justify-center mt-6">
+                <div className="col-span-full flex justify-center mt-6">
                   <button
                     className="px-6 py-2 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition flex items-center space-x-2"
                     onClick={() => setShowCourses(showCourses + loadMore)}
