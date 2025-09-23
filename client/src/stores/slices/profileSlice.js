@@ -1,48 +1,36 @@
+// src/stores/slices/profileSlice.js
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axiosInstance from "../../apiCalls/axiosInstance";
 
-//get profile
-export const getProfile = createAsyncThunk(
-  ("/user/getProfile",
-  async () => {
-    try {
-      const res = await axiosInstance.get("/api/profile");
-      return res.data;
-    } catch (error) {
-      throw error.response.data ? error.response.data : error.message;
-    }
-  })
-);
+// --- GET PROFILE ---
+export const getProfile = createAsyncThunk("profile/getProfile", async () => {
+  const res = await axiosInstance.get("/api/profile");
+  return res.data.user; // return only user object
+});
 
-//update profile
+// --- UPDATE PROFILE ---
 export const updateProfile = createAsyncThunk(
-  "/user/update",
+  "profile/updateProfile",
   async (formData) => {
-    try {
-      const res = await axiosInstance.put("/api/profile", formData);
-      return res.data;
-    } catch (error) {
-      throw error.response.data ? error.response.data : error.message;
-    }
+    const res = await axiosInstance.put("/api/profile", formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+    return res.data.user; // return updated user
   }
 );
 
-//deleteProfile
+// --- DELETE PROFILE ---
 export const deleteProfile = createAsyncThunk(
-  "/user/delete",
+  "profile/deleteProfile",
   async ({ password }) => {
-    try {
-      const res = await axiosInstance.delete("/api/profile", {
-        data: { password },
-      });
-      return res.data;
-    } catch (error) {
-      throw error.response.data ? error.response.data : error.message;
-    }
+    const res = await axiosInstance.delete("/api/profile", {
+      data: { password },
+    });
+    return res.data.message; // success message
   }
 );
 
-//create slice to update profile
+// --- SLICE ---
 const profileSlice = createSlice({
   name: "profile",
   initialState: {
@@ -51,10 +39,16 @@ const profileSlice = createSlice({
     error: null,
     success: false,
   },
-  reducers: {},
+  reducers: {
+    resetProfileState: (state) => {
+      state.status = "idle";
+      state.error = null;
+      state.success = false;
+    },
+  },
   extraReducers: (builder) => {
     builder
-      // getProfile
+      // GET PROFILE
       .addCase(getProfile.pending, (state) => {
         state.status = "loading";
         state.error = null;
@@ -65,10 +59,10 @@ const profileSlice = createSlice({
       })
       .addCase(getProfile.rejected, (state, action) => {
         state.status = "failed";
-        state.error = action.payload || action.error.message;
+        state.error = action.error.message;
       })
 
-      // updateProfile
+      // UPDATE PROFILE
       .addCase(updateProfile.pending, (state) => {
         state.status = "loading";
         state.error = null;
@@ -77,14 +71,19 @@ const profileSlice = createSlice({
       .addCase(updateProfile.fulfilled, (state, action) => {
         state.status = "succeeded";
         state.user = action.payload;
+        if (state.user.image) {
+          // update preview if backend returned image URL
+          state.preview = state.user.image;
+        }
         state.success = true;
       })
       .addCase(updateProfile.rejected, (state, action) => {
         state.status = "failed";
-        state.error = action.payload || action.error.message;
+        state.error = action.error.message;
+        state.success = false;
       })
 
-      // deleteProfile
+      // DELETE PROFILE
       .addCase(deleteProfile.pending, (state) => {
         state.status = "loading";
         state.error = null;
@@ -97,9 +96,11 @@ const profileSlice = createSlice({
       })
       .addCase(deleteProfile.rejected, (state, action) => {
         state.status = "failed";
-        state.error = action.payload || action.error.message;
+        state.error = action.error.message;
+        state.success = false;
       });
   },
 });
 
+export const { resetProfileState } = profileSlice.actions;
 export default profileSlice.reducer;

@@ -20,6 +20,9 @@ const userSchema = new Schema(
       type: String,
       default: "student",
     },
+    image: {
+      type: String,
+    },
   },
   {
     timestamps: true,

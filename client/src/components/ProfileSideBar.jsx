@@ -120,7 +120,7 @@ const ProfileSideBar = () => {
               </button>
               <Link
                 to={"/editProfile"}
-                className="w-full block bg-gradient-to-r from-[#059669] to-[#10b981] text-white text-center px-1 py-2 rounded-lg hover:opacity-90 transition"
+                className="w-full block bg-gradient-to-r from-[#059669] to-[#10b981] nav-link-white text-center px-1 py-2 rounded-lg hover:opacity-90 transition"
               >
                 Edit Profile
               </Link>
