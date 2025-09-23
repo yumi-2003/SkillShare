@@ -19,7 +19,7 @@ const Avator = ({ name }) => {
     .toUpperCase();
 
   return (
-    <div className="w-10 h-10 flex items-center justify-center rounded-full bg-gradient-to-r from-blue-300 to-blue-500 text-white font-medium text-sm">
+    <div className="w-10 h-10 flex items-center justify-center rounded-full bg-gradient-to-r from-[#059669] to-[#10b981] text-white font-medium text-sm">
       {initialName}
     </div>
   );
@@ -27,11 +27,10 @@ const Avator = ({ name }) => {
 
 const ProfileSideBar = () => {
   const [openProfile, setOpenProfile] = useState(false);
-  const sidebarRef = useRef(null); // Ref for sidebar
+  const sidebarRef = useRef(null);
   const user = useSelector((state) => state.auth.user);
   const navigate = useNavigate();
 
-  // Navigate to dashboard
   const navigateDashboard = () => {
     if (user?.userType === "student") {
       navigate("/student-dashboard");
@@ -43,7 +42,6 @@ const ProfileSideBar = () => {
     }
   };
 
-  // Close sidebar when clicking outside
   useEffect(() => {
     function handleClickOutside(event) {
       if (sidebarRef.current && !sidebarRef.current.contains(event.target)) {
@@ -68,19 +66,19 @@ const ProfileSideBar = () => {
         <div className="fixed inset-0 bg-black/50 flex justify-end z-50">
           <div
             ref={sidebarRef}
-            className="w-72 rounded-l-2xl shadow-lg relative mt-10 mx-2 h-24 bg-white"
+            className="w-72 rounded-l-2xl shadow-lg relative mt-10 mx-2 bg-[#f0fdf4]"
           >
             {/* Header */}
-            <div className="p-6 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-tl-2xl">
+            <div className="p-6 bg-gradient-to-r from-[#059669] to-[#10b981] text-white rounded-tl-2xl">
               <div className="flex flex-col items-center">
                 <Avator name={user?.name || ""} />
                 <span className="mt-2 font-bold">{user?.name}</span>
-                <span className="bg-white text-blue-600 text-sm px-3 py-1 rounded-full mt-2">
+                <span className="bg-white text-[#064e3b] text-sm px-3 py-1 rounded-full mt-2">
                   {user?.userType === "student"
                     ? "🎓 Student"
                     : "👨‍🏫 Instructor"}
                 </span>
-                <span className="flex items-center justify-center bg-white text-blue-600 text-sm px-3 py-1 rounded-full mt-2 gap-2">
+                <span className="flex items-center justify-center bg-white text-[#064e3b] text-sm px-3 py-1 rounded-full mt-2 gap-2">
                   <Mail size={16} />
                   {user?.email}
                 </span>
@@ -88,24 +86,24 @@ const ProfileSideBar = () => {
             </div>
 
             {/* Activity section */}
-            <div className="p-6 bg-white">
+            <div className="p-6">
               {user?.userType === "student" ? (
                 <Link
                   to="/allcourses"
-                  className="flex items-center gap-2 mb-2 text-gray-800 hover:text-blue-600"
+                  className="flex items-center gap-2 mb-2 text-[#064e3b] hover:text-[#10b981]"
                 >
                   <Book size={16} />
                   View Courses and Join Free
                 </Link>
               ) : (
                 <>
-                  <p className="flex items-center gap-2 mb-2 text-gray-800 hover:text-blue-600">
+                  <p className="flex items-center gap-2 mb-2 text-[#064e3b] hover:text-[#10b981]">
                     <BookKey size={16} /> Manage Courses
                   </p>
-                  <p className="flex items-center gap-2 mb-2 text-gray-800 hover:text-blue-600">
+                  <p className="flex items-center gap-2 mb-2 text-[#064e3b] hover:text-[#10b981]">
                     <GraduationCap size={16} /> Manage Students
                   </p>
-                  <p className="flex items-center gap-2 text-gray-800 hover:text-blue-600">
+                  <p className="flex items-center gap-2 text-[#064e3b] hover:text-[#10b981]">
                     <PlusCircle size={16} /> Join Courses
                   </p>
                 </>
@@ -113,16 +111,16 @@ const ProfileSideBar = () => {
             </div>
 
             {/* Actions */}
-            <div className="p-6 space-y-3 bg-white">
+            <div className="p-6 space-y-3">
               <button
                 onClick={navigateDashboard}
-                className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
+                className="w-full bg-[#059669] text-white py-2 rounded-lg hover:bg-[#065f46] transition"
               >
                 Go to Dashboard
               </button>
               <Link
                 to={"/editProfile"}
-                className="w-full block bg-gradient-to-r from-blue-500 to-purple-500 text-white text-center px-1 py-2 rounded-lg hover:opacity-90 transition"
+                className="w-full block bg-gradient-to-r from-[#059669] to-[#10b981] text-white text-center px-1 py-2 rounded-lg hover:opacity-90 transition"
               >
                 Edit Profile
               </Link>
@@ -131,7 +129,7 @@ const ProfileSideBar = () => {
             {/* Close button */}
             <button
               onClick={() => setOpenProfile(false)}
-              className="absolute top-4 right-4 text-gray-600 hover:text-black"
+              className="absolute top-4 right-4 text-[#064e3b] hover:text-[#10b981]"
             >
               <X />
             </button>

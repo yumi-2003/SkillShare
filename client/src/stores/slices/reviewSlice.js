@@ -44,17 +44,11 @@ export const deleteReview = createAsyncThunk(
 const reviewSlice = createSlice({
   name: "reviews",
   initialState: {
-    list: [],
+    reviews: [],
     status: "idle",
     error: null,
   },
-  reducers: {
-    clearReviews: (state) => {
-      state.list = [];
-      state.status = "idle";
-      state.error = null;
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       // Get reviews
@@ -64,9 +58,11 @@ const reviewSlice = createSlice({
       })
       .addCase(getReviewsByCourse.fulfilled, (state, action) => {
         state.status = "succeeded";
-        state.list = Array.isArray(action.payload.reviews)
+        state.reviews = Array.isArray(action.payload.reviews)
           ? action.payload.reviews
           : [];
+        state.averageRating = action.payload.averageRating;
+        state.totalReviews = action.payload.totalReviews;
       })
       .addCase(getReviewsByCourse.rejected, (state, action) => {
         state.status = "failed";
@@ -79,7 +75,7 @@ const reviewSlice = createSlice({
       })
       .addCase(addReview.fulfilled, (state, action) => {
         state.status = "succeeded";
-        state.list.push(action.payload);
+        state.reviews.push(action.payload);
       })
       .addCase(addReview.rejected, (state, action) => {
         state.status = "failed";
@@ -93,7 +89,7 @@ const reviewSlice = createSlice({
       })
       .addCase(updateReview.fulfilled, (state, action) => {
         state.status = "succeeded";
-        state.list = state.list.map((review) =>
+        state.reviews = state.reviews.map((review) =>
           review._id === action.payload._id ? action.payload : review
         );
       })
@@ -109,7 +105,7 @@ const reviewSlice = createSlice({
       })
       .addCase(deleteReview.fulfilled, (state, action) => {
         state.status = "succeeded";
-        state.list = state.list.filter((r) => r._id !== action.payload);
+        state.reviews = state.reviews.filter((r) => r._id !== action.payload);
       })
       .addCase(deleteReview.rejected, (state, action) => {
         state.status = "failed";

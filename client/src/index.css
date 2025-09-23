@@ -1,7 +1,131 @@
+/* tailwind import */
 @import url('https://fonts.googleapis.com/css2?family=Bigelow+Rules&family=Inter:wght@100..900&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
 @import "tailwindcss";
 
+/* body and global font  */
 body {
-  font-family: 'Inter', sans-serif;  /* or Lato, Bigelow Rules */
-  background-color: white;
+  font-family: 'Lato', sans-serif;
+  background-color: #f0fdf4; /* Soft Sage */
+  color: #065f46; /* Default text color */
+}
+
+/* heading and logo  */
+h1, h2, h3, h4, h5, h6, .logo {
+  /* font-family: 'Bigelow Rules', cursive; */
+  color: #064e3b; /* Deep Forest Green */
+}
+
+/* button  */
+.bg-blue-500, .btn-primary, .bg-blue-600 {
+  background-color: #059669 !important; /* Rich Emerald */
+  color: #ffffff !important;
+}
+
+.bg-blue-600:hover, .btn-primary:hover {
+  background-color: #065f46 !important; /* Dark Emerald */
+}
+
+.button-hover:hover {
+  opacity: 0.9;
+  transform: scale(1.03);
+  transition: all 0.2s ease-in-out;
+}
+
+/* Link  */
+.text-blue-700, a {
+  color: #064e3b !important; /* Deep Forest Green */
+}
+
+.text-blue-700:hover, a:hover {
+  color: #10b981 !important; /* Bright Mint */
+}
+
+/* input and border  */
+.border-gray-300, input, textarea, select {
+  border-color: #d1fae5 !important; /* Soft Mint Border */
+  /* border-width: 1px; */
+  border-radius: 0.375rem;
+  padding: 0.5rem 0.75rem;
+}
+
+input:focus, textarea:focus, select:focus {
+  box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.3); /* Emerald ring */
+  outline: none;
+}
+
+/* cards and background  */
+.bg-white {
+  background-color: #ffffff !important; /* Pure White */
+}
+
+.card {
+  background-color: #ffffff !important;
+  box-shadow: 0 2px 8px rgba(5, 150, 105, 0.1);
+  border-radius: 0.5rem;
+}
+
+.bg-gray-100 {
+  background-color: #ecfdf5 !important; /* Light Mint */
+}
+
+.section-muted {
+  background-color: #f7fee7 !important; /* Very Light Lime */
+}
+
+/* text accent  */
+.text-accent-forest {
+  color: #0f4c3a !important; /* Elegant Forest */
+}
+
+.text-accent-sage {
+  color: #84cc16 !important; /* Fresh Sage */
+}
+
+.text-accent-mint {
+  color: #a7f3d0 !important; /* Soft Mint */
+}
+
+.text-accent-lime {
+  color: #bef264 !important; /* Bright Lime */
+}
+
+/* hover effect  */
+.hover\:bg-blue-500:hover {
+  background-color: #059669 !important; /* Rich Emerald */
+}
+
+.hover\:bg-blue-600:hover {
+  background-color: #065f46 !important; /* Dark Emerald */
+}
+
+.hover\:text-blue-500:hover {
+  color: #10b981 !important; /* Bright Mint */
+}
+
+/* nav bar  */
+.navbar, nav {
+  background-color: #f0fdf4 !important; /* Soft Sage */
+  box-shadow: 0 2px 4px rgba(5, 150, 105, 0.1);
+}
+
+.navbar a {
+  color: #065f46 !important; /* Deep Forest Green */
+}
+
+.navbar a:hover {
+  color: #10b981 !important; /* Bright Mint */
+}
+
+/* dark mode  */
+body.dark-mode {
+  background-color: #0c1f17 !important; /* Deep Forest Background */
+  color: #34d399 !important; /* Bright Mint text */
+}
+
+body.dark-mode .card {
+  background-color: #1a2e23 !important; /* Dark Forest Cards */
+}
+
+body.dark-mode a:hover {
+  color: #34d399 !important; /* Bright Mint hover */
 }

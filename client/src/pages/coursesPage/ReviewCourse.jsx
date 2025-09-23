@@ -17,6 +17,8 @@ const ReviewCourse = ({ courseId, enrolled, currentUser }) => {
   const [comment, setComment] = useState("");
   const [editingReviewId, setEditingReviewId] = useState(null);
   const [prevReview, setPrevReview] = useState([]);
+  const [visiableReview, setVisibleReview] = useState(3);
+  const viewMore = 3;
 
   // Fetch reviews
   useEffect(() => {
@@ -29,20 +31,20 @@ const ReviewCourse = ({ courseId, enrolled, currentUser }) => {
   }, [reviews]);
 
   // Check if user already reviewed
-  const myReview = prevReview?.find((r) => r.student._id === currentUser._id);
+  // const myReview = prevReview?.find((r) => r.student?._id === currentUser._id);
 
   //  form if editing
-  useEffect(() => {
-    if (myReview) {
-      setEditingReviewId(myReview._id);
-      setRating(myReview.rating);
-      setComment(myReview.comment);
-    } else {
-      setEditingReviewId(null);
-      setRating(0);
-      setComment("");
-    }
-  }, [myReview]);
+  // useEffect(() => {
+  //   if (myReview) {
+  //     setEditingReviewId(myReview._id);
+  //     setRating(myReview.rating);
+  //     setComment(myReview.comment);
+  //   } else {
+  //     setEditingReviewId(null);
+  //     setRating(0);
+  //     setComment("");
+  //   }
+  // }, [myReview]);
 
   // Calculate ratings
   const calculateRatings = () => {
@@ -64,9 +66,11 @@ const ReviewCourse = ({ courseId, enrolled, currentUser }) => {
   const avgRating = totalRatings
     ? (totalWeightedRatings / totalRatings).toFixed(1)
     : 0;
+  console.log("avg rating", avgRating);
 
   const getPercentage = (star) =>
     totalRatings ? (ratingsCount[star] / totalRatings) * 100 : 0;
+  console.log("totalRating", totalRatings);
 
   const renderStars = (rating) => {
     return (
@@ -97,10 +101,13 @@ const ReviewCourse = ({ courseId, enrolled, currentUser }) => {
     };
 
     if (editingReviewId) {
-      dispatch(updateReview({ id: editingReviewId, data: reviewData }))
+      dispatch(updateReview({ reviewId: editingReviewId, reviewData }))
         .unwrap()
         .then(() => {
           toast.success("Review updated successfully!");
+          setEditingReviewId(null);
+          setRating(0);
+          setComment("");
           // dispatch(getReviewsByCourse(courseId));
         })
         .catch((err) => toast.error(err.message || "Failed to update review"));
@@ -109,11 +116,16 @@ const ReviewCourse = ({ courseId, enrolled, currentUser }) => {
         .unwrap()
         .then(() => {
           toast.success("Review added successfully!");
+          setEditingReviewId(null);
+          setRating(0);
+          setComment("");
           // dispatch(getReviewsByCourse(courseId));
         })
         .catch((err) => toast.error(err.message || "Failed to add review"));
     }
   };
+
+  console.log(reviews);
 
   const handleEdit = (review) => {
     setEditingReviewId(review._id);
@@ -163,7 +175,7 @@ const ReviewCourse = ({ courseId, enrolled, currentUser }) => {
 
       {/* Add/Edit Review Form */}
       {enrolled ? (
-        <div className="border p-4 rounded-md mb-6 shadow-sm">
+        <div className="border-none p-4 rounded-md mb-6 shadow-sm">
           <h3 className="text-lg font-semibold mb-2">
             {editingReviewId ? "Edit Your Review" : "Add a Review"}
           </h3>
@@ -194,19 +206,22 @@ const ReviewCourse = ({ courseId, enrolled, currentUser }) => {
         {reviews?.length === 0 && status === "succeeded" && (
           <p className="text-gray-500">No reviews yet.</p>
         )}
-        {reviews?.map((review) => (
+        {reviews?.slice(0, visiableReview).map((review, index) => (
           <div
-            key={review._id}
+            key={review?._id || index}
             className="border rounded-md p-4 shadow-sm flex justify-between items-start"
           >
             <div>
               <div className="flex items-center space-x-2 mb-1">
-                <span className="font-semibold">{review.student.name}</span>
+                {review.student && (
+                  <span className="font-semibold">{review.student.name}</span>
+                )}
+
                 <span>{renderStars(review.rating)}</span>
               </div>
               <p className="text-sm text-gray-700">{review.comment}</p>
             </div>
-            {review.student._id === currentUser._id && (
+            {review?.student && review.student?._id === currentUser._id && (
               <div className="flex flex-col space-y-1 text-xs ml-4">
                 <button
                   onClick={() => handleEdit(review)}
@@ -224,6 +239,15 @@ const ReviewCourse = ({ courseId, enrolled, currentUser }) => {
             )}
           </div>
         ))}
+        {/* laod more revieww 3 for each time  */}
+        {visiableReview < reviews.length && (
+          <button
+            className="mt-2 text-blue-600 hover:underline"
+            onClick={() => setVisibleReview(visiableReview + viewMore)}
+          >
+            Show More
+          </button>
+        )}
       </div>
     </div>
   );

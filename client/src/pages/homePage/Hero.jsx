@@ -1,14 +1,14 @@
 import React from "react";
-import HeroImg from "../../assets/hero-img.png";
+import HeroImg from "../../assets/hero2.jpg";
 import { Link } from "react-router-dom";
 
 const Hero = () => {
   return (
-    <div className="bg-gradient-to-r from-blue-400 to-blue-500 text-white mt-10">
+    <div className="bg-white text-black mt-10">
       <div className="max-w-7xl mx-auto px-6 lg:px-12 py-10 flex flex-col lg:flex-row items-stretch justify-between">
         {/* Text Content */}
-        <div className="lg:w-1/2 flex flex-col justify-center text-center lg:text-left">
-          <h1 className="text-4xl lg:text-5xl font-bold leading-tight mb-4">
+        <div className="lg:w-2/3 flex flex-col justify-center text-center lg:text-left">
+          <h1 className="text-4xl lg:text-5xl leading-tight mb-4">
             Learn Anytime, <span className="text-yellow-300">Anywhere</span>,
             For Free
           </h1>
@@ -16,13 +16,16 @@ const Hero = () => {
             Access affordable courses created by experts. Join now and start
             your journey today.
           </p>
-          <div className="flex justify-center lg:justify-start gap-3">
-            <button className="bg-yellow-400 text-black px-5 py-2 rounded-lg font-semibold shadow hover:bg-yellow-300">
+          <div className="flex justify-center lg:justify-start gap-4">
+            <Link
+              to={"/signup"}
+              className="bg-[#10b981] text-white px-6 py-3 rounded-lg font-semibold shadow-lg"
+            >
               Get Started
-            </button>
+            </Link>
             <Link
               to="/allcourses"
-              className="bg-white text-blue-700 px-5 py-2 rounded-lg font-semibold hover:bg-gray-100"
+              className="bg-white text-[#059669] px-6 py-3 rounded-lg font-semibold shadow"
             >
               Explore Courses
             </Link>
@@ -30,11 +33,11 @@ const Hero = () => {
         </div>
 
         {/* Image Content */}
-        <div className="md:w-1/2 flex justify-center items-center mt-8 lg:mt-0">
+        <div className="md:w-1/3 flex justify-center items-center mt-8 lg:mt-0">
           <img
             src={HeroImg}
-            alt="Picture"
-            className="w-52 md:w-64 drop-shadow-2xl"
+            alt="Learning"
+            className="w-80 md:w-96 rounded-lg"
           />
         </div>
       </div>

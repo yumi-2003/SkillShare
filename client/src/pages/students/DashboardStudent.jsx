@@ -32,7 +32,8 @@ const DashboardStudent = () => {
   console.log(image);
 
   return (
-    <div className="h-screen p-6 mt-24 sm:mt-10 overflow-hidden">
+    <div className="min-h-screen px-4 py-6 mt-14">
+      {/* Dashboard Header */}
       <h2 className="text-xl sm:text-2xl font-semibold text-gray-800">
         My Dashboard
       </h2>
@@ -40,6 +41,7 @@ const DashboardStudent = () => {
         Track your learning progress and enrolled courses
       </p>
 
+      {/* Stats Section */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 my-6">
         <Card
           title="Enrolled Courses"
@@ -61,20 +63,21 @@ const DashboardStudent = () => {
         />
       </div>
 
-      <div className="">
+      {/* My Courses Section */}
+      <div>
         <h3 className="text-xl font-semibold mb-4">My Courses</h3>
-        <div className="bg-white h-100 overflow-auto rounded-lg shadow p-6 text-center">
+        <div className="bg-white rounded-lg shadow p-6 text-center">
           {myEnrollments && myEnrollments.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
               {myEnrollments.map((enrollment) => (
                 <div
                   key={enrollment._id}
-                  className="border rounded-lg  shadow hover:shadow-lg transition-shadow"
+                  className="border rounded-lg shadow hover:shadow-lg transition-shadow"
                 >
                   <img
                     src={enrollment.course?.image || "/placeholder.png"}
                     alt={enrollment.course?.title}
-                    className="w-full h-40 object-cover"
+                    className="w-full h-40 object-cover rounded-t-lg"
                   />
                   <div className="p-4">
                     <h4 className="text-lg font-semibold mb-2">
@@ -89,10 +92,9 @@ const DashboardStudent = () => {
                       <span className="font-semibold">Enrolled On:</span>{" "}
                       {new Date(enrollment.enrolledAt).toLocaleDateString()}
                     </p>
-
                     <Link
                       to={`/courseDetails/${enrollment.course._id}`}
-                      className="text-blue-600 hover:underline text-sm"
+                      className="text-green-700 hover:underline text-sm"
                     >
                       View Course Details
                     </Link>
@@ -107,7 +109,7 @@ const DashboardStudent = () => {
               </p>
               <Link
                 to={"/allcourses"}
-                className="mt-4 inline-block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+                className="mt-4 inline-block bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
               >
                 Browse Courses
               </Link>

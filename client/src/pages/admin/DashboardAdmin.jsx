@@ -5,8 +5,8 @@ import CoursesForm from "../admin/CourseManage/CourseForm";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-import DashboardStudent from "../students/DashboardStudent";
 import EnrolledStudents from "./EnrolledStudents";
+import EnrolledCourses from "./EnrolledCourses";
 
 const DashboardAdmin = () => {
   const navigate = useNavigate();
@@ -39,18 +39,18 @@ const DashboardAdmin = () => {
     {
       id: 3,
       label: "My Enrollments",
-      content: <DashboardStudent />,
+      content: <EnrolledCourses />,
     },
   ];
   return (
-    <div className="p-24 sm:p-6 md:p-8 mt-6 sm:mt-10 min-h-screen overflow-auto">
+    <div className="p-24 sm:p-6 md:p-8 mt-6 sm:mt-10 max-x-6xl min-h-screen overflow-auto">
       <h2 className="text-lg sm:text-2xl md:text-3xl lg:text-4xl font-bold">
         Admin Dashboard
       </h2>
       <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-500 mb-6 break-words">
         Manage courses, students, and platform analytics
       </p>
-      <ActiveTabs tabs={activeTabs} storageKey="activeTabs" />
+      <ActiveTabs tabs={activeTabs} storageKey="activeTabs" marginTop="mt-2" />
     </div>
   );
 };

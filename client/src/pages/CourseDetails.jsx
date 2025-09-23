@@ -116,9 +116,8 @@ const CourseDetails = () => {
   };
 
   return (
-    <div className="max-w-6xl mx-auto p-6 mt-24">
+    <div className="max-w-5xl mx-auto p-6 mt-24">
       <ToastContainer />
-
       {/* Course Card */}
       <div className="bg-white shadow-xl rounded-2xl overflow-hidden flex flex-col md:flex-row gap-8">
         {/* Left: Course Image */}

@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from "react";
 import { Book, Users, Award, TrendingUp } from "lucide-react";
 import Counter from "./Counter";
 
@@ -36,7 +35,7 @@ const Stats = () => {
   ];
 
   return (
-    <section className="bg-gray-50 py-12 shadow">
+    <section className="bg-white py-12">
       <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 text-center">
         {stats.map((item) => (
           <div key={item.id} className="flex flex-col items-center">

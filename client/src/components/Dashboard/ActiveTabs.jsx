@@ -1,7 +1,11 @@
 import { Search } from "lucide-react";
 import React, { useState, useEffect } from "react";
 
-const ActiveTabs = ({ tabs, storageKeys = "activeTab" }) => {
+const ActiveTabs = ({
+  tabs,
+  storageKeys = "activeTab",
+  marginTop = "mt-2",
+}) => {
   const [activeTab, setActiveTab] = useState(tabs[0].id);
 
   useEffect(() => {
@@ -9,7 +13,7 @@ const ActiveTabs = ({ tabs, storageKeys = "activeTab" }) => {
   }, [activeTab, storageKeys]);
 
   return (
-    <div className="w-full">
+    <div className={`w-full ${marginTop}`}>
       {/* Tabs */}
       <div className="overflow-x-auto">
         <div className="flex gap-4 sm:gap-6 border-b px-2 sm:px-0">

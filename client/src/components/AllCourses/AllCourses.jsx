@@ -22,6 +22,8 @@ const AllCourses = () => {
   // Local state for filters
   const [search, setSearch] = useState("");
   const [selectedCat, setSelectedCat] = useState("");
+  const [showCourses, setShowCourses] = useState(4);
+  const loadMore = 4;
 
   // Fetch categories on mount
   useEffect(() => {
@@ -108,7 +110,7 @@ const AllCourses = () => {
         <>
           {Array.isArray(courses) && courses.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 sm:gap-8 mt-6">
-              {courses.map((course) => (
+              {courses.slice(0, showCourses).map((course) => (
                 <div
                   key={course._id}
                   className="bg-white rounded-lg shadow-md overflow-hidden flex flex-col transition duration-300 hover:shadow-lg"
@@ -160,6 +162,30 @@ const AllCourses = () => {
                   </div>
                 </div>
               ))}
+              {showCourses < courses.length && (
+                <div className="flex justify-center mt-6">
+                  <button
+                    className="px-6 py-2 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition flex items-center space-x-2"
+                    onClick={() => setShowCourses(showCourses + loadMore)}
+                  >
+                    <span>Show 4 more Courses</span>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-4 w-4"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M19 9l-7 7-7-7"
+                      />
+                    </svg>
+                  </button>
+                </div>
+              )}
             </div>
           ) : (
             <div className="text-center mt-8 text-gray-600 h-[80vh]">

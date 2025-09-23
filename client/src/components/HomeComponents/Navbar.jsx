@@ -21,7 +21,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-white/80 shadow-md fixed top-0 left-0 w-full z-50">
+    <nav className="bg-[#f0fdf4] shadow-md fixed top-0 left-0 w-full z-50">
       <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16 items-center">
           {/* Logo */}
@@ -31,18 +31,20 @@ const Navbar = () => {
               alt="SkillShare Logo"
               className="h-10 w-10"
             />
-            <span className="font-bold text-2xl text-blue-800">SkillShare</span>
+            <span className="font-bold text-2xl text-[#064e3b]">
+              SkillShare
+            </span>
           </Link>
 
           {/* Desktop Links */}
-          <div className="hidden md:flex items-center gap-8 text-gray-700 font-medium">
+          <div className="hidden md:flex items-center gap-8 font-medium">
             <NavLink
               to="/"
               end
               className={({ isActive }) =>
                 isActive
-                  ? "text-blue-700 border-b-2 border-blue-700 pb-1"
-                  : "hover:text-blue-700"
+                  ? "text-[#10b981] border-b-2 border-[#10b981] pb-1"
+                  : "text-[#064e3b] hover:text-[#10b981]"
               }
             >
               Home
@@ -51,8 +53,8 @@ const Navbar = () => {
               to="/allcourses"
               className={({ isActive }) =>
                 isActive
-                  ? "text-blue-700 border-b-2 border-blue-700 pb-1"
-                  : "hover:text-blue-700"
+                  ? "text-[#10b981] border-b-2 border-[#10b981] pb-1"
+                  : "text-[#064e3b] hover:text-[#10b981]"
               }
             >
               Courses
@@ -63,34 +65,10 @@ const Navbar = () => {
           <div className="hidden md:flex items-center gap-4">
             {user ? (
               <>
-                {/* {user.userType === "student" && (
-                  <NavLink
-                    to="/student-dashboard"
-                    className={({ isActive }) =>
-                      isActive
-                        ? "text-blue-700 font-semibold border-b-2 border-blue-700 pb-1"
-                        : "text-gray-700 hover:text-blue-700"
-                    }
-                  >
-                    Student Dashboard
-                  </NavLink>
-                )}
-                {user.userType === "instructor" && (
-                  <NavLink
-                    to="/instructor-dashboard"
-                    className={({ isActive }) =>
-                      isActive
-                        ? "text-blue-700 font-semibold border-b-2 border-blue-700 pb-1"
-                        : "text-gray-700 hover:text-blue-700"
-                    }
-                  >
-                    Instructor Dashboard
-                  </NavLink>
-                )} */}
                 <ProfileSideBar />
                 <button
                   onClick={handleLogout}
-                  className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 font-medium"
+                  className="bg-[#059669] text-white px-4 py-2 rounded hover:bg-[#065f46] font-medium transition"
                 >
                   Logout
                 </button>
@@ -101,8 +79,8 @@ const Navbar = () => {
                   to="/login"
                   className={({ isActive }) =>
                     isActive
-                      ? "text-blue-700 font-semibold border-b-2 border-blue-700 pb-1"
-                      : "hover:text-gray-800"
+                      ? "text-[#10b981] font-semibold border-b-2 border-[#10b981] pb-1"
+                      : "text-[#064e3b] hover:text-[#10b981]"
                   }
                 >
                   Login
@@ -111,8 +89,8 @@ const Navbar = () => {
                   to="/signup"
                   className={({ isActive }) =>
                     isActive
-                      ? "bg-blue-700 text-white px-4 py-2 rounded font-medium border-b-2 border-blue-700 pb-1"
-                      : "bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 font-medium"
+                      ? "bg-[#065f46] text-white px-4 py-2 rounded font-medium border-b-2 border-[#10b981] pb-1"
+                      : "bg-[#059669] text-white px-4 py-2 rounded hover:bg-[#065f46] font-medium transition"
                   }
                 >
                   Sign Up
@@ -125,7 +103,7 @@ const Navbar = () => {
           <div className="md:hidden">
             <button
               onClick={() => setMenuOpen(!menuOpen)}
-              className="text-gray-700 hover:text-blue-700 focus:outline-none"
+              className="text-[#064e3b] hover:text-[#10b981] focus:outline-none transition"
             >
               {menuOpen ? <X size={28} /> : <Menu size={28} />}
             </button>
@@ -135,7 +113,7 @@ const Navbar = () => {
 
       {/* Mobile Menu */}
       {menuOpen && (
-        <div className="md:hidden bg-white border-t border-gray-200 shadow-lg">
+        <div className="md:hidden bg-[#f0fdf4] border-t border-[#d1fae5] shadow-lg">
           <div className="flex flex-col px-4 py-3 space-y-2">
             <NavLink
               to="/"
@@ -143,8 +121,8 @@ const Navbar = () => {
               onClick={() => setMenuOpen(false)}
               className={({ isActive }) =>
                 isActive
-                  ? "text-blue-700 font-semibold border-b-2 border-blue-700 pb-1"
-                  : "text-gray-700 hover:text-blue-700"
+                  ? "text-[#10b981] font-semibold border-b-2 border-[#10b981] pb-1"
+                  : "text-[#064e3b] hover:text-[#10b981]"
               }
             >
               Home
@@ -154,8 +132,8 @@ const Navbar = () => {
               onClick={() => setMenuOpen(false)}
               className={({ isActive }) =>
                 isActive
-                  ? "text-blue-700 font-semibold border-b-2 border-blue-700 pb-1"
-                  : "text-gray-700 hover:text-blue-700"
+                  ? "text-[#10b981] font-semibold border-b-2 border-[#10b981] pb-1"
+                  : "text-[#064e3b] hover:text-[#10b981]"
               }
             >
               Courses
@@ -163,36 +141,10 @@ const Navbar = () => {
 
             {user ? (
               <>
-                {/* {user.userType === "student" && (
-                  <NavLink
-                    to="/student-dashboard"
-                    onClick={() => setMenuOpen(false)}
-                    className={({ isActive }) =>
-                      isActive
-                        ? "text-blue-700 font-semibold border-b-2 border-blue-700 pb-1"
-                        : "text-gray-700 hover:text-blue-700"
-                    }
-                  >
-                    Student Dashboard
-                  </NavLink>
-                )}
-                {user.userType === "instructor" && (
-                  <NavLink
-                    to="/instructor-dashboard"
-                    onClick={() => setMenuOpen(false)}
-                    className={({ isActive }) =>
-                      isActive
-                        ? "text-blue-700 font-semibold border-b-2 border-blue-700 pb-1"
-                        : "text-gray-700 hover:text-blue-700"
-                    }
-                  >
-                    Instructor Dashboard
-                  </NavLink>
-                )} */}
                 <ProfileSideBar />
                 <button
                   onClick={handleLogout}
-                  className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 font-medium mt-2"
+                  className="bg-[#059669] text-white px-4 py-2 rounded hover:bg-[#065f46] font-medium mt-2 transition"
                 >
                   Logout
                 </button>
@@ -204,8 +156,8 @@ const Navbar = () => {
                   onClick={() => setMenuOpen(false)}
                   className={({ isActive }) =>
                     isActive
-                      ? "text-blue-700 font-semibold border-b-2 border-blue-700 pb-1"
-                      : "text-gray-700 hover:text-blue-700"
+                      ? "text-[#10b981] font-semibold border-b-2 border-[#10b981] pb-1"
+                      : "text-[#064e3b] hover:text-[#10b981]"
                   }
                 >
                   Login
@@ -215,8 +167,8 @@ const Navbar = () => {
                   onClick={() => setMenuOpen(false)}
                   className={({ isActive }) =>
                     isActive
-                      ? "bg-blue-700 text-white px-4 py-2 rounded font-medium border-b-2 border-blue-700 pb-1"
-                      : "bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 font-medium"
+                      ? "bg-[#065f46] text-white px-4 py-2 rounded font-medium border-b-2 border-[#10b981] pb-1"
+                      : "bg-[#059669] text-white px-4 py-2 rounded hover:bg-[#065f46] font-medium transition"
                   }
                 >
                   Sign Up

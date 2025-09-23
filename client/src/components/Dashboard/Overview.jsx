@@ -78,7 +78,7 @@ const Overview = () => {
           courseEnrollees.map((enrollee) => (
             <div
               key={enrollee._id}
-              className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 border p-2 rounded mb-2"
+              className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 border-none p-2 rounded mb-2"
             >
               <div>
                 <p className="font-medium">{enrollee.student.name}</p>

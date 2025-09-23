@@ -7,7 +7,7 @@ const EditProfile = () => {
   const user = useSelector((state) => state.user.user);
 
   return (
-    <div className="flex flex-col min-h-screen p-6 gap-6">
+    <div className="flex flex-col h-auto p-6 gap-6">
       {/* Top section  */}
       <div className="flex flex-col lg:flex-row gap-6">
         {/* left profile card  */}
@@ -123,7 +123,7 @@ const EditProfile = () => {
             <div>
               <button
                 type="submit"
-                className="w-full bg-gradient-to-r from-blue-500 to-orange-400 text-white px-4 py-2 rounded-lg"
+                className="w-full bg-gradient-to-r from-green-400 to-orange-300 text-black px-4 py-2 rounded-lg"
               >
                 Update Profile
               </button>

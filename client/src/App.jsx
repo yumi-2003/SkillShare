@@ -13,6 +13,7 @@ import CreateCoursePage from "./pages/admin/CourseManage/CreateCoursePage";
 import EditCourse from "./pages/admin/CourseManage/EditCourse";
 import CourseDetails from "./pages/CourseDetails";
 import EditProfile from "./components/Profile/EditProfile";
+import AboutUs from "./pages/homePage/AboutUs";
 // import { checkCurrentUser } from "./apiCalls/auth";
 
 function App() {
@@ -39,6 +40,7 @@ function App() {
           <Route path="/courses/edit/:id" element={<EditCourse />} />
           <Route path="/courseDetails/:id" element={<CourseDetails />} />
           <Route path="/editProfile" element={<EditProfile />} />
+          <Route path="/aboutUs" element={<AboutUs />} />
         </Routes>
 
         <Footer />
