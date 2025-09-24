@@ -81,15 +81,15 @@ const Overview = () => {
               className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 border-none p-2 rounded mb-2"
             >
               <div>
-                <p className="font-medium">{enrollee.student.name}</p>
+                <p className="font-medium">{enrollee?.student?.name}</p>
                 <p className="text-sm text-gray-500">
-                  {enrollee.student.email}
+                  {enrollee?.student?.email}
                 </p>
               </div>
               <div>
                 <p className="text-sm text-gray-500">
                   Enrolled At:{" "}
-                  {new Date(enrollee.enrolledAt).toLocaleDateString()}
+                  {new Date(enrollee?.enrolledAt).toLocaleDateString()}
                 </p>
                 <p className="text-sm text-gray-500">
                   Enrolled On:{" "}

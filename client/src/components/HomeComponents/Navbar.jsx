@@ -5,6 +5,7 @@ import { logOut } from "../../stores/slices/authSlice";
 import SkillShareLogo from "../../assets/skillshare.png";
 import { Menu, X } from "lucide-react";
 import ProfileSideBar from "../ProfileSideBar";
+import Theme from "../../pages/homePage/Theme";
 
 const Navbar = () => {
   const user = useSelector((state) => state.auth?.user);
@@ -63,6 +64,7 @@ const Navbar = () => {
 
           {/* Desktop User Actions */}
           <div className="hidden md:flex items-center gap-4">
+            <Theme />
             {user ? (
               <>
                 <ProfileSideBar />

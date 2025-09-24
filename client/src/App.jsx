@@ -15,6 +15,7 @@ import CourseDetails from "./pages/CourseDetails";
 import EditProfile from "./components/Profile/EditProfile";
 import AboutUs from "./pages/homePage/AboutUs";
 import ContactUs from "./pages/homePage/ContactUs";
+import ScrollToTopOnNavigation from "./util/ScrollToTopOnNavigation";
 // import { checkCurrentUser } from "./apiCalls/auth";
 
 function App() {
@@ -29,6 +30,7 @@ function App() {
   return (
     <>
       <Router>
+        <ScrollToTopOnNavigation />
         <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
@@ -44,7 +46,6 @@ function App() {
           <Route path="/aboutUs" element={<AboutUs />} />
           <Route path="/contactUs" element={<ContactUs />} />
         </Routes>
-
         <Footer />
       </Router>
     </>

@@ -7,7 +7,11 @@ const CourseAccordion = ({ course }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   console.log("Enrollees", courseEnrollees);
-  console.log("course", course);
+  console.log("Available Course", course);
+
+  // if (course?._id === courseEnrollees?.course?._id) {
+  //   return;
+  // }
 
   const toggleAccordion = () => {
     setIsOpen(!isOpen);
@@ -27,25 +31,31 @@ const CourseAccordion = ({ course }) => {
       {isOpen && (
         <div className="bg-gray-50 p-4 border-none rounded mt-2">
           {courseEnrollees?.length > 0 ? (
-            courseEnrollees.map((enrollee) => (
-              <div
-                key={enrollee._id}
-                className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 border-none p-2 rounded mb-2"
-              >
-                <div>
-                  <p className="font-medium">{enrollee.student.name}</p>
-                  <p className="text-sm text-gray-500">
-                    {enrollee.student.email}
-                  </p>
+            courseEnrollees
+              .filter((enrollee) => enrollee?.course?._id === course?._id)
+              .map((enrollee) => (
+                <div
+                  key={enrollee._id}
+                  className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 border-none p-2 rounded mb-2"
+                >
+                  <div>
+                    {/* <img
+                      src={enrollee?.student?.image || "placeholder.jpg"}
+                      className="w-10 h-10"
+                    /> */}
+                    <p className="font-medium">{enrollee?.student?.name}</p>
+                    <p className="text-sm text-gray-500">
+                      {enrollee?.student?.email}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-500">
+                      Enrolled on:{" "}
+                      {new Date(enrollee?.enrolledAt).toLocaleDateString()}
+                    </p>
+                  </div>
                 </div>
-                <div>
-                  <p className="text-sm text-gray-500">
-                    Enrolled on:{" "}
-                    {new Date(enrollee.enrolledAt).toLocaleDateString()}
-                  </p>
-                </div>
-              </div>
-            ))
+              ))
           ) : (
             <p className="text-gray-500">
               No students enrolled in this course yet.
