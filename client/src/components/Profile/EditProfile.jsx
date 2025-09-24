@@ -5,17 +5,16 @@ import {
   updateProfile,
   deleteProfile,
 } from "../../stores/slices/profileSlice";
-import { Camera } from "lucide-react";
+import { Eye, EyeOff, Camera } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { logOut } from "../../stores/slices/authSlice";
 import { toast } from "react-toastify";
+import { emailValidate, passwordValidate } from "../../util/validation";
 
 const EditProfile = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { user, status, error, success } = useSelector(
-    (state) => state.profile
-  );
+  const { user, status } = useSelector((state) => state.profile);
 
   // Local state
   const [preview, setPreview] = useState(null);
@@ -25,6 +24,10 @@ const EditProfile = () => {
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+
+  const [formErrors, setFormErrors] = useState({});
+  const [deleteModal, setDeleteModal] = useState(false);
+  const [deletePassword, setDeletePassword] = useState("");
 
   // Fetch profile on mount
   useEffect(() => {
@@ -37,7 +40,6 @@ const EditProfile = () => {
       setName(user.name || "");
       setEmail(user.email || "");
       setPreview(user.image || null);
-      setCurrentPassword(user.password || "");
     }
   }, [user]);
 
@@ -46,27 +48,43 @@ const EditProfile = () => {
     const selectedFile = e.target.files[0];
     if (selectedFile) {
       setImage(selectedFile);
-      setPreview(URL.createObjectURL(selectedFile)); // show temporary preview
+      setPreview(URL.createObjectURL(selectedFile));
     }
   };
+
+  //handle password show and hide
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   // Handle profile update
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    let errors = {};
+
+    // Email validation
+    if (!emailValidate(email)) errors.email = "Please enter a valid email";
+
     // Password validation
     if (newPassword) {
-      if (!currentPassword) {
-        alert("You must enter your current password to set a new password");
-        return;
-      }
-      if (newPassword !== confirmPassword) {
-        alert("Password and Confirm Password must match");
-        return;
-      }
+      if (!currentPassword)
+        errors.currentPassword =
+          "Enter your current password to set a new password";
+      if (!passwordValidate(newPassword))
+        errors.newPassword =
+          "Password must be at least 8 characters, include 1 uppercase, 1 lowercase, 1 number, and 1 special character";
+      if (newPassword !== confirmPassword)
+        errors.confirmPassword = "Password and Confirm Password must match";
     }
 
-    // Build form data
+    if (Object.keys(errors).length > 0) {
+      setFormErrors(errors);
+      return;
+    }
+
+    setFormErrors({});
+
     const formData = new FormData();
     formData.append("name", name);
     formData.append("email", email);
@@ -78,48 +96,49 @@ const EditProfile = () => {
 
     try {
       const result = await dispatch(updateProfile(formData));
-
       if (updateProfile.fulfilled.match(result)) {
-        const updatedUser = result.payload.user;
-        setPreview(updatedUser.image || preview);
-        if (success) {
-          toast.success("Profile updated successfully!");
-        }
+        toast.success("Profile updated successfully!");
         setCurrentPassword("");
         setNewPassword("");
         setConfirmPassword("");
+        setPreview(result.payload.user.image || preview);
       } else {
-        if (error) {
-          toast.error(result.payload?.message || "Failed to update profile");
-        }
+        toast.error(result.payload?.message || "Failed to update profile");
       }
     } catch (err) {
       console.error(err);
-      toast.error(err);
+      toast.error("Something went wrong!");
     }
   };
 
   // Handle account deletion
   const handleDelete = async () => {
-    const password = prompt("Enter your password to delete your account");
-    if (!password) return;
-    try {
-      const deleteAccount = await dispatch(deleteProfile({ password }));
+    if (!deletePassword) {
+      setFormErrors({
+        deletePassword: "Please enter your password to delete account",
+      });
+      return;
+    }
 
-      if (deleteProfile.fulfilled.match(deleteAccount)) {
-        toast.success(deleteAccount.payload);
+    try {
+      const result = await dispatch(
+        deleteProfile({ password: deletePassword })
+      );
+      if (deleteProfile.fulfilled.match(result)) {
+        toast.success("Account deleted successfully!");
         dispatch(logOut());
         localStorage.removeItem("SkillShareToken");
         localStorage.removeItem("SkillShareUser");
         navigate("/");
       } else {
         toast.error(
-          deleteAccount.payload?.message || "Failed to delete account"
+          result.payload?.message ||
+            "Password incorrect or failed to delete account"
         );
       }
     } catch (err) {
-      toast.error("Something went wrong!");
       console.error(err);
+      toast.error("Something went wrong!");
     }
   };
 
@@ -145,7 +164,7 @@ const EditProfile = () => {
           <p className="text-gray-500 mb-2 capitalize">{user?.userType}</p>
           <button
             className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 shadow"
-            onClick={() => handleDelete()}
+            onClick={() => setDeleteModal(true)}
           >
             Delete Account
           </button>
@@ -157,12 +176,7 @@ const EditProfile = () => {
             Profile Setting
           </h3>
 
-          {/* Status messages */}
           {status === "loading" && <p>Loading...</p>}
-          {/* {error && <p className="text-red-600">{error}</p>}
-          {success && (
-            <p className="text-green-600">Profile updated successfully!</p>
-          )} */}
 
           <form onSubmit={handleSubmit} className="flex flex-col gap-6">
             {/* Profile Image Upload */}
@@ -188,7 +202,6 @@ const EditProfile = () => {
                   <Camera className="w-5 h-5 text-gray-600" />
                   <input
                     type="file"
-                    name="image"
                     accept="image/*"
                     className="hidden"
                     onChange={handleImageChange}
@@ -224,6 +237,9 @@ const EditProfile = () => {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                   />
+                  {formErrors.email && (
+                    <p className="text-red-500 text-sm">{formErrors.email}</p>
+                  )}
                 </div>
                 <div>
                   <label className="block text-sm text-gray-600 mb-2">
@@ -243,38 +259,86 @@ const EditProfile = () => {
                 <h4 className="text-md font-semibold text-gray-700">
                   Change Password
                 </h4>
-                <div>
+                <div className="relative">
                   <label className="block text-sm text-gray-600 mb-2">
                     Current Password
                   </label>
                   <input
-                    type="password"
+                    type={showCurrentPassword ? "text" : "password"}
                     className="w-full border rounded-lg p-2"
                     value={currentPassword}
                     onChange={(e) => setCurrentPassword(e.target.value)}
                   />
+                  <div
+                    className="absolute top-1/2 right-3 cursor-pointer"
+                    onClick={() => setShowCurrentPassword(!showCurrentPassword)}
+                  >
+                    {showCurrentPassword ? (
+                      <EyeOff size={18} />
+                    ) : (
+                      <Eye size={18} />
+                    )}
+                  </div>
+                  {formErrors.currentPassword && (
+                    <p className="text-red-500 text-sm">
+                      {formErrors.currentPassword}
+                    </p>
+                  )}
                 </div>
-                <div>
+                <div className="relative">
                   <label className="block text-sm text-gray-600 mb-2">
                     New Password
                   </label>
                   <input
-                    type="password"
+                    type={showNewPassword ? "text" : "password"}
                     className="w-full border rounded-lg p-2"
                     value={newPassword}
                     onChange={(e) => setNewPassword(e.target.value)}
                   />
+                  <div
+                    className="absolute top-1/2 right-3 cursor-pointer"
+                    onClick={() => setShowNewPassword(!showNewPassword)}
+                  >
+                    {showNewPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                  </div>
+                  {formErrors.newPassword && (
+                    <p className="text-red-500 text-sm">
+                      {formErrors.newPassword}
+                    </p>
+                  )}
                 </div>
-                <div>
+                <div className="relative">
                   <label className="block text-sm text-gray-600 mb-2">
                     Confirm New Password
                   </label>
                   <input
-                    type="password"
+                    type={showConfirmPassword ? "text" : "password"}
                     className="w-full border rounded-lg p-2"
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
                   />
+                  <div className="absolute top-1/2 right-3 cursor-pointer">
+                    {showConfirmPassword ? (
+                      <EyeOff
+                        size={18}
+                        onClick={() =>
+                          setShowConfirmPassword(!showConfirmPassword)
+                        }
+                      />
+                    ) : (
+                      <Eye
+                        size={18}
+                        onClick={() =>
+                          setShowConfirmPassword(!showConfirmPassword)
+                        }
+                      />
+                    )}
+                  </div>
+                  {formErrors.confirmPassword && (
+                    <p className="text-red-500 text-sm">
+                      {formErrors.confirmPassword}
+                    </p>
+                  )}
                 </div>
               </div>
             </div>
@@ -289,6 +353,45 @@ const EditProfile = () => {
           </form>
         </div>
       </div>
+
+      {/* Delete Modal */}
+      {deleteModal && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
+          <div className="bg-white p-6 rounded-xl w-96">
+            <h3 className="text-lg font-bold mb-4">Confirm Delete Account</h3>
+            <input
+              type="password"
+              placeholder="Enter your password"
+              value={deletePassword}
+              onChange={(e) => setDeletePassword(e.target.value)}
+              className="w-full border rounded-lg p-2 mb-2"
+            />
+            {formErrors.deletePassword && (
+              <p className="text-red-500 text-sm mb-2">
+                {formErrors.deletePassword}
+              </p>
+            )}
+            <div className="flex justify-end gap-4">
+              <button
+                className="px-4 py-2 bg-gray-300 rounded-lg"
+                onClick={() => {
+                  setDeleteModal(false);
+                  setDeletePassword("");
+                  setFormErrors({});
+                }}
+              >
+                Cancel
+              </button>
+              <button
+                className="px-4 py-2 bg-red-600 text-white rounded-lg"
+                onClick={handleDelete}
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

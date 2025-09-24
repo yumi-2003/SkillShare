@@ -58,6 +58,14 @@ const AllCourses = () => {
     return category ? category.name : "Unknown";
   };
 
+  // Helper to format reviews like 94K
+  const formatReviews = (num) => {
+    if (num >= 1000) {
+      return (num / 1000).toFixed(1).replace(/\.0$/, "") + "K";
+    }
+    return num;
+  };
+
   return (
     <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-12 py-24 sm:py-8">
       {/* Page Title */}
@@ -151,6 +159,33 @@ const AllCourses = () => {
                         👨‍🏫 {course.instructor.name}
                       </div>
                     )}
+
+                    {/* Rating Section with dynamic stars */}
+                    <div className="flex items-center gap-1 mb-3 text-[12px] sm:text-sm">
+                      {/* Stars */}
+                      {[1, 2, 3, 4, 5].map((star) => (
+                        <span
+                          key={star}
+                          className={
+                            star <= Math.round(course.averageRating || 0)
+                              ? "text-yellow-500"
+                              : "text-gray-300"
+                          }
+                        >
+                          ★
+                        </span>
+                      ))}
+
+                      {/* Number Rating */}
+                      <span className="ml-1 font-semibold">
+                        {course.averageRating?.toFixed(1) || "0.0"}
+                      </span>
+
+                      {/* Reviews */}
+                      <span className="text-gray-500">
+                        · {formatReviews(course.totalReviews || 0)} reviews
+                      </span>
+                    </div>
 
                     {/* Details Button */}
                     <Link

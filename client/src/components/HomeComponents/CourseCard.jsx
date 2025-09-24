@@ -31,6 +31,14 @@ const CourseCard = ({ title = true, showViewButton = true }) => {
     return category ? category.name : "Unknown";
   };
 
+  // Helper to format reviews like 94K
+  const formatReviews = (num) => {
+    if (num >= 1000) {
+      return (num / 1000).toFixed(1).replace(/\.0$/, "") + "K";
+    }
+    return num;
+  };
+
   return (
     <div className="w-full sm:px-3 py-6">
       <div className="max-w-8xl mx-auto">
@@ -94,6 +102,17 @@ const CourseCard = ({ title = true, showViewButton = true }) => {
                     <div className="flex justify-between mb-3 text-[11px] sm:text-xs text-gray-500 font-medium">
                       <span>⏱ {course.duration} hrs</span>
                       <span>📚 {course.totalLessons} lessons</span>
+                    </div>
+
+                    {/* Rating Section*/}
+                    <div className="flex items-center gap-1 mb-3 text-[12px] sm:text-sm">
+                      <span className="text-yellow-500">⭐</span>
+                      <span className="font-semibold">
+                        {course.averageRating?.toFixed(1) || "0.0"}
+                      </span>
+                      <span className="text-gray-500">
+                        · {formatReviews(course.totalReviews || 0)} reviews
+                      </span>
                     </div>
 
                     {/* Details Button */}

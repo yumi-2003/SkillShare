@@ -70,7 +70,7 @@ const AuthForm = () => {
     }));
   };
 
-  // Centralized validation
+  // form input validation
   const validateForm = () => {
     const errors = {};
 
@@ -87,7 +87,8 @@ const AuthForm = () => {
     if (!formData.password) {
       errors.password = "Please enter password!";
     } else if (!passwordValidate(formData.password)) {
-      errors.password = "Password should be included 8 character!";
+      errors.password =
+        "Password should be included 8 character, At least 8 characters, including 1 uppercase, 1 lowercase, 1 number, and 1 special character.!";
     }
 
     if (!isLoginPage) {
