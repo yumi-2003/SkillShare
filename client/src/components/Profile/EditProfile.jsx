@@ -77,21 +77,20 @@ const EditProfile = () => {
     }
 
     try {
-      const resultAction = await dispatch(updateProfile(formData));
+      const result = await dispatch(updateProfile(formData));
 
-      if (updateProfile.fulfilled.match(resultAction)) {
-        const updatedUser = resultAction.payload.user;
-        setPreview(updatedUser.image || preview); // update preview with server URL
-        toast.success("Profile updated successfully!");
-        navigate("/login");
+      if (updateProfile.fulfilled.match(result)) {
+        const updatedUser = result.payload.user;
+        setPreview(updatedUser.image || preview);
+        if (success) {
+          toast.success("Profile updated successfully!");
+        }
         setCurrentPassword("");
         setNewPassword("");
         setConfirmPassword("");
       } else {
         if (error) {
-          toast.error(
-            resultAction.payload?.message || "Failed to update profile"
-          );
+          toast.error(result.payload?.message || "Failed to update profile");
         }
       }
     } catch (err) {

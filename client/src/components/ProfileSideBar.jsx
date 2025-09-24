@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
 import {
   X,
@@ -9,6 +9,7 @@ import {
   GraduationCap,
   PlusCircle,
 } from "lucide-react";
+import { getProfile } from "../stores/slices/profileSlice";
 
 // Avatar component to show initials
 const Avator = ({ name }) => {
@@ -29,7 +30,16 @@ const ProfileSideBar = () => {
   const [openProfile, setOpenProfile] = useState(false);
   const sidebarRef = useRef(null);
   const user = useSelector((state) => state.auth.user);
+  const userProfile = useSelector((state) => state.profile);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  // Fetch profile on mount
+  useEffect(() => {
+    dispatch(getProfile());
+  }, [dispatch]);
+  console.log("User Updated Profile", userProfile);
+  console.log(userProfile?.user?.image);
 
   const navigateDashboard = () => {
     if (user?.userType === "student") {
@@ -41,6 +51,7 @@ const ProfileSideBar = () => {
       setOpenProfile(false);
     }
   };
+  console.log("User:", user);
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -59,7 +70,15 @@ const ProfileSideBar = () => {
     <div>
       {/* Avatar button */}
       <div onClick={() => setOpenProfile(true)} className="cursor-pointer">
-        <Avator name={user?.name || ""} />
+        {userProfile?.user?.image ? (
+          <img
+            className="w-12 h-12 flex items-center justify-center rounded-full"
+            src={userProfile?.user.image}
+            alt="user profile"
+          />
+        ) : (
+          <Avator name={user?.name || ""} />
+        )}
       </div>
 
       {openProfile && (
@@ -71,8 +90,18 @@ const ProfileSideBar = () => {
             {/* Header */}
             <div className="p-6 bg-gradient-to-r from-[#059669] to-[#10b981] text-white rounded-tl-2xl">
               <div className="flex flex-col items-center">
-                <Avator name={user?.name || ""} />
-                <span className="mt-2 font-bold">{user?.name}</span>
+                {userProfile?.user?.image ? (
+                  <img
+                    className="w-12 h-12 flex items-center justify-center rounded-full"
+                    src={userProfile?.user.image}
+                    alt="user profile"
+                  />
+                ) : (
+                  <Avator name={user?.name || ""} />
+                )}
+                <span className="mt-2 font-bold">
+                  {userProfile?.user?.name || user?.name}
+                </span>
                 <span className="bg-white text-[#064e3b] text-sm px-3 py-1 rounded-full mt-2">
                   {user?.userType === "student"
                     ? "🎓 Student"
@@ -80,7 +109,7 @@ const ProfileSideBar = () => {
                 </span>
                 <span className="flex items-center justify-center bg-white text-[#064e3b] text-sm px-3 py-1 rounded-full mt-2 gap-2">
                   <Mail size={16} />
-                  {user?.email}
+                  {userProfile?.user?.email || user?.email}
                 </span>
               </div>
             </div>

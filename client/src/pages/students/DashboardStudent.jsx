@@ -109,7 +109,7 @@ const DashboardStudent = () => {
               </p>
               <Link
                 to={"/allcourses"}
-                className="mt-4 inline-block bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+                className="mt-4 inline-block bg-green-600 nav-link-white px-4 py-2 rounded hover:bg-green-700"
               >
                 Browse Courses
               </Link>

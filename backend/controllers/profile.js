@@ -40,7 +40,7 @@ exports.updateProfile = async (req, res) => {
     if (!userDoc) throw new Error("User not found");
 
     // --- IMAGE HANDLING ---
-    let imageUrl = courseDoc.image; // keep old by default
+    let imageUrl = userDoc.image; // keep old by default
     let newImageUploaded = false;
 
     const fileFromMultipart =
@@ -125,8 +125,8 @@ exports.deleteProfile = async (req, res) => {
     if (!isPasswordValid) {
       throw new Error("Password is incorrect");
     }
-    if (courseDoc.image && Array.isArray(courseDoc.image)) {
-      const deletePromises = courseDoc.image.map((img) => {
+    if (userDoc.image && Array.isArray(userDoc.image)) {
+      const deletePromises = userDoc.image.map((img) => {
         const publicId = img.substring(
           img.lastIndexOf("/") + 1,
           img.lastIndexOf(".")
