@@ -104,22 +104,23 @@ const ReviewCourse = ({ courseId, enrolled, currentUser }) => {
       dispatch(updateReview({ reviewId: editingReviewId, reviewData }))
         .unwrap()
         .then(() => {
-          toast.success("Review updated successfully!");
+          toast.success("Review updated successfully!", { autoClose: 1000 });
           setEditingReviewId(null);
           setRating(0);
           setComment("");
-          // dispatch(getReviewsByCourse(courseId));
+          dispatch(getReviewsByCourse(courseId));
+          // setPrevReview((prev) => [newReview, ...prev]);
         })
         .catch((err) => toast.error(err.message || "Failed to update review"));
     } else {
       dispatch(addReview({ courseId, reviewData }))
         .unwrap()
         .then(() => {
-          toast.success("Review added successfully!");
+          toast.success("Review added successfully!", { autoClose: 1000 });
           setEditingReviewId(null);
           setRating(0);
           setComment("");
-          // dispatch(getReviewsByCourse(courseId));
+          dispatch(getReviewsByCourse(courseId));
         })
         .catch((err) => toast.error(err.message || "Failed to add review"));
     }
@@ -137,7 +138,7 @@ const ReviewCourse = ({ courseId, enrolled, currentUser }) => {
     dispatch(deleteReview(id))
       .unwrap()
       .then(() => {
-        toast.success("Review deleted successfully!");
+        toast.success("Review deleted successfully!", { autoClose: 1000 });
         dispatch(getReviewsByCourse(courseId));
       })
       .catch((err) => toast.error(err.message || "Failed to delete review"));

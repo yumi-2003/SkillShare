@@ -190,7 +190,7 @@ const AllCourses = () => {
                     {/* Details Button */}
                     <Link
                       to={`/courseDetails/${course._id}`}
-                      className="block w-full bg-blue-600 text-white text-xs sm:text-sm font-medium rounded-md px-3 py-1.5 hover:bg-blue-700 transition text-center"
+                      className="block w-full bg-green-600 text-white text-xs sm:text-sm font-medium rounded-md px-3 py-1.5 hover:bg-green-700 transition text-center"
                     >
                       Details
                     </Link>
@@ -200,7 +200,7 @@ const AllCourses = () => {
               {showCourses < courses.length && (
                 <div className="col-span-full flex justify-center mt-6">
                   <button
-                    className="px-6 py-2 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition flex items-center space-x-2"
+                    className="px-6 py-2 bg-green-600 text-white font-semibold rounded-lg shadow-md hover:bg-green-700 transition flex items-center space-x-2"
                     onClick={() => setShowCourses(showCourses + loadMore)}
                   >
                     <span>Show 4 more Courses</span>

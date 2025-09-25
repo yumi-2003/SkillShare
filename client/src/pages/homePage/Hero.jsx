@@ -1,8 +1,10 @@
 import React from "react";
 import HeroImg from "../../assets/hero2.jpg";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Hero = () => {
+  const user = useSelector((state) => state.user.user);
   return (
     <div className="bg-white text-black mt-10">
       <div className="max-w-7xl mx-auto px-6 lg:px-12 py-10 flex flex-col lg:flex-row items-stretch justify-between">
@@ -17,12 +19,23 @@ const Hero = () => {
             your journey today.
           </p>
           <div className="flex justify-center lg:justify-start gap-4">
-            <Link
-              to={"/signup"}
-              className="bg-[#10b981] nav-link-white px-6 py-3 rounded-lg font-semibold shadow-lg"
-            >
-              Get Started
-            </Link>
+            {!user ? (
+              // If not logged in ye, go to signup
+              <Link
+                to="/signup"
+                className="bg-[#10b981] nav-link-white px-6 py-3 rounded-lg font-semibold shadow-lg"
+              >
+                Get Started
+              </Link>
+            ) : (
+              // If logged in, disable button
+              <button
+                disabled
+                className="bg-gray-400 cursor-not-allowed px-6 py-3 rounded-lg font-semibold shadow-lg"
+              >
+                Get Started
+              </button>
+            )}
             <Link
               to="/allcourses"
               className="bg-white text-[#059669] px-6 py-3 rounded-lg font-semibold shadow"

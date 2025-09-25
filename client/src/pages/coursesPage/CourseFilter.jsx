@@ -14,7 +14,7 @@ const CourseFilter = ({
           type="text"
           placeholder="Search by title or instructor name..."
           value={search}
-          className="w-full border rounded-lg px-3 py-2 text-sm sm:text-base focus:ring focus:ring-blue-300"
+          className="w-full border rounded-lg px-3 py-2 text-sm sm:text-base focus:ring focus:ring-green-300"
           onChange={(e) => setSearch(e.target.value)}
         />
       </div>
@@ -24,7 +24,7 @@ const CourseFilter = ({
         <button
           className={`px-3 py-1.5 text-xs sm:text-sm rounded ${
             selectedCat === ""
-              ? "bg-blue-600 text-white"
+              ? "bg-green-600 text-white"
               : "bg-gray-200 text-gray-800"
           }`}
           onClick={() => setSelectedCat("")}
@@ -37,7 +37,7 @@ const CourseFilter = ({
               key={cat._id}
               className={`px-3 py-1.5 text-xs sm:text-sm rounded ${
                 selectedCat === cat._id
-                  ? "bg-blue-600 text-white"
+                  ? "bg-green-600 text-white"
                   : "bg-gray-200 text-gray-800"
               }`}
               onClick={() => setSelectedCat(cat._id)}

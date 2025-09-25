@@ -38,14 +38,15 @@ export const updateCategory = createAsyncThunk(
 );
 
 const categorySlice = createSlice({
-  name: "category",
+  name: "category", // store configuration name
   initialState: {
-    categories: [],
-    status: "idle",
-    error: null,
+    categories: [], //store category list
+    status: "idle", // idle, loading, succeeded, failed
+    error: null, // store error message
   },
   reducers: {},
   extraReducers: (builder) => {
+    //pending = loading, fulfilled = update , rejected = failed
     builder
       // Fetch
       .addCase(getAllCategories.pending, (state) => {

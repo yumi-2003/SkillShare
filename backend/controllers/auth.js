@@ -23,7 +23,7 @@ exports.register = async (req, res) => {
       password: hashedPassword,
       userType,
       image:
-        "https://res.cloudinary.com/dktycpcb5/image/upload/v1758652631/profile_img_kdkffq.jpg",
+        "https://res.cloudinary.com/dktycpcb5/image/upload/v1758821542/profile_img-removebg-preview_efwddw.png",
     });
 
     const token = jwt.sign(

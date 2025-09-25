@@ -12,6 +12,8 @@ const CategoryForm = () => {
     name: "",
     description: "",
   });
+
+  //make the first letter to uppercase
   const handleChange = (e) => {
     const { name, value } = e.target;
 

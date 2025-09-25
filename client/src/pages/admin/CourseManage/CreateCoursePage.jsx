@@ -7,20 +7,22 @@ import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 
 const CreateCoursePage = () => {
-  const [preview, setPreview] = useState("");
+  //get redux data user, and category
   const user = useSelector((state) => state.user.user);
-  const dispatch = useDispatch();
   const { categories } = useSelector((state) => state.category);
   const { status, error } = useSelector((state) => state.course);
   const firstRender = useRef(true);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  // get all categories
+  // get all categories on page load or mount
   useEffect(() => {
     dispatch(getAllCategories());
   }, [dispatch]);
 
-  // form state
+  //local states
+  const [preview, setPreview] = useState(""); // stores preview url of the uploaded image
+  // form state, store everything from the form
   const [formData, setFormData] = useState({
     title: "",
     description: "",

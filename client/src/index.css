@@ -50,7 +50,9 @@ h1, h2, h3, h4, h5, h6, .logo {
 }
 
 input:focus, textarea:focus, select:focus {
-  box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.3); /* Emerald ring */
+  border-width: 2px;
+  border-radius: 0.375rem;
+  border-color: #1f2120 !important; /* Soft Mint Border */
   outline: none;
 }
 

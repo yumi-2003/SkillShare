@@ -139,15 +139,19 @@ const AuthForm = () => {
         }
       } else {
         showToast({
-          message: "Account created successfully, please log in",
+          message: "Account created successfully",
           icon: CheckCircle,
           iconColor: "text-green-500",
           duration: 2500,
         });
 
-        setTimeout(() => {
-          navigate("/login");
-        }, 2500);
+        if (response?.user?.userType === "student") {
+          navigate("/student-dashboard");
+        } else if (response?.user?.userType === "instructor") {
+          navigate("/instructor-dashboard");
+        } else {
+          navigate("/");
+        }
       }
 
       // Reset form
@@ -169,8 +173,8 @@ const AuthForm = () => {
   };
 
   return (
-    <section className="min-h-screen flex items-center justify-center mt-14">
-      <div className="w-full max-w-md p-6 rounded-xl shadow-lg">
+    <section className="min-h-screen flex items-center justify-center mt-6">
+      <div className="w-full max-w-md p-6 rounded-xl border border-neutral-300 shadow-sm">
         <h2 className="font-bold text-blue-600 text-2xl mb-6 text-center">
           {isLoginPage ? "Welcome Back" : "Join SkillShare"}
         </h2>
@@ -182,14 +186,14 @@ const AuthForm = () => {
         <form onSubmit={handleSubmit} className="space-y-4">
           {!isLoginPage && (
             <>
-              <div className="flex items-center gap-2 rounded-lg px-3 py-2 w-full max-w-md sm:max-w-lg">
+              <div className="flex items-center gap-2 rounded-lg px-3 w-full max-w-md sm:max-w-lg">
                 <input
                   type="text"
                   name="name"
                   value={formData.name}
                   onChange={handleInputChange}
                   placeholder="Full Name"
-                  className="flex-1 bg-transparent border-none outline-none text-sm sm:text-base"
+                  className="flex-1 bg-transparent outline-none text-sm sm:text-base"
                 />
                 <User size={20} className="text-gray-500" />
               </div>
@@ -199,7 +203,7 @@ const AuthForm = () => {
             </>
           )}
           <>
-            <div className="flex items-center gap-2 rounded-lg px-3 py-2 w-full max-w-md sm:max-w-lg">
+            <div className="flex items-center gap-2 rounded-lg px-3 w-full max-w-md sm:max-w-lg">
               <input
                 type="email"
                 name="email"
@@ -251,7 +255,7 @@ const AuthForm = () => {
           )}
 
           <>
-            <div className="flex items-center gap-2 rounded-lg px-3 py-2 w-full max-w-md sm:max-w-lg ">
+            <div className="flex items-center gap-2 rounded-lg px-3 w-full max-w-md sm:max-w-lg ">
               <input
                 type={show ? "text" : "password"}
                 name="password"
