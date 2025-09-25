@@ -2,7 +2,7 @@ import axios from "axios";
 import { logout } from "./auth";
 
 const axiosInstance = axios.create({
-  bbaseURL: `${import.meta.env.VITE_SERVER_URL}`, // api base url
+  baseURL: `${import.meta.env.VITE_SERVER_URL}`, // api base url
   // timeout: 10000, // request timeout in millseconds
   headers: {
     "Content-Type": "application/json",
