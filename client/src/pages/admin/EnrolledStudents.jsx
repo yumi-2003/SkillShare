@@ -11,9 +11,9 @@ const EnrolledStudents = () => {
   const courses = coursesData || [];
 
   // Filter courses created by this instructor
-  const instructorCourses = courses.filter(
-    (course) => course.instructor === user?._id
-  );
+  const instructorCourses =
+    Array.isArray(courses) &&
+    courses.filter((course) => course.instructor === user?._id);
   // Get all courses
   useEffect(() => {
     dispatch(getAllCourses());
@@ -39,13 +39,14 @@ const EnrolledStudents = () => {
         <p className="text-gray-500">Your courses are not been applied yet</p>
       )}
 
-      {instructorCourses.map((course) => (
-        <CourseAccordion
-          key={course._id}
-          course={course}
-          // enrollees={courseEnrollees[course._id]}
-        />
-      ))}
+      {Array.isArray(instructorCourses) &&
+        instructorCourses.map((course) => (
+          <CourseAccordion
+            key={course._id}
+            course={course}
+            // enrollees={courseEnrollees[course._id]}
+          />
+        ))}
     </div>
   );
 };

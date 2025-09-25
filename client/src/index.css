@@ -102,7 +102,7 @@ input:focus, textarea:focus, select:focus {
 }
 
 .hover\:text-blue-500:hover {
-  color: #10b981 !important; /* Bright Mint */
+  color: #e9f2ef !important; /* Bright Mint */
 }
 
 /* nav bar  */

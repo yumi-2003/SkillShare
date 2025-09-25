@@ -118,7 +118,7 @@ const CourseCard = ({ title = true, showViewButton = true }) => {
                     {/* Details Button */}
                     <Link
                       to={`/courseDetails/${course._id}`}
-                      className="block w-full bg-green-600 nav-link-white text-xs sm:text-sm font-medium rounded-md px-3 py-1.5 hover:bg-green-700 transition text-center"
+                      className="block w-full bg-green-600 nav-link-white text-xs sm:text-sm font-medium rounded-md px-3 py-1.5 hover:bg-green-700 hover:nav-link-white transition text-center"
                     >
                       View Details
                     </Link>
@@ -140,7 +140,7 @@ const CourseCard = ({ title = true, showViewButton = true }) => {
           <div className="mt-6 text-center">
             <Link
               to="/allcourses"
-              className="text-xs sm:text-sm font-medium rounded-md px-4 py-2 hover:nav-link-white hover:bg-green-700 border border-neutral-300 shadow-md transition"
+              className="text-xs sm:text-sm font-medium rounded-md px-4 py-2 hover:text-blue-500 hover:bg-green-700 border border-neutral-300 shadow-md transition"
             >
               View All Courses
             </Link>

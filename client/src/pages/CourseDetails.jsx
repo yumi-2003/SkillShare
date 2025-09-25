@@ -163,13 +163,13 @@ const CourseDetails = () => {
             <div className="flex gap-2 mt-2">
               <Link
                 to={`/courses/edit/${courseData._id}`}
-                className="flex items-center gap-2 px-5 py-2 bg-green-600 text-white rounded-lg shadow hover:bg-green-700 transition"
+                className="flex items-center gap-2 px-5 py-2 bg-green-600 nav-link-white rounded-lg shadow hover:bg-green-700 transition"
               >
                 <Edit size={18} /> Edit
               </Link>
               <button
                 onClick={() => handleDelete(courseData._id)}
-                className="flex items-center gap-2 px-5 py-2 bg-red-600 text-white rounded-lg shadow hover:bg-red-700 transition"
+                className="flex items-center gap-2 px-5 py-2 bg-red-600 nav-link-white rounded-lg shadow hover:bg-red-700 transition"
               >
                 <Trash size={18} /> Delete
               </button>
@@ -177,13 +177,13 @@ const CourseDetails = () => {
           ) : (
             <div className="mt-2">
               {isEnrolled ? (
-                <button className="bg-blue-800 text-white px-4 py-2 rounded">
+                <button className="bg-green-800 text-white px-4 py-2 rounded">
                   Already Enrolled
                 </button>
               ) : (
                 <button
                   onClick={handleEnroll}
-                  className="bg-blue-600 text-white px-4 py-2 rounded"
+                  className="bg-green-600 text-white px-4 py-2 rounded"
                 >
                   Enroll Now
                 </button>
@@ -208,7 +208,7 @@ const CourseDetails = () => {
       <div className="mt-12">
         <h2 className="text-2xl font-bold mb-6">Related Courses</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {relatedCourses.map((course) => (
+          {relatedCourses.slice(0, 4).map((course) => (
             <div
               key={course._id}
               className="bg-white shadow-lg rounded-xl overflow-hidden hover:shadow-2xl transition duration-300"
@@ -220,7 +220,6 @@ const CourseDetails = () => {
               />
               <div className="p-4">
                 <h3 className="text-lg font-semibold mb-2">
-                  {" "}
                   {course.title.length > 20
                     ? `${course.title.substring(0, 18)}...`
                     : course.title}
@@ -230,9 +229,9 @@ const CourseDetails = () => {
                 </p>
                 <Link
                   to={`/courseDetails/${course._id}`}
-                  className="inline-block px-4 py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 transition"
+                  className="inline-block px-4 py-2 bg-green-600 text-sm rounded-lg hover:bg-green-700 transition"
                 >
-                  View Details
+                  <span className="text-white">View Details</span>
                 </Link>
               </div>
             </div>
