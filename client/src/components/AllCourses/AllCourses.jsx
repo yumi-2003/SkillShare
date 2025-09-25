@@ -192,7 +192,7 @@ const AllCourses = () => {
                       to={`/courseDetails/${course._id}`}
                       className="block w-full bg-green-600 text-white text-xs sm:text-sm font-medium rounded-md px-3 py-1.5 hover:bg-green-700 transition text-center"
                     >
-                      Details
+                      <span className="text-white">Details</span>
                     </Link>
                   </div>
                 </div>

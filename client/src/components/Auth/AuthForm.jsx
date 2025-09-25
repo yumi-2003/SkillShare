@@ -174,7 +174,7 @@ const AuthForm = () => {
 
   return (
     <section className="min-h-screen flex items-center justify-center mt-6">
-      <div className="w-full max-w-md p-6 rounded-xl border border-neutral-300 shadow-sm">
+      <div className="w-full max-w-md p-6 rounded-xl border bg-white border-neutral-300 shadow-sm">
         <h2 className="font-bold text-blue-600 text-2xl mb-6 text-center">
           {isLoginPage ? "Welcome Back" : "Join SkillShare"}
         </h2>
@@ -183,7 +183,7 @@ const AuthForm = () => {
           <p className="text-red-500 text-sm mb-3 text-center">{error}</p>
         )} */}
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4 bg-white">
           {!isLoginPage && (
             <>
               <div className="flex items-center gap-2 rounded-lg px-3 w-full max-w-md sm:max-w-lg">

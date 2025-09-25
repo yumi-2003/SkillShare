@@ -74,7 +74,9 @@ const CourseDetails = () => {
     (enrollment) => enrollment.course._id === courseData._id
   );
 
-  const relatedCourses = coursesList?.filter((c) => c._id !== courseData._id);
+  const relatedCourses =
+    Array.isArray(coursesList) &&
+    coursesList?.filter((c) => c._id !== courseData._id);
 
   const getCategoryName = (categoryId) => {
     const cat = categories.find((cat) => cat._id === categoryId);

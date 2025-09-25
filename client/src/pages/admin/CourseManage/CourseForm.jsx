@@ -28,9 +28,10 @@ const CourseForm = () => {
   };
 
   // Filter courses by logged-in instructor
-  const displayedCourses = user
-    ? courses.filter((course) => course.instructor === user._id)
-    : [];
+  const displayedCourses =
+    user && Array.isArray(courses)
+      ? courses.filter((course) => course.instructor === user._id)
+      : [];
 
   console.log("Displayed courses:", displayedCourses);
 

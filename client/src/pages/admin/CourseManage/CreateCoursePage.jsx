@@ -84,7 +84,7 @@ const CreateCoursePage = () => {
     }
     if (status === "succeeded") {
       toast.success("Course created successfully!", { autoClose: 2000 });
-      navigate("/allcourses");
+      navigate("/instructor-dashboard");
 
       // reset form after success
       setFormData({
