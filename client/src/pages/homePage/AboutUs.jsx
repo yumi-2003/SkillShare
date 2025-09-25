@@ -47,7 +47,7 @@ const AboutUs = () => {
       {/* header  */}
       <div className="max-w-7xl mx-auto text-center mb-12">
         <h2 className="text-3xl lg:text-4xl font-bold text-[#064e3b]">
-          Why Choose <span className="text-[#059669]">SkillShare</span>?
+          Why Choose <span className="text-[#059669]">IngyinLearn</span>?
         </h2>
         <p className="text-[#065f46] mt-2">
           We provide everything you need to excel in Computer Science and

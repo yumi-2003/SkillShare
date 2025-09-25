@@ -33,7 +33,7 @@ const Navbar = () => {
               className="h-10 w-10"
             />
             <span className="font-bold text-2xl text-[#064e3b]">
-              SkillShare
+              IngyinLearn
             </span>
           </Link>
 

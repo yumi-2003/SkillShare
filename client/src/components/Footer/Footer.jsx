@@ -9,7 +9,7 @@ const Footer = () => {
       <div className="max-w-7xl mx-auto px-4 py-6 flex flex-col md:flex-row items-center justify-center gap-4">
         <div className="flex items-center gap-2">
           <img src={SkillShareLogo} className="w-10 h-10" alt="Logo" />
-          <span className="font-bold text-2xl">SkillShare</span>
+          <span className="font-bold text-2xl">IngyinLearn</span>
         </div>
 
         <div className="flex gap-6 font-medium text-sm">
@@ -45,7 +45,7 @@ const Footer = () => {
 
       {/* bottom section  */}
       <div className="px-4 py-4 text-center text-sm border-t border-[#d1fae5]">
-        &copy; 2025 SkillShare. Empowering Learners Worldwide
+        &copy; 2025 IngyinLearn. Empowering Learners Worldwide
       </div>
     </footer>
   );
