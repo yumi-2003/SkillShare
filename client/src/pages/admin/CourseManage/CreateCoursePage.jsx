@@ -65,7 +65,7 @@ const CreateCoursePage = () => {
       "totalLessons",
       formData.totalLessons ? Number(formData.totalLessons) : ""
     );
-    data.append("userId", user._id);
+    data.append("userId", user?._id || "");
     if (formData.image) {
       data.append("image", formData.image);
     }

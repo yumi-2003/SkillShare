@@ -34,6 +34,7 @@ const CourseFilter = ({
         {Array.isArray(categories) && categories.length > 0 ? (
           categories.map((cat) => (
             <button
+              type="button"
               key={cat._id}
               className={`px-3 py-1.5 text-xs sm:text-sm rounded ${
                 selectedCat === cat._id
@@ -53,6 +54,7 @@ const CourseFilter = ({
       {/* Action Buttons */}
       <div className="flex gap-2">
         <button
+          type="button"
           onClick={onClear}
           className="px-3 py-1.5 text-xs sm:text-sm bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300"
         >
