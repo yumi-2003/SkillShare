@@ -45,6 +45,7 @@ const CreateCoursePage = () => {
   // handle submit
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (!user?._id) return;
 
     if (
       !formData.title ||
@@ -65,7 +66,7 @@ const CreateCoursePage = () => {
       "totalLessons",
       formData.totalLessons ? Number(formData.totalLessons) : ""
     );
-    data.append("userId", user?._id || "");
+    data.append("userId", user._id);
     if (formData.image) {
       data.append("image", formData.image);
     }
