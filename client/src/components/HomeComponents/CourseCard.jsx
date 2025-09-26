@@ -68,7 +68,7 @@ const CourseCard = ({ title = true, showViewButton = true }) => {
         {/* Courses Grid */}
         {status === "succeeded" &&
           (Array.isArray(courses) && courses.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 sm:gap-8 mt-6">
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-6 md:grid-cols-3 lg:grid-cols-4 lg:gap-10 mt-6 px-4 sm:px-6 lg:px-8">
               {displayedCourses.map((course) => (
                 <div
                   key={course._id}
