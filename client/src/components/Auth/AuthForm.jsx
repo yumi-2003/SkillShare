@@ -174,7 +174,7 @@ const AuthForm = () => {
 
   return (
     <section className="min-h-screen flex items-center justify-center mt-6">
-      <div className="w-full max-w-md p-6 rounded-xl border bg-white border-neutral-300 shadow-sm">
+      <div className="w-full max-w-md p-6 mx-4 rounded-xl border bg-white border-neutral-300 shadow-sm sm:px-6">
         <h2 className="font-bold text-blue-600 text-2xl mb-6 text-center">
           {isLoginPage ? "Welcome Back" : "Join IngyinLearn"}
         </h2>
