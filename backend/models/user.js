@@ -23,6 +23,22 @@ const userSchema = new Schema(
     image: {
       type: String,
     },
+    points: {
+      type: Number,
+      default: 0,
+    },
+    earnedBadges: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Badge",
+      },
+    ],
+    completedQuicks: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Quick",
+      },
+    ],
   },
   {
     timestamps: true,

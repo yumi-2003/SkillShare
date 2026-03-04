@@ -23,4 +23,7 @@ router.get("/courses/:id", publicController.getCoursesById);
 // GET /api/categories
 router.get("/categories", categoryController.getCategories);
 
+// GET /api/stats
+router.get("/stats", publicController.getStats);
+
 module.exports = router;

@@ -21,11 +21,10 @@ const ActiveTabs = ({
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center gap-2 pb-2 border-b-2 transition-colors whitespace-nowrap ${
-                activeTab === tab.id
+              className={`flex items-center gap-2 pb-2 border-b-2 transition-colors whitespace-nowrap ${activeTab === tab.id
                   ? "border-blue-600 text-gray-600 font-semibold"
                   : "border-transparent text-gray-500 hover:text-blue-600"
-              }`}
+                }`}
             >
               {tab.icon && <tab.icon size={18} />}
               <span className="text-sm sm:text-base">{tab.label}</span>
@@ -35,7 +34,7 @@ const ActiveTabs = ({
       </div>
 
       {/* Tab Content */}
-      <div className="p-4 sm:p-6">
+      <div className="py-4 sm:p-6">
         {tabs.map(
           (tab) =>
             activeTab === tab.id && (

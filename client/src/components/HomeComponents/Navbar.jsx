@@ -60,11 +60,32 @@ const Navbar = () => {
             >
               Courses
             </NavLink>
+            <NavLink
+              to="/quicks"
+              className={({ isActive }) =>
+                isActive
+                  ? "text-white border-b-2 border-[#10b981]"
+                  : "text-white hover:text-[#10b981]"
+              }
+            >
+              Quicks
+            </NavLink>
           </div>
 
           {/* Desktop User Actions */}
           <div className="hidden md:flex items-center gap-4">
-            {/* <Theme /> */}
+            <Theme />
+            {user && (
+              <button
+                onClick={() => {
+                  const isStudentView = window.location.pathname.includes("student");
+                  navigate(isStudentView ? "/instructor-dashboard" : "/student-dashboard");
+                }}
+                className="text-[#064e3b] hover:text-[#10b981] font-semibold flex items-center gap-1 border border-[#064e3b] px-3 py-1 rounded-lg transition"
+              >
+                {window.location.pathname.includes("student") ? "Switch to Instructor View" : "Switch to Student View"}
+              </button>
+            )}
             {user ? (
               <>
                 <ProfileSideBar />
@@ -81,8 +102,8 @@ const Navbar = () => {
                   to="/login"
                   className={({ isActive }) =>
                     isActive
-                      ? "text-white font-semibold border-none border-[#10b981]"
-                      : "text-white hover:text-[#10b981]"
+                      ? "text-[#064e3b] font-semibold border-none border-[#10b981]"
+                      : "text-[#064e3b] hover:text-[#10b981]"
                   }
                 >
                   Login
@@ -140,9 +161,35 @@ const Navbar = () => {
             >
               Courses
             </NavLink>
+            <NavLink
+              to="/quicks"
+              onClick={() => setMenuOpen(false)}
+              className={({ isActive }) =>
+                isActive
+                  ? "text-[#10b981] font-semibold border border-[#10b981] pb-1"
+                  : "text-[#064e3b] hover:text-[#10b981]"
+              }
+            >
+              Quicks
+            </NavLink>
+
+            <div className="flex items-center justify-between mb-4">
+              <span className="text-[#064e3b] font-medium">Theme</span>
+              <Theme />
+            </div>
 
             {user ? (
               <>
+                <button
+                  onClick={() => {
+                    const isStudentView = window.location.pathname.includes("student");
+                    navigate(isStudentView ? "/instructor-dashboard" : "/student-dashboard");
+                    setMenuOpen(false);
+                  }}
+                  className="text-[#064e3b] hover:text-[#10b981] font-semibold border border-[#064e3b] px-3 py-2 rounded-lg transition text-left"
+                >
+                  {window.location.pathname.includes("student") ? "Switch to Instructor View" : "Switch to Student View"}
+                </button>
                 <ProfileSideBar />
                 <button
                   onClick={handleLogout}
@@ -158,8 +205,8 @@ const Navbar = () => {
                   onClick={() => setMenuOpen(false)}
                   className={({ isActive }) =>
                     isActive
-                      ? "text-white font-semibold border border-[#10b981] pb-1"
-                      : "text-white hover:text-[#10b981]"
+                      ? "text-[#064e3b] font-semibold border border-[#10b981] pb-1"
+                      : "text-[#064e3b] hover:text-[#10b981]"
                   }
                 >
                   Login

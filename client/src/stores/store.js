@@ -6,6 +6,7 @@ import courseReducer from "./slices/courseSlice";
 import enrollmentReducer from "./slices/enrollment";
 import profileReducer from "./slices/profileSlice";
 import reviewReducer from "./slices/reviewSlice";
+import quickReducer from "./slices/quickSlice";
 
 export default configureStore({
   reducer: {
@@ -13,9 +14,9 @@ export default configureStore({
     user: userReducer,
     category: categoryReducer,
     course: courseReducer,
-    // Add enrollment slice reducer
     enrollment: enrollmentReducer,
     profile: profileReducer,
     review: reviewReducer,
+    quicks: quickReducer,
   },
 });

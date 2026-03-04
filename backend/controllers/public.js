@@ -1,5 +1,6 @@
 const Course = require("../models/course");
 const User = require("../models/user");
+const Enrollment = require("../models/enrollment");
 
 exports.getUsers = async (req, res) => {
   try {
@@ -18,7 +19,10 @@ exports.getUsers = async (req, res) => {
 
 exports.getCourses = async (req, res) => {
   try {
-    const courses = await Course.find({}).sort({ createdAt: -1 });
+    const courses = await Course.find({})
+      .sort({ createdAt: -1 })
+      .populate("instructor", "name email")
+      .populate("category", "name");
 
     return res.status(200).json({
       isSuccess: true,
@@ -61,7 +65,7 @@ exports.getCoursesByFilters = async (req, res) => {
     // Execute query with pagination
     const courses = await Course.find(query)
       .populate("instructor", "name email")
-      .populate("category", "category_name");
+      .populate("category", "name");
 
     return res.status(200).json({
       isSuccess: true,
@@ -84,7 +88,7 @@ exports.getCoursesById = async (req, res) => {
   try {
     const course = await Course.findById(req.params.id)
       .populate("instructor", "name email")
-      .populate("category", "category_name");
+      .populate("category", "name");
 
     if (!course) {
       return res.status(404).json({
@@ -104,3 +108,30 @@ exports.getCoursesById = async (req, res) => {
     });
   }
 };
+
+exports.getStats = async (req, res) => {
+  try {
+    const totalCourses = await Course.countDocuments({});
+    const activeStudents = await User.countDocuments({ userType: "student" });
+
+    // Mock values for now
+    const certificatesIssued = 350;
+    const successRate = 98;
+
+    return res.status(200).json({
+      isSuccess: true,
+      stats: {
+        totalCourses,
+        activeStudents,
+        certificatesIssued,
+        successRate,
+      },
+    });
+  } catch (err) {
+    return res.status(500).json({
+      isSuccess: false,
+      message: err.message || "Failed to fetch stats",
+    });
+  }
+};
+

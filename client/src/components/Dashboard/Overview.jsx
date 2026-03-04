@@ -4,11 +4,12 @@ import { Users, BookOpen, Layers, UserStar } from "lucide-react";
 import axiosInstance from "../../apiCalls/axiosInstance";
 import EnrolledStudents from "../../pages/admin/EnrolledStudents";
 import { useSelector } from "react-redux";
+import Skeleton from "../ui/Skeleton";
 // import { getCourseEnrollees } from "../../stores/slices/enrollment";
 
 const Overview = () => {
-  const [userList, setUserList] = useState([]);
-  const [courseList, setCourseList] = useState([]);
+  const [userList, setUserList] = useState(null);
+  const [courseList, setCourseList] = useState(null);
   // const [enrollmentList, setEnrollmentList] = useState([]);
   // const user = useSelector((state) => state.auth.user); // Get user from Redux
   const { courseEnrollees } = useSelector((state) => state.enrollment);
@@ -46,19 +47,19 @@ const Overview = () => {
 
   return (
     <>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 md:gap-8 my-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 my-6">
         {/* check this card are populated by loggin user data id */}
         <Card
           title="Total Users"
           value={
-            userList.filter((user) => user.userType !== "instructor").length
+            userList ? userList.filter((user) => user.userType !== "instructor").length : <Skeleton width="40px" height="24px" />
           }
           subtitle=""
           icon={<Users size={20} />}
         />
         <Card
           title="Total Courses"
-          value={courseList.length}
+          value={courseList ? courseList.length : <Skeleton width="40px" height="24px" />}
           subtitle=""
           icon={<BookOpen size={20} />}
         />

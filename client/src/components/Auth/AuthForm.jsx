@@ -97,9 +97,6 @@ const AuthForm = () => {
       } else if (formData.password !== formData.cpassword) {
         errors.cpassword = "Passwords do not match!";
       }
-      if (!formData.userType) {
-        errors.userType = "Please select a role!";
-      }
     }
 
     setFormError(errors);
@@ -114,7 +111,7 @@ const AuthForm = () => {
       name: formData.name,
       email: formData.email,
       password: formData.password,
-      userType: formData.userType || "student",
+      userType: "student", // All users are learners by default
     };
 
     try {
@@ -221,36 +218,9 @@ const AuthForm = () => {
 
           {!isLoginPage && (
             <div className="w-full">
-              <p className="mb-2 font-medium text-gray-700">
-                I want to join as
+              <p className="text-gray-500 text-sm text-center">
+                By signing up, you gain access to both student and instructor features.
               </p>
-              <div className="flex flex-col gap-3">
-                <label className="flex items-center rounded-lg p-3 cursor-pointer ">
-                  <input
-                    type="radio"
-                    name="userType"
-                    value="student"
-                    checked={formData.userType === "student"}
-                    onChange={handleInputChange}
-                    className="mr-3"
-                  />
-                  <span className="text-gray-800">Student</span>
-                </label>
-                <label className="flex items-center rounded-lg p-3 cursor-pointer ">
-                  <input
-                    type="radio"
-                    name="userType"
-                    value="instructor"
-                    checked={formData.userType === "instructor"}
-                    onChange={handleInputChange}
-                    className="mr-3"
-                  />
-                  <span className="text-gray-800">Instructor</span>
-                </label>
-              </div>
-              {formError.userType && (
-                <p className="text-red-500 text-sm">{formError.userType}</p>
-              )}
             </div>
           )}
 
@@ -312,8 +282,8 @@ const AuthForm = () => {
                 ? "Logging in..."
                 : "Registering..."
               : isLoginPage
-              ? "Login"
-              : "Register"}
+                ? "Login"
+                : "Register"}
           </button>
         </form>
 

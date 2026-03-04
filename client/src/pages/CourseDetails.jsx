@@ -8,6 +8,7 @@ import { enrollInCourse, getMyEnrollments } from "../stores/slices/enrollment";
 import axiosInstance from "../apiCalls/axiosInstance";
 import { toast, ToastContainer } from "react-toastify";
 import ReviewCourse from "../pages/coursesPage/ReviewCourse";
+import Skeleton from "../components/ui/Skeleton";
 
 const CourseDetails = () => {
   const { id } = useParams();
@@ -124,78 +125,84 @@ const CourseDetails = () => {
   return (
     <div className="max-w-6xl mx-auto p-6 mt-24">
       <ToastContainer />
-      {/* Course Card */}
-      <div className="bg-white shadow-xl rounded-2xl overflow-hidden flex flex-col md:flex-row gap-8">
-        {/* Left: Course Image */}
-        <div className="relative md:w-1/2">
-          <img
-            src={courseData?.image || "/placeholder.png"}
-            alt={courseData?.title || "Course Image"}
-            className="w-full h-80 md:h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+      {/* Loading State */}
+      {!courseData?._id ? (
+        <div className="flex justify-center items-center h-[60vh]">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600"></div>
         </div>
-
-        {/* Right: Course Info */}
-        <div className="md:w-1/2 flex flex-col justify-center p-6">
-          <h1 className="text-4xl md:text-5xl font-extrabold mb-4">
-            {courseData?.title || "Untitled Course"}
-          </h1>
-          <div className="flex flex-wrap gap-2 mb-6">
-            <span className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm font-semibold">
-              Category: {category?.name || "N/A"}
-            </span>
-            <span className="bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-sm font-semibold">
-              Lessons: {courseData?.totalLessons || "0"}
-            </span>
+      ) : (
+        <div className="bg-white shadow-xl rounded-2xl overflow-hidden flex flex-col md:flex-row gap-8">
+          {/* Left: Course Image */}
+          <div className="relative md:w-1/2">
+            <img
+              src={courseData?.image || "/placeholder.png"}
+              alt={courseData?.title || "Course Image"}
+              className="w-full h-80 md:h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
           </div>
-          <div className="flex flex-wrap gap-2 mb-6">
-            <span className="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-semibold">
-              Duration: {courseData?.duration || "0"} hours
-            </span>
-            <span className="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-semibold">
-              Instructor: {courseData?.instructor?.name || "Unknown"}
-            </span>
-          </div>
-          <p className="text-gray-700 leading-relaxed mb-6">
-            {courseData?.description || "No description available."}
-          </p>
 
-          {/* Action Buttons */}
-          {user?.userType === "instructor" &&
-          user?._id === courseData?.instructor?._id ? (
-            <div className="flex gap-2 mt-2">
-              <Link
-                to={`/courses/edit/${courseData?._id}`}
-                className="flex items-center gap-2 px-5 py-2 bg-green-600 nav-link-white rounded-lg shadow hover:bg-green-700 transition"
-              >
-                <Edit size={18} /> Edit
-              </Link>
-              <button
-                onClick={() => handleDelete(courseData?._id)}
-                className="flex items-center gap-2 px-5 py-2 bg-red-600 nav-link-white rounded-lg shadow hover:bg-red-700 transition"
-              >
-                <Trash size={18} /> Delete
-              </button>
+          {/* Right: Course Info */}
+          <div className="md:w-1/2 flex flex-col justify-center p-6">
+            <h1 className="text-4xl md:text-5xl font-extrabold mb-4">
+              {courseData?.title || "Untitled Course"}
+            </h1>
+            <div className="flex flex-wrap gap-2 mb-6">
+              <span className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm font-semibold">
+                Category: {category?.name || "N/A"}
+              </span>
+              <span className="bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-sm font-semibold">
+                Lessons: {courseData?.totalLessons || "0"}
+              </span>
             </div>
-          ) : (
-            <div className="mt-2">
-              {isEnrolled ? (
-                <button className="bg-green-800 text-white px-4 py-2 rounded">
-                  Already Enrolled
-                </button>
-              ) : (
-                <button
-                  onClick={handleEnroll}
-                  className="bg-green-600 text-white px-4 py-2 rounded"
+            <div className="flex flex-wrap gap-2 mb-6">
+              <span className="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-semibold">
+                Duration: {courseData?.duration || "0"} hours
+              </span>
+              <span className="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-semibold">
+                Instructor: {courseData?.instructor?.name || "Unknown"}
+              </span>
+            </div>
+            <p className="text-gray-700 leading-relaxed mb-6">
+              {courseData?.description || "No description available."}
+            </p>
+
+            {/* Action Buttons */}
+            {user?.userType === "instructor" &&
+              user?._id === courseData?.instructor?._id ? (
+              <div className="flex gap-2 mt-2">
+                <Link
+                  to={`/courses/edit/${courseData?._id}`}
+                  className="flex items-center gap-2 px-5 py-2 bg-green-600 nav-link-white rounded-lg shadow hover:bg-green-700 transition"
                 >
-                  Enroll Now
+                  <Edit size={18} /> Edit
+                </Link>
+                <button
+                  onClick={() => handleDelete(courseData?._id)}
+                  className="flex items-center gap-2 px-5 py-2 bg-red-600 nav-link-white rounded-lg shadow hover:bg-red-700 transition"
+                >
+                  <Trash size={18} /> Delete
                 </button>
-              )}
-            </div>
-          )}
+              </div>
+            ) : (
+              <div className="mt-2">
+                {isEnrolled ? (
+                  <button className="bg-green-800 text-white px-4 py-2 rounded">
+                    Already Enrolled
+                  </button>
+                ) : (
+                  <button
+                    onClick={handleEnroll}
+                    className="bg-green-600 text-white px-4 py-2 rounded"
+                  >
+                    Enroll Now
+                  </button>
+                )}
+              </div>
+            )}
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Reviews Section */}
       <div className="mt-12">

@@ -7,6 +7,9 @@ import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import EnrolledStudents from "./EnrolledStudents";
 import EnrolledCourses from "./EnrolledCourses";
+import AdminQuicks from "./AdminQuicks";
+import AdminBadges from "./AdminBadges";
+import { Zap, Award as BadgeIcon } from "lucide-react";
 
 const DashboardAdmin = () => {
   const navigate = useNavigate();
@@ -41,9 +44,21 @@ const DashboardAdmin = () => {
       label: "My Enrollments",
       content: <EnrolledCourses />,
     },
+    {
+      id: 4,
+      label: "Quicks",
+      icon: Zap,
+      content: <AdminQuicks />,
+    },
+    {
+      id: 5,
+      label: "Badges",
+      icon: BadgeIcon,
+      content: <AdminBadges />,
+    },
   ];
   return (
-    <div className="p-24 sm:p-6 md:p-8 mt-6 sm:mt-10 max-x-6xl min-h-screen overflow-auto">
+    <div className="p-4 sm:p-8 pt-20 sm:pt-28 max-w-6xl mx-auto min-h-screen overflow-auto">
       <h2 className="text-lg sm:text-2xl md:text-3xl lg:text-4xl font-bold">
         Admin Dashboard
       </h2>

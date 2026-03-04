@@ -25,8 +25,13 @@ const CourseCard = ({ title = true, showViewButton = true }) => {
     dispatch(getAllCategories());
   }, [dispatch]);
 
-  // Helper to get category name from ID
-  const getCategoryName = (categoryId) => {
+  // Helper to get category name from ID or object
+  const getCategoryName = (categoryData) => {
+    if (!categoryData) return "Unknown";
+    // If it's a populated object with a name
+    if (categoryData.name) return categoryData.name;
+    // If it's an ID, find in categories list
+    const categoryId = typeof categoryData === "object" ? categoryData._id : categoryData;
     const category = categories.find((cat) => cat._id === categoryId);
     return category ? category.name : "Unknown";
   };

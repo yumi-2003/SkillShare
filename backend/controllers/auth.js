@@ -21,7 +21,7 @@ exports.register = async (req, res) => {
       name,
       email,
       password: hashedPassword,
-      userType,
+      userType: userType || "student",
       image:
         "https://res.cloudinary.com/dktycpcb5/image/upload/v1758821542/profile_img-removebg-preview_efwddw.png",
     });

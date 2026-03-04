@@ -7,6 +7,7 @@ import {
   clearFilters,
 } from "../../stores/slices/courseSlice";
 import { getAllCategories } from "../../stores/slices/categorySlice";
+import Skeleton from "../ui/Skeleton";
 
 const AllCourses = () => {
   const dispatch = useDispatch();
@@ -52,8 +53,14 @@ const AllCourses = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search, selectedCat]);
 
-  // Helper to get category name from ID
-  const getCategoryName = (categoryId) => {
+  // Helper to get category name from ID or object
+  const getCategoryName = (categoryData) => {
+    if (!categoryData) return "Unknown";
+    // If it's a populated object with a name
+    if (categoryData.name) return categoryData.name;
+    // If it's an ID, find in categories list
+    const categoryId =
+      typeof categoryData === "object" ? categoryData._id : categoryData;
     const category = categories.find((cat) => cat._id === categoryId);
     return category ? category.name : "Unknown";
   };
@@ -91,13 +98,24 @@ const AllCourses = () => {
         </div>
       )}
 
-      {/* Loading / Error */}
+      {/* Loading State */}
       {status === "loading" && (
-        <div className="text-center mt-8">
-          <div className="inline-block animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600"></div>
-          <p className="mt-2 text-xs sm:text-sm text-gray-500">
-            Loading courses...
-          </p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 sm:gap-8 mt-6">
+          {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
+            <div
+              key={i}
+              className="bg-white rounded-lg shadow-md overflow-hidden flex flex-col p-4 border border-emerald-100"
+            >
+              <div className="animate-pulse bg-gray-200 h-40 sm:h-44 w-full rounded-md mb-4"></div>
+              <div className="animate-pulse bg-gray-200 h-6 w-3/4 mb-2 rounded"></div>
+              <div className="animate-pulse bg-gray-200 h-4 w-full mb-4 rounded"></div>
+              <div className="flex justify-between mb-4">
+                <div className="animate-pulse bg-gray-200 h-3 w-1/4 rounded"></div>
+                <div className="animate-pulse bg-gray-200 h-3 w-1/4 rounded"></div>
+              </div>
+              <div className="animate-pulse bg-gray-200 h-10 w-full rounded-md"></div>
+            </div>
+          ))}
         </div>
       )}
 
@@ -133,7 +151,7 @@ const AllCourses = () => {
                       />
                     )}
                     <span className="absolute top-2 left-2 bg-green-200 text-green-800 rounded px-2 py-0.5 text-[10px] font-medium">
-                      {getCategoryName(course.category._id)}
+                      {getCategoryName(course.category)}
                     </span>
                   </div>
 

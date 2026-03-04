@@ -15,6 +15,7 @@ import CourseDetails from "./pages/CourseDetails";
 import EditProfile from "./components/Profile/EditProfile";
 import AboutUs from "./pages/homePage/AboutUs";
 import ContactUs from "./pages/homePage/ContactUs";
+import QuicksPage from "./pages/QuicksPage";
 import ScrollToTopOnNavigation from "./util/ScrollToTopOnNavigation";
 // import { checkCurrentUser } from "./apiCalls/auth";
 
@@ -45,6 +46,7 @@ function App() {
           <Route path="/editProfile" element={<EditProfile />} />
           <Route path="/aboutUs" element={<AboutUs />} />
           <Route path="/contactUs" element={<ContactUs />} />
+          <Route path="/quicks" element={<QuicksPage />} />
         </Routes>
         <Footer />
       </Router>

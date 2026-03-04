@@ -1,9 +1,10 @@
 import Card from "../../components/Dashboard/Card";
-import { BookOpen, Clock, Award } from "lucide-react";
+import { BookOpen, Clock, Award, Star } from "lucide-react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
 import { useEffect } from "react";
 import { getMyEnrollments } from "../../stores/slices/enrollment";
+import Skeleton from "../../components/ui/Skeleton";
 
 const DashboardStudent = () => {
   const navigate = useNavigate();
@@ -61,13 +62,50 @@ const DashboardStudent = () => {
           subtitle="Completed courses"
           icon={<Award size={20} />}
         />
+        <Card
+          title="My Points"
+          value={user?.points || 0}
+          subtitle="Earned from Quicks"
+          icon={<Star className="text-yellow-500" size={20} />}
+        />
+      </div>
+
+      {/* Rewards/Badges Section */}
+      <div className="mb-8">
+        <h3 className="text-xl font-semibold mb-4">My Badges</h3>
+        <div className="bg-white rounded-lg shadow p-6">
+          {user?.earnedBadges?.length > 0 ? (
+            <div className="flex flex-wrap gap-6">
+              {user.earnedBadges.map((badge) => (
+                <div key={badge._id} className="flex flex-col items-center">
+                  <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-2 border-2 border-green-500">
+                    <img src={badge.image || "/badge-placeholder.png"} alt={badge.name} className="w-10 h-10 object-contain" />
+                  </div>
+                  <span className="text-xs font-semibold text-gray-700">{badge.name}</span>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="text-gray-500 text-center">No badges earned yet. Complete <Link to="/quicks" className="text-green-600 hover:underline">Quicks</Link> to earn some!</p>
+          )}
+        </div>
       </div>
 
       {/* My Courses Section */}
       <div>
         <h3 className="text-xl font-semibold mb-4">My Courses</h3>
         <div className="bg-white rounded-lg shadow p-6 text-center">
-          {myEnrollments && myEnrollments.length > 0 ? (
+          {!myEnrollments ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+              {[1, 2, 3, 4].map((i) => (
+                <div key={i} className="border rounded-lg p-4 border-emerald-100">
+                  <div className="animate-pulse bg-gray-200 h-40 rounded mb-4"></div>
+                  <div className="animate-pulse bg-gray-200 h-6 w-3/4 mb-2"></div>
+                  <div className="animate-pulse bg-gray-200 h-4 w-full mb-4"></div>
+                </div>
+              ))}
+            </div>
+          ) : myEnrollments.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
               {myEnrollments.map((enrollment) => (
                 <div

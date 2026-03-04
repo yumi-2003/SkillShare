@@ -12,6 +12,7 @@ const adminRoutes = require("./routes/admin");
 const publicRoutes = require("./routes/public");
 const profileRoutes = require("./routes/profile");
 const reviewRoutes = require("./routes/review");
+const quickRoutes = require("./routes/quick");
 
 const app = express();
 
@@ -52,6 +53,7 @@ app.use("/admin", adminRoutes);
 app.use("/api", publicRoutes);
 app.use("/api", profileRoutes);
 app.use("/api", reviewRoutes);
+app.use("/api", quickRoutes);
 
 mongoose.connect(process.env["MONGODB_URL"]).then((_) => {
   app.listen(4000);
