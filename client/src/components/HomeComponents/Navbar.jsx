@@ -22,7 +22,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-[#f0fdf4] shadow-md fixed top-0 left-0 w-full z-50">
+    <nav className="shadow-md fixed top-0 left-0 w-full z-50 transition-colors duration-300">
       <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16 items-center">
           {/* Logo */}
@@ -32,7 +32,7 @@ const Navbar = () => {
               alt="SkillShare Logo"
               className="h-10 w-10"
             />
-            <span className="font-bold text-2xl text-[#064e3b]">
+            <span className="font-bold text-2xl">
               IngyinLearn
             </span>
           </Link>
@@ -44,8 +44,8 @@ const Navbar = () => {
               end
               className={({ isActive }) =>
                 isActive
-                  ? "text-white border-b-2 border-[#10b981]"
-                  : "text-white hover:text-[#10b981]"
+                  ? "text-[var(--accent-primary)] border-b-2 border-[var(--accent-primary)]"
+                  : "text-[var(--text-primary)] hover:text-[var(--accent-primary)]"
               }
             >
               Home
@@ -54,8 +54,8 @@ const Navbar = () => {
               to="/allcourses"
               className={({ isActive }) =>
                 isActive
-                  ? "text-white border-b-2 border-[#10b981]"
-                  : "text-white hover:text-[#10b981]"
+                  ? "text-[var(--accent-primary)] border-b-2 border-[var(--accent-primary)]"
+                  : "text-[var(--text-primary)] hover:text-[var(--accent-primary)]"
               }
             >
               Courses
@@ -64,11 +64,21 @@ const Navbar = () => {
               to="/quicks"
               className={({ isActive }) =>
                 isActive
-                  ? "text-white border-b-2 border-[#10b981]"
-                  : "text-white hover:text-[#10b981]"
+                  ? "text-[var(--accent-primary)] border-b-2 border-[var(--accent-primary)]"
+                  : "text-[var(--text-primary)] hover:text-[var(--accent-primary)]"
               }
             >
               Quicks
+            </NavLink>
+            <NavLink
+              to="/roadmaps"
+              className={({ isActive }) =>
+                isActive
+                  ? "text-[var(--accent-primary)] border-b-2 border-[var(--accent-primary)]"
+                  : "text-[var(--text-primary)] hover:text-[var(--accent-primary)]"
+              }
+            >
+              Roadmaps
             </NavLink>
           </div>
 
@@ -81,7 +91,7 @@ const Navbar = () => {
                   const isStudentView = window.location.pathname.includes("student");
                   navigate(isStudentView ? "/instructor-dashboard" : "/student-dashboard");
                 }}
-                className="text-[#064e3b] hover:text-[#10b981] font-semibold flex items-center gap-1 border border-[#064e3b] px-3 py-1 rounded-lg transition"
+                className="text-[var(--text-primary)] hover:text-[var(--accent-primary)] font-semibold flex items-center gap-1 border border-[var(--border-color)] px-3 py-1 rounded-lg transition"
               >
                 {window.location.pathname.includes("student") ? "Switch to Instructor View" : "Switch to Student View"}
               </button>
@@ -91,7 +101,7 @@ const Navbar = () => {
                 <ProfileSideBar />
                 <button
                   onClick={handleLogout}
-                  className="bg-[#059669] text-white px-4 py-2 rounded hover:bg-[#065f46] font-medium transition"
+                  className="bg-[var(--accent-primary)] text-white px-4 py-2 rounded hover:bg-[var(--accent-hover)] font-medium transition"
                 >
                   Logout
                 </button>
@@ -102,8 +112,8 @@ const Navbar = () => {
                   to="/login"
                   className={({ isActive }) =>
                     isActive
-                      ? "text-[#064e3b] font-semibold border-none border-[#10b981]"
-                      : "text-[#064e3b] hover:text-[#10b981]"
+                      ? "text-[var(--accent-primary)] font-semibold"
+                      : "text-[var(--text-primary)] hover:text-[var(--accent-primary)]"
                   }
                 >
                   Login
@@ -112,8 +122,8 @@ const Navbar = () => {
                   to="/signup"
                   className={({ isActive }) =>
                     isActive
-                      ? "bg-[#065f46] nav-link-white px-4 py-2 rounded font-medium border border-[#10b981]"
-                      : "bg-[#059669] nav-link-white px-4 py-2 rounded hover:bg-[#065f46] font-medium transition"
+                      ? "bg-[var(--accent-hover)] text-white px-4 py-2 rounded font-medium border border-[var(--accent-primary)]"
+                      : "bg-[var(--accent-primary)] text-white px-4 py-2 rounded hover:bg-[var(--accent-hover)] font-medium transition shadow-md"
                   }
                 >
                   Sign Up
@@ -126,7 +136,7 @@ const Navbar = () => {
           <div className="md:hidden">
             <button
               onClick={() => setMenuOpen(!menuOpen)}
-              className="text-[#064e3b] hover:text-[#10b981] focus:outline-none transition"
+              className="text-[var(--text-primary)] hover:text-[var(--accent-primary)] focus:outline-none transition"
             >
               {menuOpen ? <X size={28} /> : <Menu size={28} />}
             </button>
@@ -136,16 +146,16 @@ const Navbar = () => {
 
       {/* Mobile Menu */}
       {menuOpen && (
-        <div className="md:hidden bg-[#f0fdf4] border-t border-[#d1fae5] shadow-lg">
-          <div className="flex flex-col px-4 py-3 space-y-2">
+        <div className="md:hidden bg-[var(--bg-primary)] border-t border-[var(--border-color)] shadow-lg animate-in slide-in-from-top duration-300">
+          <div className="flex flex-col px-4 py-5 space-y-4">
             <NavLink
               to="/"
               end
               onClick={() => setMenuOpen(false)}
               className={({ isActive }) =>
                 isActive
-                  ? "text-[#10b981] font-semibold border border-[#10b981] pb-1"
-                  : "text-[#064e3b] hover:text-[#10b981]"
+                  ? "text-[var(--accent-primary)] font-black border-l-4 border-[var(--accent-primary)] pl-3"
+                  : "text-[var(--text-primary)] hover:text-[var(--accent-primary)] pl-3"
               }
             >
               Home
@@ -155,8 +165,8 @@ const Navbar = () => {
               onClick={() => setMenuOpen(false)}
               className={({ isActive }) =>
                 isActive
-                  ? "text-[#10b981] font-semibold border border-[#10b981] pb-1"
-                  : "text-[#064e3b] hover:text-[#10b981]"
+                  ? "text-[var(--accent-primary)] font-black border-l-4 border-[var(--accent-primary)] pl-3"
+                  : "text-[var(--text-primary)] hover:text-[var(--accent-primary)] pl-3"
               }
             >
               Courses
@@ -166,63 +176,68 @@ const Navbar = () => {
               onClick={() => setMenuOpen(false)}
               className={({ isActive }) =>
                 isActive
-                  ? "text-[#10b981] font-semibold border border-[#10b981] pb-1"
-                  : "text-[#064e3b] hover:text-[#10b981]"
+                  ? "text-[var(--accent-primary)] font-black border-l-4 border-[var(--accent-primary)] pl-3"
+                  : "text-[var(--text-primary)] hover:text-[var(--accent-primary)] pl-3"
               }
             >
               Quicks
             </NavLink>
+            <NavLink
+              to="/roadmaps"
+              onClick={() => setMenuOpen(false)}
+              className={({ isActive }) =>
+                isActive
+                  ? "text-[var(--accent-primary)] font-black border-l-4 border-[var(--accent-primary)] pl-3"
+                  : "text-[var(--text-primary)] hover:text-[var(--accent-primary)] pl-3"
+              }
+            >
+              Roadmaps
+            </NavLink>
 
-            <div className="flex items-center justify-between mb-4">
-              <span className="text-[#064e3b] font-medium">Theme</span>
+            <div className="flex items-center justify-between py-2 border-y border-[var(--border-color)]">
+              <span className="text-[var(--text-primary)] font-bold">Dark Mode</span>
               <Theme />
             </div>
 
             {user ? (
-              <>
+              <div className="flex flex-col gap-3 pt-2">
                 <button
                   onClick={() => {
                     const isStudentView = window.location.pathname.includes("student");
                     navigate(isStudentView ? "/instructor-dashboard" : "/student-dashboard");
                     setMenuOpen(false);
                   }}
-                  className="text-[#064e3b] hover:text-[#10b981] font-semibold border border-[#064e3b] px-3 py-2 rounded-lg transition text-left"
+                  className="w-full text-[var(--accent-primary)] font-bold border-2 border-[var(--accent-primary)] px-4 py-3 rounded-2xl transition hover:bg-[var(--accent-primary)] hover:text-white text-center"
                 >
-                  {window.location.pathname.includes("student") ? "Switch to Instructor View" : "Switch to Student View"}
+                  {window.location.pathname.includes("student") ? "Instructor View" : "Student View"}
                 </button>
-                <ProfileSideBar />
+                <div className="flex justify-center border-t border-[var(--border-color)] pt-3">
+                  <ProfileSideBar />
+                </div>
                 <button
                   onClick={handleLogout}
-                  className="bg-[#059669] text-white px-4 py-2 rounded hover:bg-[#065f46] font-medium mt-2 transition"
+                  className="bg-red-500 text-white px-4 py-3 rounded-2xl font-black shadow-lg shadow-red-200 active:scale-95 transition"
                 >
                   Logout
                 </button>
-              </>
+              </div>
             ) : (
-              <>
+              <div className="flex flex-col gap-3 pt-2">
                 <NavLink
                   to="/login"
                   onClick={() => setMenuOpen(false)}
-                  className={({ isActive }) =>
-                    isActive
-                      ? "text-[#064e3b] font-semibold border border-[#10b981] pb-1"
-                      : "text-[#064e3b] hover:text-[#10b981]"
-                  }
+                  className="w-full text-center py-3 font-bold text-[var(--text-primary)] border border-[var(--border-color)] rounded-2xl"
                 >
                   Login
                 </NavLink>
                 <NavLink
                   to="/signup"
                   onClick={() => setMenuOpen(false)}
-                  className={({ isActive }) =>
-                    isActive
-                      ? "bg-[#065f46] nav-link-white px-4 py-2 rounded font-medium border-b-2 border-[#10b981]"
-                      : "bg-[#059669] nav-link-white px-4 py-2 rounded hover:bg-[#065f46] font-medium transition"
-                  }
+                  className="w-full text-center py-3 font-bold bg-[var(--accent-primary)] text-white rounded-2xl shadow-lg shadow-emerald-100"
                 >
                   Sign Up
                 </NavLink>
-              </>
+              </div>
             )}
           </div>
         </div>

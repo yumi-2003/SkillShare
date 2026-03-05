@@ -28,6 +28,7 @@ exports.addNewCourse = async (req, res) => {
     category,
     userId,
     image,
+    lessons,
   } = req.body;
 
   try {
@@ -60,6 +61,7 @@ exports.addNewCourse = async (req, res) => {
       category,
       image: imageUrl,
       instructor: userId,
+      lessons: lessons ? (typeof lessons === 'string' ? JSON.parse(lessons) : lessons) : [],
     });
 
     return res.status(201).json({
@@ -141,7 +143,7 @@ exports.updateCourse = async (req, res) => {
   }
 
   try {
-    const { title, description, totalLessons, duration, category, image } =
+    const { title, description, totalLessons, duration, category, image, lessons } =
       req.body;
     const { id } = req.params;
 
@@ -209,6 +211,9 @@ exports.updateCourse = async (req, res) => {
     courseDoc.totalLessons = totalLessons;
     courseDoc.duration = duration;
     courseDoc.category = category;
+    if (lessons) {
+      courseDoc.lessons = typeof lessons === 'string' ? JSON.parse(lessons) : lessons;
+    }
     if (newImageUploaded) courseDoc.image = imageUrl;
 
     await courseDoc.save();
@@ -241,8 +246,11 @@ exports.deleteCourse = async (req, res) => {
       });
     }
 
-    if (userId.toString() !== courseDoc.instructor.toString()) {
-      throw new Error("Authorization Failed.");
+    if (req.userId.toString() !== courseDoc.instructor.toString()) {
+      return res.status(403).json({
+        isSuccess: false,
+        message: "You are not authorized to delete this course.",
+      });
     }
 
     if (courseDoc.image && Array.isArray(courseDoc.image)) {

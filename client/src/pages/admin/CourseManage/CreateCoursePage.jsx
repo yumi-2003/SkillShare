@@ -30,7 +30,27 @@ const CreateCoursePage = () => {
     duration: "",
     category: "",
     image: null,
+    lessons: [],
   });
+
+  const handleAddLesson = () => {
+    setFormData({
+      ...formData,
+      lessons: [...formData.lessons, { title: "", content: "", type: "video" }],
+    });
+  };
+
+  const handleRemoveLesson = (index) => {
+    const updatedLessons = [...formData.lessons];
+    updatedLessons.splice(index, 1);
+    setFormData({ ...formData, lessons: updatedLessons });
+  };
+
+  const handleLessonChange = (index, field, value) => {
+    const updatedLessons = [...formData.lessons];
+    updatedLessons[index][field] = value;
+    setFormData({ ...formData, lessons: updatedLessons });
+  };
 
   // handle change
   const handleChange = (e) => {
@@ -70,6 +90,10 @@ const CreateCoursePage = () => {
     if (formData.image) {
       data.append("image", formData.image);
     }
+    data.append("lessons", JSON.stringify(formData.lessons));
+
+    // Automatically set totalLessons based on the lessons array
+    data.append("totalLessons", formData.lessons.length);
 
     dispatch(createCourse(data));
   };
@@ -230,6 +254,78 @@ const CreateCoursePage = () => {
                 alt="Preview"
                 className="w-full h-40 object-cover rounded-lg shadow-md mt-3"
               />
+            )}
+          </div>
+
+          {/* Lessons Section */}
+          <div className="bg-gray-50 p-4 rounded-xl border border-gray-200">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="font-bold text-gray-800">Lessons</h3>
+              <button
+                type="button"
+                onClick={handleAddLesson}
+                className="text-sm bg-indigo-600 text-white px-3 py-1.5 rounded-lg hover:bg-indigo-700 transition"
+              >
+                + Add Lesson
+              </button>
+            </div>
+
+            {formData.lessons.length === 0 ? (
+              <p className="text-gray-400 text-sm text-center py-4">No lessons added yet.</p>
+            ) : (
+              <div className="space-y-4">
+                {formData.lessons.map((lesson, index) => (
+                  <div key={index} className="bg-white p-4 rounded-lg shadow-sm border border-gray-100 relative group">
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveLesson(index)}
+                      className="absolute top-2 right-2 text-red-500 opacity-0 group-hover:opacity-100 transition"
+                    >
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </button>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
+                      <div>
+                        <label className="text-xs font-bold text-gray-500 uppercase">Lesson Title</label>
+                        <input
+                          type="text"
+                          value={lesson.title}
+                          onChange={(e) => handleLessonChange(index, "title", e.target.value)}
+                          placeholder="Lesson Title"
+                          className="w-full mt-1 px-3 py-2 text-sm border rounded-lg"
+                          required
+                        />
+                      </div>
+                      <div>
+                        <label className="text-xs font-bold text-gray-500 uppercase">Type</label>
+                        <select
+                          value={lesson.type}
+                          onChange={(e) => handleLessonChange(index, "type", e.target.value)}
+                          className="w-full mt-1 px-3 py-2 text-sm border rounded-lg"
+                        >
+                          <option value="video">Video</option>
+                          <option value="blog">Blog</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div>
+                      <label className="text-xs font-bold text-gray-500 uppercase">
+                        {lesson.type === "video" ? "Video URL" : "Blog Content"}
+                      </label>
+                      <textarea
+                        value={lesson.content}
+                        onChange={(e) => handleLessonChange(index, "content", e.target.value)}
+                        placeholder={lesson.type === "video" ? "https://..." : "Write your lesson content here..."}
+                        rows={lesson.type === "video" ? 1 : 4}
+                        className="w-full mt-1 px-3 py-2 text-sm border rounded-lg"
+                        required
+                      ></textarea>
+                    </div>
+                  </div>
+                ))}
+              </div>
             )}
           </div>
 

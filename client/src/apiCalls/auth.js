@@ -34,6 +34,7 @@ export const login = async (payload) => {
 //logout user
 export const logout = async () => {
   localStorage.removeItem("SkillShareToken");
+  localStorage.removeItem("SkillShareUser");
   window.location.href = "/login";
 };
 

@@ -10,7 +10,9 @@ module.exports = (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_KEY);
-    req.user = decoded; // userId and userType
+    req.user = decoded; // for compatibility
+    req.userId = decoded.userId;
+    req.userType = decoded.userType;
     next();
   } catch (err) {
     return res.status(401).json({ message: "Invalid token" });

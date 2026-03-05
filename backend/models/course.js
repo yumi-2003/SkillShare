@@ -39,6 +39,13 @@ const courseSchema = new Schema(
       type: Number,
       default: 0,
     },
+    lessons: [
+      {
+        title: { type: String, required: true },
+        content: { type: String, required: true }, // Video URL or Blog content
+        type: { type: String, enum: ["video", "blog"], default: "video" },
+      },
+    ],
     createdAt: {
       type: Date,
       default: Date.now,

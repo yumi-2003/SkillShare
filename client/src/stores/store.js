@@ -7,6 +7,8 @@ import enrollmentReducer from "./slices/enrollment";
 import profileReducer from "./slices/profileSlice";
 import reviewReducer from "./slices/reviewSlice";
 import quickReducer from "./slices/quickSlice";
+import skillPathReducer from "./slices/skillPathSlice";
+import courseProgressReducer from "./slices/courseProgressSlice";
 
 export default configureStore({
   reducer: {
@@ -18,5 +20,7 @@ export default configureStore({
     profile: profileReducer,
     review: reviewReducer,
     quicks: quickReducer,
+    skillPath: skillPathReducer,
+    courseProgress: courseProgressReducer,
   },
 });

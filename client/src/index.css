@@ -2,10 +2,25 @@
 @import url('https://fonts.googleapis.com/css2?family=Bigelow+Rules&family=Inter:wght@100..900&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
 @import "tailwindcss";
 
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.animate-shimmer {
+  animation: shimmer 2s infinite linear;
+}
+
 :root {
   --bg-primary: #f0fdf4;
   --bg-secondary: #ffffff;
   --bg-muted: #ecfdf5;
+  --bg-card: #ffffff;
   --text-primary: #064e3b;
   --text-secondary: #065f46;
   --text-muted: #6b7280;
@@ -19,15 +34,16 @@
 
 body.dark-mode {
   --bg-primary: #0c1a14;
-  --bg-secondary: #142b1f;
-  --bg-muted: #1a3627;
+  --bg-secondary: #060e0a;
+  --bg-muted: #11241a;
+  --bg-card: #0e1e16;
   --text-primary: #ecfdf5;
   --text-secondary: #d1fae5;
   --text-muted: #94a3b8;
   --accent-primary: #10b981;
   --accent-hover: #34d399;
   --border-color: #2d4a3b;
-  --card-shadow: rgba(0, 0, 0, 0.3);
+  --card-shadow: rgba(0, 0, 0, 0.5);
   --skeleton-bg: #1e293b;
   --skeleton-shimmer: #334155;
 }
@@ -41,17 +57,30 @@ body {
 }
 
 /* heading and logo  */
-h1, h2, h3, h4, h5, h6, .logo {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.logo {
   color: var(--text-primary) !important;
 }
 
 /* button  */
-.bg-blue-500, .btn-primary, .bg-blue-600, .bg-green-600 {
+.bg-blue-500,
+.btn-primary,
+.bg-blue-600,
+.bg-green-600,
+.bg-emerald-600 {
   background-color: var(--accent-primary) !important;
   color: #ffffff !important;
 }
 
-.bg-blue-600:hover, .btn-primary:hover, .bg-green-600:hover {
+.bg-blue-600:hover,
+.btn-primary:hover,
+.bg-green-600:hover,
+.bg-emerald-600:hover {
   background-color: var(--accent-hover) !important;
 }
 
@@ -67,45 +96,82 @@ a {
 }
 
 a:hover {
-  color: #10b981 !important; /* Bright Mint */
+  color: #10b981 !important;
+  /* Bright Mint */
 }
 
 /* input and border  */
-input, textarea, select {
+input,
+textarea,
+select {
   background-color: var(--bg-secondary) !important;
   color: var(--text-primary) !important;
   border-color: var(--border-color) !important;
 }
 
-input:focus, textarea:focus, select:focus {
+input:focus,
+textarea:focus,
+select:focus {
   border-color: var(--accent-primary) !important;
 }
 
-/* cards and background  */
+/* card-like backgrounds and shadows  */
 .bg-white {
   background-color: var(--bg-secondary) !important;
 }
 
-.card, .bg-white.rounded-lg.shadow {
-  background-color: var(--bg-secondary) !important;
-  box-shadow: 0 4px 6px var(--card-shadow) !important;
-  border: 1px solid var(--border-color);
-}
-
+.bg-gray-50,
 .bg-gray-100 {
   background-color: var(--bg-muted) !important;
 }
 
+.card,
+.bg-white.rounded-lg.shadow,
+.bg-white.rounded-2xl.shadow-xl,
+.bg-white.rounded-3xl.shadow-xl {
+  background-color: var(--bg-card) !important;
+  box-shadow: 0 10px 15px -3px var(--card-shadow), 0 4px 6px -2px var(--card-shadow) !important;
+  border: 1px solid var(--border-color);
+}
+
+.border,
+.border-gray-100,
+.border-gray-200 {
+  border-color: var(--border-color) !important;
+}
+
+/* text overrides */
+.text-gray-900,
+.text-gray-800,
+.text-gray-700 {
+  color: var(--text-primary) !important;
+}
+
+.text-gray-600,
+.text-gray-500 {
+  color: var(--text-secondary) !important;
+}
+
+.text-gray-400 {
+  color: var(--text-muted) !important;
+}
+
 /* nav bar  */
-nav, .navbar {
+nav,
+.navbar {
   background-color: var(--bg-primary) !important;
   border-bottom: 1px solid var(--border-color) !important;
 }
 
 /* Skeleton Animation */
 @keyframes shimmer {
-  0% { transform: translateX(-100%); }
-  100% { transform: translateX(100%); }
+  0% {
+    transform: translateX(-100%);
+  }
+
+  100% {
+    transform: translateX(100%);
+  }
 }
 
 .skeleton {
@@ -121,11 +187,9 @@ nav, .navbar {
   right: 0;
   bottom: 0;
   left: 0;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    var(--skeleton-shimmer),
-    transparent
-  );
+  background: linear-gradient(90deg,
+      transparent,
+      var(--skeleton-shimmer),
+      transparent);
   animation: shimmer 1.5s infinite;
 }

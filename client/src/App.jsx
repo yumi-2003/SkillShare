@@ -16,6 +16,9 @@ import EditProfile from "./components/Profile/EditProfile";
 import AboutUs from "./pages/homePage/AboutUs";
 import ContactUs from "./pages/homePage/ContactUs";
 import QuicksPage from "./pages/QuicksPage";
+import SkillRoadmapList from "./pages/SkillRoadmapList";
+import SkillRoadmapDetail from "./pages/SkillRoadmapDetail";
+
 import ScrollToTopOnNavigation from "./util/ScrollToTopOnNavigation";
 // import { checkCurrentUser } from "./apiCalls/auth";
 
@@ -32,23 +35,30 @@ function App() {
     <>
       <Router>
         <ScrollToTopOnNavigation />
-        <Navbar />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<AuthForm />} />
-          <Route path="/signup" element={<AuthForm />} />
-          <Route path="/instructor-dashboard" element={<DashboardAdmin />} />
-          <Route path="/student-dashboard" element={<DashboardStudent />} />
-          <Route path="/allcourses" element={<AllCourses />} />
-          <Route path="/createCoursePage" element={<CreateCoursePage />} />
-          <Route path="/courses/edit/:id" element={<EditCourse />} />
-          <Route path="/courseDetails/:id" element={<CourseDetails />} />
-          <Route path="/editProfile" element={<EditProfile />} />
-          <Route path="/aboutUs" element={<AboutUs />} />
-          <Route path="/contactUs" element={<ContactUs />} />
-          <Route path="/quicks" element={<QuicksPage />} />
-        </Routes>
-        <Footer />
+        <div className="flex flex-col min-h-screen">
+          <Navbar />
+          <main className="flex-1">
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/login" element={<AuthForm />} />
+              <Route path="/signup" element={<AuthForm />} />
+              <Route path="/instructor-dashboard" element={<DashboardAdmin />} />
+              <Route path="/student-dashboard" element={<DashboardStudent />} />
+              <Route path="/allcourses" element={<AllCourses />} />
+              <Route path="/createCoursePage" element={<CreateCoursePage />} />
+              <Route path="/courses/edit/:id" element={<EditCourse />} />
+              <Route path="/courseDetails/:id" element={<CourseDetails />} />
+              <Route path="/course-overview/:id" element={<CourseDetails />} />
+              <Route path="/editProfile" element={<EditProfile />} />
+              <Route path="/aboutUs" element={<AboutUs />} />
+              <Route path="/contactUs" element={<ContactUs />} />
+              <Route path="/quicks" element={<QuicksPage />} />
+              <Route path="/roadmaps" element={<SkillRoadmapList />} />
+              <Route path="/roadmaps/:id" element={<SkillRoadmapDetail />} />
+            </Routes>
+          </main>
+          <Footer />
+        </div>
       </Router>
     </>
   );
